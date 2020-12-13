@@ -1,5 +1,3 @@
-* TOC
-{:toc}
 # Set-up
 
 Each scientist was first presented with a preamble and standardized
