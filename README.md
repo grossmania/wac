@@ -96,7 +96,7 @@ better way of living and
 participate in the discourse 
 and acting on that.
 
-#### Q5 
+**Q5**
 
 * > Historically, we have
 experienced these types of 
@@ -204,7 +204,7 @@ concern for the world, as we
 know it. It allows us to see 
 what\'s important and
 what\'s not important. 
-#### Q5 
+**Q5**
 
 * > My advice is that, not to be 
 too panicked about it. 
@@ -335,7 +335,7 @@ familiarity with computers,
 teleconferencing, social 
 media, and information 
 technology in general.   
-#### Q5 
+**Q5**
 
 * > And if I were young, and had 
 a job as a waiter or 
@@ -446,7 +446,9 @@ more likely to help each
 other, and as a result,
 increase the cohesion of the 
 group. 
-#### Q5 * > Caring about other people, 
+**Q5**
+
+* > Caring about other people, 
 care about your family, care 
 about your friends, help 
 where you can without
@@ -514,7 +516,7 @@ they too are coping well.
 * > And also, very important to
 maintain social connections
 and social support.
-#### Q5 
+**Q5**
 
 * > If we are to learn something 
 from the past and from 
@@ -630,7 +632,7 @@ using the established
 connections to work on 
 global warming and maybe 
 other global problems. 
-#### Q5 
+**Q5**
 
 * > It might be also a good time 
 to reflect on how we might 
@@ -680,7 +682,7 @@ and empathy, as it\'s time
 for those around us who
 haven\'t been as lucky as
 the luckiest among us. 
-#### Q5 
+**Q5**
 
 * > So being friendly, open and
 compassionate to ourselves 
@@ -843,7 +845,7 @@ do better by working
 together to combat a common
 problem, rather than to
 fight each other.
-#### Q5 
+**Q5**
 
 * > Benjamin Franklin \[...\]
 said, we must all hang 
@@ -883,7 +885,9 @@ recklessly.
  information in a way that avoids 
  bias; unbiased reasoning. 
 
-**Q1*** > People started asking
+**Q1**
+
+* > People started asking
 questions that they might
 not have even considered 
 asking before  
@@ -943,7 +947,7 @@ creating impediments for
 understanding that we\'re
 going to have to kind of 
 tackle in a reasoned way.  
-#### Q5 
+**Q5**
 
 * > Yes, people are getting
 sick, and some are dying.
@@ -1010,7 +1014,7 @@ prepared to respond swiftly
 and sensibly, and
 thoughtfully to future 
 challenges.
-#### Q5 
+**Q5**
 
 * > knowledge of how pandemics 
 have ended in the past in
@@ -1076,7 +1080,7 @@ those who assess the
 situation accurately, and
 refocus their goals, those 
 flexible.  
-#### Q5 
+**Q5**
 
 * > Things might change so 
 quickly; change by the day 
@@ -1201,7 +1205,7 @@ deindividuation. And that\'s
 part of the wisdom. The
 other part is to counteract
 it.
-#### Q5 
+**Q5**
 
 * > To try to support each other 
 and still focus on those 
@@ -1307,7 +1311,7 @@ integrate this in the story
 of our lives, and who we 
 are, and share those stories 
 with others. 
-#### Q5 
+**Q5**
 
 * > It is important to, stop and 
 rethink about what we have 
@@ -1374,7 +1378,7 @@ asking in a careful way,
 what is influencing me? And
 are these the influences I 
 want to shape my worldview?
-#### Q5 
+**Q5**
 
 * > Remember you're a social 
 animal. Remember that. You 
@@ -1448,7 +1452,7 @@ and learning to ask other
 people about what their
 states are like and learning 
 to learn about other people. 
-#### Q5 
+**Q5**
 
 * > So, the first one has to do
 with perspective taking. For 
@@ -1510,7 +1514,7 @@ judgment.
 balance the values of
 liberty and privacy against
 the values of saved lives. 
-#### Q5 
+**Q5**
 
 * > And so each of us has to 
 sort of figure out for 
@@ -2269,7 +2273,9 @@ we can learn from our
 mistakes and plan for what 
 we can do better next time 
 we face a collective threat. 
-#### Q5 * > The future is more important 
+**Q5**
+
+* > The future is more important 
 than short term
 gratifications. That we
 should never lose sight of 
@@ -2304,7 +2310,9 @@ restore the infrastructure
 and the base that\'s 
 necessary for people to have 
 trust in our institutions. 
-#### Q5 * > Patience and resilience are
+**Q5**
+
+* > Patience and resilience are
 the two core components of 
 wisdom, which I think we 
 should all try to rely on in 
@@ -2364,7 +2372,7 @@ not fairly distributed
 locally, nationally or 
 internationally ever and 
 never has been.
-#### Q5 
+**Q5**
 
 * > the most important part is 
 now that we are from, you
@@ -2396,7 +2404,7 @@ help themselves
  day life; framing pandemic as a
  manageable challenge. 
 
-#### Q5 
+**Q5**
 
 * > I think finding small ways 
 in which we can hold on to 
@@ -2424,7 +2432,7 @@ new activities.
  public health guidelines (e.g.,
  physical distancing). 
 
-#### Q5 
+**Q5**
 
 * > If we think about it as
 temporary, and we have hope, 
@@ -2442,7 +2450,7 @@ keep us safe.
  communication as well as public
  risk awareness. 
 
-#### Q5 
+**Q5**
 
 * > Public health officials have 
 said things that when they 
@@ -2464,7 +2472,7 @@ been all over the map. 
  Definition: believing in science 
  and taking experts seriously.
 
-#### Q5 
+**Q5**
 
 * > But science and the
 institutions that sustain
