@@ -1,4 +1,3 @@
-# World after Covid: Questions & Coded Themes
 * TOC
 {:toc}
 # Set-up
