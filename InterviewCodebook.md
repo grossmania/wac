@@ -43,20 +43,20 @@ questions, examples are provided for each.*
 
 ### Nature
 
-+----------------------------------+----------------------------------+
+
 | Definition: Improved ecology and |                                  |
 | other aspects of nature and      |                                  |
 | one's environment, such as       |                                  |
 | cleaner air, less pollution,     |                                  |
 | paying greater attention to      |                                  |
 | landscape around us.             |                                  |
-+==================================+==================================+
+
 | Q1                               | -   There\'s no doubt that the   |
 |                                  |     biggest benefit of lockdown  |
 |                                  |     has been the impact on the   |
 |                                  |     environment, the air is      |
 |                                  |     cleaner.                     |
-+----------------------------------+----------------------------------+
+
 
 ### Gratitude
 
