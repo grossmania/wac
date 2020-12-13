@@ -67,13 +67,17 @@ Definition: being appreciative of / grateful for what one has.
 
  Definition: being hopeful and optimistic; includes believing in human ability, not panicking, remembering we will recover, realizing importance of expressing positive emotions.
 
-#### Q1 * People become more aware of
+#### Q1 
+
+* People become more aware of
 the importance of the
 expression of positive 
 emotions when they\'re in
 ordinary day to day
 interactions with others.
-#### Q4 * I think that one that is 
+#### Q4 
+
+* I think that one that is 
 very important is to never 
 lose hope and optimism, as 
 the humankind has been able
@@ -88,7 +92,10 @@ keep imagining what may be a
 better way of living and 
 participate in the discourse 
 and acting on that.
-#### Q5 * Historically, we have
+
+#### Q5 
+
+* Historically, we have
 experienced these types of 
 pandemics multiple times,
 yet we have successfully 
@@ -114,7 +121,9 @@ the future.
  things), deriving pleasure from
  the moment and details of life.
 
-#### Q1 * Rather than planning a trip
+#### Q1 
+
+* Rather than planning a trip
 abroad that\'s filled with 
 mishaps and standing in the
 rain and getting sick and
@@ -145,7 +154,9 @@ individual, and realize that
 they\'re special, that 
 they\'re wonderful and we
 have taken them for granted. 
-#### Q2 * We need to slow down, and
+#### Q2 
+
+* We need to slow down, and
 just notice; notice things 
 every day, the great gifts 
 that we have in our lives
@@ -169,7 +180,10 @@ do that, the better off
 we\'ll be able to really 
 kind of foster that positive 
 change 
-#### Q4 * To me, recognition of the
+
+#### Q4 
+
+* To me, recognition of the
 fragility of life. And 
 certainly, the COVID 
 pandemic is reminding us of
@@ -187,7 +201,9 @@ concern for the world, as we
 know it. It allows us to see 
 what\'s important and
 what\'s not important. 
-#### Q5 * My advice is that, not to be 
+#### Q5 
+
+* My advice is that, not to be 
 too panicked about it. 
 We\'ve been through this 
 before, and just stay
@@ -202,7 +218,9 @@ people.
  the capacity to cope with 
  difficulties. 
 
-#### Q1 * I also think that
+#### Q1 
+
+* I also think that
 individuals will newly 
 embrace flexibility and
 understanding how to cope
@@ -231,7 +249,9 @@ experience of loneliness.
  and factors that such 
  improvements are contingent on.
 
-#### Q1 * couples who are able to be 
+#### Q1 
+
+* couples who are able to be 
 resilient over time also may 
 do better in terms of their
 health, and general
@@ -242,7 +262,9 @@ wellbeing.
  Definition: the capacity to 
  balance work and private life
 
-#### Q1 * This coronavirus pandemic is 
+#### Q1 
+
+* This coronavirus pandemic is 
 also affecting their social
 bonds and we can re-evaluate 
 how the pressures that each
@@ -255,7 +277,9 @@ general, the Japanese
 businesspeople stay in their 
 office longer time than
 other countries. 
-#### Q2 * Work life balance. We need 
+#### Q2 
+
+* Work life balance. We need 
 to decrease our work time, 
 increase our family time.
 Companies should restructure 
@@ -271,7 +295,9 @@ that\'s the wisdom we need.
  interpersonal contact, including 
  new technological developments.
 
-#### Q1 * Certainly, people who are
+#### Q1 
+
+* Certainly, people who are
 middle aged and older are
 embracing technology in ways 
 that they might not have 
@@ -296,7 +322,9 @@ birthday party at the end of
 March, and we had 20 people
 on zoom, and that was kind 
 of fun.
-#### Q2 * For the second question, the 
+#### Q2 
+
+* For the second question, the 
 kind of wisdom people will 
 need in order to work from 
 home. My answer is 
@@ -304,7 +332,9 @@ familiarity with computers,
 teleconferencing, social 
 media, and information 
 technology in general.   
-#### Q5 * And if I were young, and had 
+#### Q5 
+
+* And if I were young, and had 
 a job as a waiter or 
 waitress, I\'d be trying to
 learn some of that stuff. So 
@@ -316,7 +346,7 @@ we are now because it\'s so
 convenient. Learn about
 these things, learn about
 this technology, because 
-there\'s going to be some
+there's going to be some
 money in it. 
 
 ### 
@@ -328,7 +358,9 @@ money in it. 
  travel) and redefining what 
  "normal" implies. 
 
-#### Q1 * But with a pandemic, and 
+#### Q1 
+
+* But with a pandemic, and 
 with the change in work
 mode, people started asking
 questions like, is this
@@ -357,7 +389,9 @@ different.
  care for elderly, including 
  calls for more funding/policies. 
 
-#### Q1 * On the other hand, there\'s
+#### Q1 
+
+* On the other hand, there\'s
 a chance that we\'ll think 
 more seriously about how we
 care about the frail elderly 
@@ -382,7 +416,9 @@ term care homes.
  tolerance of others, being
  considerate of others.
 
-#### Q1 * I\'m hoping that we\'re
+#### Q1 
+
+* I\'m hoping that we\'re
 going to see a lot more
 community engagement from
 individuals after this 
@@ -421,19 +457,23 @@ wellbeing. So, care.
 
 ### Social connectedness
 
- Definition: paying attention to
+Definition: paying attention to
  importance of interpersonal 
  relationships, maintaining
  relationships.
 
-#### Q1 * Compared with before the 
+#### Q1 
+
+* Compared with before the 
 pandemic, people during this 
 pandemic feel more connected 
 with the community. Tighter
 family relationships would 
 be the most positive outcome 
 of this. 
-#### Q2 * I think there\'s a force in
+#### Q2 
+
+* I think there\'s a force in
 our society that says you
 need to separate yourself, 
 but I think that\'s sort of
@@ -450,7 +490,9 @@ be, don\'t pay attention to
 your cultural value that you 
 should separate yourself 
 from your family.
-#### Q4 * What I\'m saying is call 
+#### Q4 
+
+* What I\'m saying is call 
 your grandma. And just keep
 in touch with those
 relationships because
@@ -469,7 +511,9 @@ they too are coping well.
 * And also, very important to
 maintain social connections
 and social support.
-#### Q5 * If we are to learn something 
+#### Q5 
+
+* If we are to learn something 
 from the past and from 
 previous pandemics, we know
 that whoever was organized 
@@ -494,7 +538,9 @@ that assistance.
  all share a common human
  experience / fate.
 
-#### Q1 * I think the number one piece 
+#### Q1 
+
+* I think the number one piece 
 of wisdom is that we\'re all 
 in it together. And that has 
 been bandied around but I
@@ -505,10 +551,14 @@ ones, protect our friends,
 protect their neighbors, and 
 in doing so we will protect
 ourselves. 
-#### Q2 * I think stressing the common 
+#### Q2 
+
+* I think stressing the common 
 humanity would help us enjoy 
 this unifying effect.
-#### Q4 * This pandemic taught us that 
+#### Q4 
+
+* This pandemic taught us that 
 we are all biological
 beings, we are all 
 vulnerable to the virus. So
@@ -538,12 +588,16 @@ aspects of our being born.
  "we-ness", sense that we are in
  this together.
 
-#### Q1 * I think the biggest change 
+#### Q1 
+
+* I think the biggest change 
 will be where people will
 look to their community
 rather than the central
 government.
-#### Q2 * The realization that what
+#### Q2 
+
+* The realization that what
 matters is the common good 
 and not petty ideologies.
 That sounds simple. But
@@ -559,7 +613,9 @@ good, doing what will help
 not just ourselves or our
 tribe, but what\'s good for
 all. 
-#### Q4 * The main thing is the
+#### Q4 
+
+* The main thing is the
 realization that to achieve
 a common good, to do what\'s 
 best for all.
@@ -571,7 +627,9 @@ using the established
 connections to work on 
 global warming and maybe 
 other global problems. 
-#### Q5 * It might be also a good time 
+#### Q5 
+
+* It might be also a good time 
 to reflect on how we might 
 be able to contribute in 
 helping not just ourselves 
@@ -586,13 +644,17 @@ the community as a whole.
  listeners and communicating 
  warmth. 
 
-#### Q1 * Probably one positive effect 
+#### Q1 
+
+* Probably one positive effect 
 of tears could be that 
 everybody will feel empathy
 for others who are affected
 more severely no matter
 where they live. 
-#### Q2 * I think that people will 
+#### Q2 
+
+* I think that people will 
 need to recognize the value
 of flexibility and the value 
 of compassion and the value
@@ -603,7 +665,9 @@ comes out of COVID for some
 people, as wisdom, I expect
 it will have some payoff in
 enhancing empathy. 
-#### Q4 * People who haven\'t lost 
+#### Q4 
+
+* People who haven\'t lost 
 their job, people who
 haven\'t lost relatives, 
 people who haven\'t lost 
@@ -613,7 +677,9 @@ and empathy, as it\'s time
 for those around us who
 haven\'t been as lucky as
 the luckiest among us. 
-#### Q5 * So being friendly, open and
+#### Q5 
+
+* So being friendly, open and
 compassionate to ourselves 
 can help us become more open 
 and compassionate to others
@@ -643,7 +709,9 @@ problem.
  support for telehealth, police 
  accountability).
 
-#### Q1 * This pandemic has
+#### Q1 
+
+* This pandemic has
 underscored societal 
 inequalities along age,
 class, ethnic, regional and
@@ -682,7 +750,9 @@ distribution of resources
 and rights not just where we 
 live, but much more
 globally.
-#### Q2 * Proactive efforts towards
+#### Q2 
+
+* Proactive efforts towards
 societal change may be 
 called upon. 
  
@@ -695,7 +765,9 @@ government involvement, and
 that we can try to do this 
 together in a way that\'s
 not as divisive
-#### Q4 * And finally, emerging out of 
+#### Q4 
+
+* And finally, emerging out of 
 the Black Lives Matter 
 movement we will always need 
 an accountable policing
@@ -716,7 +788,9 @@ elements.
  political groups and/or nations
  work together to a shared goal.
 
-#### Q1 * one place that we might see
+#### Q1 
+
+* one place that we might see
 benefit, or something
 positive coming from this
 very difficult time is an
@@ -724,7 +798,9 @@ appreciation, greater
 appreciation, of the need
 for collaboration at 
 transnational levels.
-#### Q2 * Those that divide other
+#### Q2 
+
+* Those that divide other
 people that attack other 
 people, that increase
 political polarization, that 
@@ -757,12 +833,16 @@ countries. Globalization
 must be detached from
 international business 
 competition. 
-#### Q4 * As moral decent creatures we 
+#### Q4 
+
+* As moral decent creatures we 
 do better by working 
 together to combat a common
 problem, rather than to
 fight each other.
-#### Q5 * Benjamin Franklin \[...\]
+#### Q5 
+
+* Benjamin Franklin \[...\]
 said, we must all hang 
 together or most assuredly,
 we will all hang separately. 
@@ -815,7 +895,9 @@ and more to the point, how
 do you do it in a scientific 
 way? What does science look
 like?  
-#### Q2 * Some who may be more 
+#### Q2 
+
+* Some who may be more 
 vulnerable than we are, and
 will need most of all
 rationality, the ability not 
@@ -833,7 +915,9 @@ sound voice and who is
 giving us information
 that\'s going to mislead and 
 maybe harm us. 
-#### Q4 * It\'s really reflecting on 
+#### Q4 
+
+* It\'s really reflecting on 
 what we want to influence
 us. That really sort of
 asking in a careful way, 
@@ -856,7 +940,9 @@ creating impediments for
 understanding that we\'re
 going to have to kind of 
 tackle in a reasoned way.  
-#### Q5 * Yes, people are getting
+#### Q5 
+
+* Yes, people are getting
 sick, and some are dying.
 But understand that it\'s a
 property of the human mind 
@@ -902,13 +988,17 @@ people are facing. 
  forward; learning from past 
  experiences.
 
-#### Q1 * This is maybe even more
+#### Q1 
+
+* This is maybe even more
 important, a means through 
 which these challenges can 
 be met. So, it\'s really 
 been an unprecedented
 learning opportunity.
-#### Q2 * if we have the wisdom to 
+#### Q2 
+
+* if we have the wisdom to 
 critically self-reflect on 
 the mistakes that we\'ve 
 made and to learn from them, 
@@ -917,7 +1007,9 @@ prepared to respond swiftly
 and sensibly, and
 thoughtfully to future 
 challenges.
-#### Q5 * knowledge of how pandemics 
+#### Q5 
+
+* knowledge of how pandemics 
 have ended in the past in
 '68, '57, for example, the 
 1918, 1919 this is 
@@ -929,7 +1021,9 @@ important.
  for higher education, as
  inspired by COVID-19. 
 
-#### Q1 * I imagine much like a lot of 
+#### Q1 
+
+* I imagine much like a lot of 
 my generation went into
 science because of Sputnik,
 a lot of people are going to 
@@ -945,7 +1039,9 @@ because of this situation.
  new circumstances, being
  flexible. 
 
-#### Q2 * We need to accept the
+#### Q2 
+
+* We need to accept the
 possibility that there is
 and will be a lot of 
 uncertainty, we need to be 
@@ -961,7 +1057,9 @@ lot of uncertainties and
 that we need to handle and 
 try to able to be adapted to 
 deal with.   
-#### Q4 * Flexibility. A willingness 
+#### Q4 
+
+* Flexibility. A willingness 
 to walk away from what the 
 economist calls "sunk
 costs." Yes, it really sucks 
@@ -975,7 +1073,9 @@ those who assess the
 situation accurately, and
 refocus their goals, those 
 flexible.  
-#### Q5 * Things might change so 
+#### Q5 
+
+* Things might change so 
 quickly; change by the day 
 or by the minute or by the 
 hour. And so, we need to be
@@ -1002,7 +1102,9 @@ problem. 
  mistakes made, questioning what
  we know.
 
-#### Q2 * The issue isn\'t so much do
+#### Q2 
+
+* The issue isn\'t so much do
 we have the wisdom, it\'s do 
 we think about what is 
 wisdom mean for how we 
@@ -1033,7 +1135,9 @@ learn from those mistakes
  knowledge prior to making 
  decisions.
 
-#### Q2 * a huge amount of research
+#### Q2 
+
+* a huge amount of research
 that needs to be done. 
 Rather than people 
 automatically doing internet 
@@ -1044,7 +1148,9 @@ have some idea what kind of
 subjects and what kind of
 people it would make sense 
 for. 
-#### Q4 * You just need to do the
+#### Q4 
+
+* You just need to do the
 research and find out what 
 kinds of teachers, what
 kinds of topics, what kinds
@@ -1062,7 +1168,9 @@ online.
  than texting, having live 
  conversation).
 
-#### Q2 * So I think this ability to 
+#### Q2 
+
+* So I think this ability to 
 be able to connect with
 people virtually, will help
 this positive change, help 
@@ -1073,7 +1181,9 @@ one, but you can find sort
 of solace in being able to 
 communicate with them
 directly over video. 
-#### Q4 * People are going to have to
+#### Q4 
+
+* People are going to have to
 think about why something
 like face to face
 communication and touch, why 
@@ -1088,7 +1198,9 @@ deindividuation. And that\'s
 part of the wisdom. The
 other part is to counteract
 it.
-#### Q5 * To try to support each other 
+#### Q5 
+
+* To try to support each other 
 and still focus on those 
 relationships, and to focus
 on that, and focus on real 
@@ -1109,7 +1221,9 @@ conversation.
  Definition: providing/having
  adequate social support.
 
-#### Q2 * we also have to realize that 
+#### Q2 
+
+* we also have to realize that 
 we\'re more responsible for
 other people, for the
 well-being of other people,
@@ -1122,7 +1236,9 @@ don\'t look like us, who
 don\'t act like us, and who
 we might consider to be
 strangers. 
-#### Q4 * And also very important to 
+#### Q4 
+
+* And also very important to 
 maintain social connections
 and social support. In the 
 past, busy with our very,
@@ -1139,7 +1255,9 @@ much as we are now.
  gaining insight into the meaning 
  of our life.
 
-#### Q2 * What you hear people saying
+#### Q2 
+
+* What you hear people saying
 are things like, wow, time 
 is slowing down, I can slow
 down time, sometimes too 
@@ -1169,7 +1287,9 @@ persistently aware of those
 things that we care about
 and the way we want to 
 structure our lives. 
-#### Q4 * A third piece of wisdom is 
+#### Q4 
+
+* A third piece of wisdom is 
 that contentedness is a
 better personal goal than
 happiness. 
@@ -1184,7 +1304,9 @@ integrate this in the story
 of our lives, and who we 
 are, and share those stories 
 with others. 
-#### Q5 * It is important to, stop and 
+#### Q5 
+
+* It is important to, stop and 
 rethink about what we have 
 defined as normal life as
 very normal or not. Was it 
@@ -1224,7 +1346,9 @@ that as they go forward.
  (e.g., of the issues concerning
  the whole planet).
 
-#### Q2 * Not social distancing, as
+#### Q2 
+
+* Not social distancing, as
 we\'ve seen, but 
 self-distancing, and I think 
 it\'s learning that you must 
@@ -1238,14 +1362,18 @@ better to interact with
 people on the other side,
 whatever the other side
 looks like.
-#### Q4 * It\'s really reflecting on 
+#### Q4 
+
+* It\'s really reflecting on 
 what we want to influence
 us. That really sort of
 asking in a careful way, 
 what is influencing me? And
 are these the influences I 
 want to shape my worldview?
-#### Q5 * Remember you're a social 
+#### Q5 
+
+* Remember you're a social 
 animal. Remember that. You 
 need other people to keep
 yourself healthy. And you
@@ -1272,7 +1400,9 @@ be their best self.
  considering the perspective of 
  others. 
 
-#### Q2 * Essential for wisdom is
+#### Q2 
+
+* Essential for wisdom is
 perspective taking, being
 able to see the world as 
 other people see it so that
@@ -1285,7 +1415,9 @@ learn to open to others,
 even if they come from the 
 other side, whatever the 
 other side is. 
-#### Q4 * And you have to balance
+#### Q4 
+
+* And you have to balance
 different interests against
 each other, and that 
 includes the interests of
@@ -1313,7 +1445,9 @@ and learning to ask other
 people about what their
 states are like and learning 
 to learn about other people. 
-#### Q5 * So, the first one has to do
+#### Q5 
+
+* So, the first one has to do
 with perspective taking. For 
 a lot of people, some bit of 
 perspective taking can help. 
@@ -1353,7 +1487,9 @@ groups.
  from virus). MUST mention 
  balance.  
 
-#### Q2 * The pandemic is demanding
+#### Q2 
+
+* The pandemic is demanding
 that we find a way to
 balance our legitimate 
 concerns about freedom and 
@@ -1365,11 +1501,15 @@ two will require us to
 develop a kind of judgment,
 a situation by situation 
 judgment.
-#### Q4 * We need wise leaders who can 
+#### Q4 
+
+* We need wise leaders who can 
 balance the values of
 liberty and privacy against
 the values of saved lives. 
-#### Q5 * And so each of us has to 
+#### Q5 
+
+* And so each of us has to 
 sort of figure out for 
 ourselves, and the 
 particular circumstances 
@@ -1408,7 +1548,9 @@ construct each other.
  susceptibility to authoritarian
  influence.
 
-#### Q3 * What I would flag would be 
+#### Q3 
+
+* What I would flag would be 
 shortcomings and the 
 capabilities and the 
 prestige of democracies. So, 
@@ -1437,7 +1579,9 @@ susceptible to social norms.
  and decreased political 
  engagement. 
 
-#### Q3 * One of the big ideas in
+#### Q3 
+
+* One of the big ideas in
 there is demosclerosis, that 
 as a state goes on, decade 
 after decade, that it
@@ -1485,7 +1629,9 @@ lives.
  political violence, political
  polarization. 
 
-#### Q3 * We\'re all asking what comes 
+#### Q3 
+
+* We\'re all asking what comes 
 next? What does this mean
 for the way our society is 
 structured? Those are
@@ -1520,7 +1666,9 @@ violence.
  look and think differently, and
  strangers.
 
-#### Q3 * I think there\'s going to be 
+#### Q3 
+
+* I think there\'s going to be 
 more ethnocentrism, not
 necessarily ethnic, but kind 
 of, geocentric, there\'s 
@@ -1547,7 +1695,9 @@ erosion of social capital.
  opinions of others, xenophobia,
  discrimination on basis of race. 
 
-#### Q3 * And there\'s an opportunity, 
+#### Q3 
+
+* And there\'s an opportunity, 
 unfortunately, for increased 
 racism in certain cases. 
 Consequently, stereotypes, 
@@ -1564,7 +1714,9 @@ group members might arise.
  deindividuation, ignoring 
  unfamiliar people.
 
-#### Q3 * The negative change that I 
+#### Q3 
+
+* The negative change that I 
 worry about is that people 
 will slowly begin to ignore
 unfamiliar people within 
@@ -1587,7 +1739,9 @@ desperate enough. 
  responsibility and increased
  self-centeredness.
 
-#### Q3 * When people are threatened,
+#### Q3 
+
+* When people are threatened,
 when people perceive real
 danger, they kind of pull
 in, and they focus entirely
@@ -1608,7 +1762,9 @@ people.
  Definition: becoming cynical and 
  pessimistic.  
 
-#### Q3 * Cynicism and a sense of
+#### Q3 
+
+* Cynicism and a sense of
 despair are certainly
 growing in some quarters.  
  
@@ -1629,7 +1785,9 @@ cooperative way.
  Definition: increased mistrust & 
  skepticism in science & data.  
 
-#### Q3 * It is this suspicion of
+#### Q3 
+
+* It is this suspicion of
 science and the suspicion of 
 data, that we have strong
 ways of understanding this 
@@ -1649,7 +1807,9 @@ efficacy of science.
  white thinking & belief in
  conspiracy theories.
 
-#### Q3 * Research shows that when we
+#### Q3 
+
+* Research shows that when we
 are faced with a threat of 
 death, or with some greater
 uncertainty, we might stop 
@@ -1671,7 +1831,9 @@ antagonism.
  of misinformation (e.g., fake
  news).
 
-#### Q3 * I don\'t know how many 
+#### Q3 
+
+* I don\'t know how many 
 videos I\'ve seen of people
 massively upset because
 you\'ve been asked to wear 
@@ -1709,7 +1871,9 @@ cooperative way.
  distress, increased mental
  health crisis.
 
-#### Q3 * A lot of people are
+#### Q3 
+
+* A lot of people are
 experiencing a lasting hit 
 on their health and
 well-being.  
@@ -1730,7 +1894,9 @@ and happiness is at a
  differentiate contexts and
  feelings in one's life. 
 
-#### Q3 * lots of folks have told me 
+#### Q3 
+
+* lots of folks have told me 
 that they feel like one
 event just blends into the 
 other, blends in together in 
@@ -1747,7 +1913,9 @@ couple of years.
  existential despair, distinct
  from mental health decline  
 
-#### Q3 * I\'m mostly worried about
+#### Q3 
+
+* I\'m mostly worried about
 despair at a social and
 psychological level. 
  
@@ -1764,7 +1932,9 @@ humanity. 
  psychological consequences of
  social isolation. 
 
-#### Q3 * But if they have no such 
+#### Q3 
+
+* But if they have no such 
 kind of relationship and 
 they feel lonely, then this
 kind of change also worsen 
@@ -1791,7 +1961,9 @@ isolation.
  friends) being mentioned in 
  other entries.
 
-#### Q3 * We know from many research 
+#### Q3 
+
+* We know from many research 
 studies that when people are 
 faced with stress that comes 
 from outside the 
@@ -1826,7 +1998,9 @@ long term.
  plans and greater competition, 
  rethinking career goals.
 
-#### Q3 * Graduate students are going
+#### Q3 
+
+* Graduate students are going
 to find it vastly more 
 difficult to launch their
 academic careers. Many 
@@ -1863,7 +2037,9 @@ activities cease to exist. 
  societal level, includes
  economic disruptions. 
 
-#### Q3 * Clearly the economic damage
+#### Q3 
+
+* Clearly the economic damage
 is a serious concern, which
 could compromise our society 
 for a long period of time
@@ -1895,7 +2071,9 @@ be recovered. 
  privileged and less privileged 
  people. 
 
-#### Q3 * And that\'s tragic. In North 
+#### Q3 
+
+* And that\'s tragic. In North 
 America, we\'re likely to
 see that inequality trends 
 which have already been
@@ -1916,7 +2094,9 @@ community.
  income students, unequal
  education outcomes. 
 
-#### Q3 * But when the students go 
+#### Q3 
+
+* But when the students go 
 back to their homes, they go 
 back to very different 
 environments, the poorer 
@@ -1966,7 +2146,9 @@ have access to. 
  education, without critical 
  peer-to-peer interactions.
 
-#### Q3 * It's internet education. 
+#### Q3 
+
+* It's internet education. 
 There is something that goes 
 on in a real classroom,
 that\'s superior, to what
@@ -1990,7 +2172,9 @@ problem.
  children (e.g., social, 
  educational). 
 
-#### Q3 * That's a real concern. I 
+#### Q3 
+
+* That's a real concern. I 
 know that there are parents
 who are worried about the
 long-term consequences for 
@@ -2013,7 +2197,9 @@ of other people.
  Contextualizing one's memories 
  to ensure they remain distinct.  
 
-#### Q4 * I think kind of the wisdom 
+#### Q4 
+
+* I think kind of the wisdom 
 necessary, maybe is
 something like this, some
 sort of effort for cognitive 
@@ -2056,7 +2242,9 @@ future. 
  with regards to goals and 
  outcomes. 
 
-#### Q4 * You have to look at long 
+#### Q4 
+
+* You have to look at long 
 term interests, as well as 
 short term ones. And that\'s 
 proven hard for people to
@@ -2096,7 +2284,9 @@ future generations.
  getting angry or upset; being
  patient.
 
-#### Q4 * The first is patience. These 
+#### Q4 
+
+* The first is patience. These 
 things are not going to
 reverse overnight. Even if 
 we get government leaders
@@ -2131,7 +2321,9 @@ because we want it to pass.
  interacting with, noticing
  others and their struggles).
 
-#### Q4 * An important first step is 
+#### Q4 
+
+* An important first step is 
 the sense of awareness. We 
 need to be aware of the fact 
 that although some of us 
@@ -2148,7 +2340,9 @@ when trying to adapt.
  society, both as individuals
  and/or as a society.
 
-#### Q4 * But at the same time, in the 
+#### Q4 
+
+* But at the same time, in the 
 long term, it's very 
 important to try to reduce 
 wealth disparity and racial
@@ -2167,7 +2361,9 @@ not fairly distributed
 locally, nationally or 
 internationally ever and 
 never has been.
-#### Q5 * the most important part is 
+#### Q5 
+
+* the most important part is 
 now that we are from, you
 know, personal level, but
 also from the political and
@@ -2197,7 +2393,9 @@ help themselves
  day life; framing pandemic as a
  manageable challenge. 
 
-#### Q5 * I think finding small ways 
+#### Q5 
+
+* I think finding small ways 
 in which we can hold on to 
 that feeling of having some
 sort of control would help 
@@ -2223,7 +2421,9 @@ new activities.
  public health guidelines (e.g.,
  physical distancing). 
 
-#### Q5 * If we think about it as
+#### Q5 
+
+* If we think about it as
 temporary, and we have hope, 
 that it can give us the
 patience that we need to do
@@ -2239,7 +2439,9 @@ keep us safe.
  communication as well as public
  risk awareness. 
 
-#### Q5 * Public health officials have 
+#### Q5 
+
+* Public health officials have 
 said things that when they 
 said them, I knew they were
 wrong in most cases, they
@@ -2259,7 +2461,9 @@ been all over the map. 
  Definition: believing in science 
  and taking experts seriously.
 
-#### Q5 * But science and the
+#### Q5 
+
+* But science and the
 institutions that sustain
 science are self-correcting
 in a way that no other 
