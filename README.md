@@ -1,4 +1,4 @@
-This repository contains the data behind **World after Covid**, including [thematic classification of videos](https://worldaftercovid.info/) and interactive visualizations](http://igorgrossmann.com/wac)
+This repository contains the data behind **World after Covid**, including [thematic classification of videos](https://worldaftercovid.info/) and [interactive visualizations](http://igorgrossmann.com/wac).
 
 ## Data
 
@@ -8,5 +8,5 @@ This repository contains the data behind **World after Covid**, including [thema
 
 ## Method
 
-* [Set-up & Codebook] (https://github.com/grossmania/wac/blob/main/codebook.md)
+* [Set-up & Codebook](https://github.com/grossmania/wac/blob/main/codebook.md)
 * [Coding procedures & analyses]
