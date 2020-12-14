@@ -1,0 +1,361 @@
+Theme,Word,TFIDF Weight
+(social awareness),ancestor,0.1275253385118838
+(social awareness),care,0.15359162778944488
+(social awareness),community,0.1633644210132986
+(social awareness),compassion,0.13028488018188178
+(social awareness),crisis,0.1879898931920619
+(social awareness),empathy,0.1633644210132986
+(social awareness),face,0.20432115240660623
+(social awareness),foreigner,0.1275253385118838
+(social awareness),future,0.1239167582089947
+(social awareness),health,0.13028488018188178
+(social awareness),individual,0.1449714132457059
+(social awareness),necessarily_push,0.1275253385118838
+(social awareness),neighborhood,0.2550506770237676
+(social awareness),norm,0.22537580744331742
+(social awareness),outsider,0.1275253385118838
+(social awareness),people,0.38151027016940037
+(social awareness),she_became,0.1275253385118838
+(social awareness),specie,0.15359162778944488
+(social awareness),support,0.26196942423923414
+(social awareness),typically_guy,0.1275253385118838
+(social awareness),village,0.2550506770237676
+(balance of personal & others interest),child,0.1344811154541111
+(balance of personal & others interest),experiment,0.20018405000505263
+(balance of personal & others interest),line,0.20018405000505263
+(balance of personal & others interest),mask,0.40036810001010525
+(balance of personal & others interest),natural_tendencie,0.2208123895923339
+(balance of personal & others interest),people,0.3737854358272652
+(balance of personal & others interest),value,0.20018405000505263
+(balance of personal & others interest),wise_leadership,0.17111003830329513
+(solidarity),care,0.16709076234403494
+(solidarity),community,0.17772248422566575
+(solidarity),each_other,0.31210977321914507
+(solidarity),health,0.14173558978966636
+(solidarity),neighbor,0.14818592918546986
+(solidarity),people,0.470379940902004
+(solidarity),person,0.1493241523310392
+(solidarity),ripple_effect,0.1634560252256765
+(solidarity),solidarity,0.14818592918546986
+(solidarity),support,0.18999590640434494
+(solidarity),trust,0.1493241523310392
+(context sensitivity),care,0.12549228764284648
+(context sensitivity),context,0.2083895677467972
+(context sensitivity),crisis,0.1535974459672174
+(context sensitivity),email,0.2083895677467972
+(context sensitivity),future,0.15186958125982783
+(context sensitivity),human,0.13347716413626556
+(context sensitivity),interaction,0.3682873352210052
+(context sensitivity),memory,0.2083895677467972
+(context sensitivity),norm,0.1841436676105026
+(context sensitivity),people,0.21819950785274542
+(context sensitivity),person,0.22429761183048402
+(context sensitivity),reason,0.13347716413626556
+(context sensitivity),specie,0.12549228764284648
+(context sensitivity),trust,0.16822320887286302
+(context sensitivity),way,0.16250207950369336
+(bipartisanship and international cooperation),capacity,0.15646081524522693
+(bipartisanship and international cooperation),care,0.12783171951816788
+(bipartisanship and international cooperation),country,0.3399136259374778
+(bipartisanship and international cooperation),each_other,0.31339558251748945
+(bipartisanship and international cooperation),government,0.21803273032299397
+(bipartisanship and international cooperation),institution,0.12065726044379506
+(bipartisanship and international cooperation),long_term,0.1965164500798636
+(bipartisanship and international cooperation),mistake,0.17005304665353022
+(bipartisanship and international cooperation),nhs,0.17005304665353022
+(bipartisanship and international cooperation),people,0.1905147352814764
+(bipartisanship and international cooperation),politician,0.17005304665353022
+(bipartisanship and international cooperation),problem,0.20626765282660056
+(bipartisanship and international cooperation),rather_than,0.17135923216479682
+(bipartisanship and international cooperation),resilience,0.23469122286784036
+(bipartisanship and international cooperation),year,0.17005304665353022
+(critical thinking),bias,0.3502935796878559
+(critical thinking),difference,0.23215297627989714
+(critical thinking),discrimination,0.19364284796207917
+(critical thinking),group,0.15821020866208788
+(critical thinking),lawn,0.17514678984392795
+(critical thinking),people,0.2357894905559885
+(critical thinking),tendency,0.16827687490822552
+(critical thinking),way,0.13657937811271306
+(critical thinking),won_allow,0.17514678984392795
+(critical thinking),world,0.14138785991017713
+(evidence-based decision-making),base,0.13350001519829288
+(evidence-based decision-making),careful_listening,0.13350001519829288
+(evidence-based decision-making),course,0.13350001519829288
+(evidence-based decision-making),cynicism,0.13350001519829288
+(evidence-based decision-making),different_skill,0.13350001519829288
+(evidence-based decision-making),entire_planet,0.18417519269119884
+(evidence-based decision-making),every_day,0.18417519269119884
+(evidence-based decision-making),gaia,0.18417519269119884
+(evidence-based decision-making),government_leader,0.13350001519829288
+(evidence-based decision-making),human_welfare,0.13350001519829288
+(evidence-based decision-making),humanism,0.18417519269119884
+(evidence-based decision-making),infrastructure,0.12551377170768582
+(evidence-based decision-making),institution,0.23693881142019602
+(evidence-based decision-making),law,0.13350001519829288
+(evidence-based decision-making),listen_right,0.13350001519829288
+(evidence-based decision-making),own_ego,0.18417519269119884
+(evidence-based decision-making),patience,0.13350001519829288
+(evidence-based decision-making),people,0.12470677899142729
+(evidence-based decision-making),planet,0.18417519269119884
+(evidence-based decision-making),practice,0.14271945670299424
+(evidence-based decision-making),procedures_changing,0.13350001519829288
+(evidence-based decision-making),research,0.20842524368409507
+(evidence-based decision-making),reverse_overnight,0.13350001519829288
+(evidence-based decision-making),science,0.12551377170768582
+(evidence-based decision-making),solid_science,0.36835038538239767
+(evidence-based decision-making),sothere,0.18417519269119884
+(evidence-based decision-making),spiritual_perspective,0.18417519269119884
+(evidence-based decision-making),student,0.20842524368409507
+(evidence-based decision-making),teacher,0.20842524368409507
+(evidence-based decision-making),topic,0.20842524368409507
+(evidence-based decision-making),tribe,0.18417519269119884
+(gratitude),anxiety,0.29717905573468156
+(gratitude),bad_stuff,0.2760851476458032
+(gratitude),complexity,0.32299591274719214
+(gratitude),dalai_lama,0.32299591274719214
+(gratitude),day,0.2760851476458032
+(gratitude),feeling_upset,0.32299591274719214
+(gratitude),ideal_world,0.25825050247661435
+(gratitude),life,0.28544905764824885
+(gratitude),mindfulness,0.29717905573468156
+(gratitude),morning,0.32299591274719214
+(gratitude),people,0.12062016730462521
+(gratitude),problem,0.1958906650190431
+(gratitude),threat,0.2291743825444143
+(optimism / positivity),ability,0.2588602978982216
+(optimism / positivity),connection,0.17726573321489159
+(optimism / positivity),current_generation,0.21251891299561032
+(optimism / positivity),discourse,0.21251891299561032
+(optimism / positivity),end,0.1540450573189189
+(optimism / positivity),generation,0.21251891299561032
+(optimism / positivity),happening_integrate,0.21251891299561032
+(optimism / positivity),history_books,0.21251891299561032
+(optimism / positivity),hope,0.21251891299561032
+(optimism / positivity),humankind,0.21251891299561032
+(optimism / positivity),life,0.17026885146540122
+(optimism / positivity),living,0.21251891299561032
+(optimism / positivity),macro_level,0.21251891299561032
+(optimism / positivity),meaning_making,0.21251891299561032
+(optimism / positivity),optimism,0.21251891299561032
+(optimism / positivity),past,0.17726573321489159
+(optimism / positivity),skill_form,0.21251891299561032
+(optimism / positivity),story,0.42503782599122064
+(optimism / positivity),support,0.16468332872982958
+(optimism / positivity),way,0.1500340065722965
+(optimism / positivity),write_story,0.21251891299561032
+(improve communication),compassion,0.12666007906045704
+(improve communication),consequence,0.12183974431534338
+(improve communication),country,0.15881927705136512
+(improve communication),deindividuation,0.1653030849072436
+(improve communication),each_other,0.2440485663048715
+(improve communication),eye_contact,0.24795462736086543
+(improve communication),face,0.19863650549024625
+(improve communication),mask,0.1324243369934975
+(improve communication),people,0.3956222367646315
+(improve communication),racial_discrimination,0.12183974431534338
+(improve communication),technology,0.21910537546055725
+(improve communication),touch,0.3972730109804925
+(improve communication),way,0.1289032619830631
+(long term orientation),care,0.1528222030329485
+(long term orientation),cost,0.19032974115579912
+(long term orientation),country,0.20318254871514949
+(long term orientation),death,0.15247319671525525
+(long term orientation),depression,0.16818508225119697
+(long term orientation),government,0.17377138374753748
+(long term orientation),long_term,0.32303489150893056
+(long term orientation),people,0.3606191220563414
+(long term orientation),resilience,0.14028611148449216
+(long term orientation),society,0.1528222030329485
+(long term orientation),trust,0.1365727560585977
+(long term orientation),year,0.15247319671525525
+(social support),access,0.20237502955358447
+(social support),couple,0.21616357313364357
+(social support),life,0.1432766309426309
+(social support),mental_health,0.16212267985023268
+(social support),network,0.4172674669594884
+(social support),partner,0.21616357313364357
+(social support),people,0.22199239882215482
+(social support),resilience,0.19888575679399034
+(social support),secure_network,0.13491668636905632
+(social support),security,0.20237502955358447
+(social support),strategy,0.13491668636905632
+(social support),stress,0.18476875294381007
+(social support),stressor,0.13491668636905632
+(social support),support,0.23096094117976257
+(social connectedness),contact,0.1522721759063628
+(social connectedness),each_other,0.23398800767775954
+(social connectedness),face,0.19044799514893646
+(social connectedness),interaction,0.14004870984424733
+(social connectedness),life,0.14025771070363377
+(social connectedness),people,0.3556061877426166
+(social connectedness),person,0.25588111363499416
+(social connectedness),touch,0.44437865534751836
+(social connectedness),trust,0.12794055681749708
+(social connectedness),way,0.1235894064499536
+(acknowledge uncertainty/flexibility),ambiguity,0.12641314129402773
+(acknowledge uncertainty/flexibility),aspect,0.14615340620398992
+(acknowledge uncertainty/flexibility),comfort,0.12641314129402773
+(acknowledge uncertainty/flexibility),control_comfort,0.12641314129402773
+(acknowledge uncertainty/flexibility),cycle,0.12641314129402773
+(acknowledge uncertainty/flexibility),economist_calls,0.12641314129402773
+(acknowledge uncertainty/flexibility),embrace_flexibility,0.12641314129402773
+(acknowledge uncertainty/flexibility),fragility,0.22920719842595272
+(acknowledge uncertainty/flexibility),goal,0.12641314129402773
+(acknowledge uncertainty/flexibility),invest_year,0.12641314129402773
+(acknowledge uncertainty/flexibility),life,0.40512573822005526
+(acknowledge uncertainty/flexibility),loss,0.12641314129402773
+(acknowledge uncertainty/flexibility),people,0.25678662977263805
+(acknowledge uncertainty/flexibility),preparation,0.12641314129402773
+(acknowledge uncertainty/flexibility),situation_accurately,0.12641314129402773
+(acknowledge uncertainty/flexibility),world,0.15397849985378906
+(living in the moment),anxiety,0.14430295977465396
+(living in the moment),appreciation,0.12540019611590003
+(living in the moment),aspect,0.20001600623203686
+(living in the moment),awareness,0.12540019611590003
+(living in the moment),bad_stuff,0.13406026833425438
+(living in the moment),complexity,0.15683900094947467
+(living in the moment),concern,0.13406026833425438
+(living in the moment),dalai_lama,0.15683900094947467
+(living in the moment),day,0.13406026833425438
+(living in the moment),extent,0.14430295977465396
+(living in the moment),feeling_upset,0.15683900094947467
+(living in the moment),fragility,0.31367800189894934
+(living in the moment),fragility_contribute,0.15683900094947467
+(living in the moment),greatest_gifts,0.15683900094947467
+(living in the moment),human,0.12540019611590003
+(living in the moment),ideal_world,0.12540019611590003
+(living in the moment),insight,0.13406026833425438
+(living in the moment),knowledge,0.14430295977465396
+(living in the moment),life,0.554428625956779
+(living in the moment),mindfully_aware,0.15683900094947467
+(living in the moment),mindfulness,0.14430295977465396
+(living in the moment),morning,0.15683900094947467
+(living in the moment),mortality_throughout,0.15683900094947467
+(living in the moment),recognition,0.13406026833425438
+(living in the moment),shouldn_waste,0.15683900094947467
+(living in the moment),virtuallyall_ofour,0.15683900094947467
+(patience),base,0.1455983079300986
+(patience),careful_listening,0.1455983079300986
+(patience),crisis,0.33509144998587
+(patience),cynicism,0.1455983079300986
+(patience),different_skill,0.1455983079300986
+(patience),easy_process,0.20086586790801592
+(patience),evolution,0.20086586790801592
+(patience),evolving_isnot,0.20086586790801592
+(patience),government_leader,0.1455983079300986
+(patience),head,0.20086586790801592
+(patience),human_welfare,0.1455983079300986
+(patience),humanity,0.15565325122842869
+(patience),infrastructure,0.13688831986587985
+(patience),institution,0.2584111318227805
+(patience),law,0.1455983079300986
+(patience),listen_right,0.1455983079300986
+(patience),mechanism,0.20086586790801592
+(patience),order,0.15565325122842869
+(patience),patience,0.2911966158601972
+(patience),people,0.20401229147721586
+(patience),previous_ideas,0.20086586790801592
+(patience),procedures_changing,0.1455983079300986
+(patience),reverse_overnight,0.1455983079300986
+(patience),science,0.13688831986587985
+(patience),thank_god,0.20086586790801592
+(patience),trust,0.12233310831334773
+(patience),weare_specie,0.20086586790801592
+(patience),wehave_tobe,0.20086586790801592
+(perspective-taking),clinician,0.131488617261898
+(perspective-taking),compassion,0.2686678419387422
+(perspective-taking),consideration,0.131488617261898
+(perspective-taking),empathy,0.16844151977551866
+(perspective-taking),long_term,0.12172772355421337
+(perspective-taking),notion,0.262977234523796
+(perspective-taking),people,0.47204038175782204
+(perspective-taking),reflection,0.2701110050760814
+(perspective-taking),rumination,0.131488617261898
+(perspective-taking),state,0.2323801185773291
+(perspective-taking),thought,0.131488617261898
+(perspective-taking),world,0.1415261961221164
+(self-reflection on what's important),answer,0.12104974007467138
+(self-reflection on what's important),aspect,0.18550373281550045
+(self-reflection on what's important),contact,0.23260342923064858
+(self-reflection on what's important),direction,0.12104974007467138
+(self-reflection on what's important),exercise,0.12104974007467138
+(self-reflection on what's important),fourth_question,0.12104974007467138
+(self-reflection on what's important),fragility,0.1939459457954874
+(self-reflection on what's important),internal_calmness,0.12104974007467138
+(self-reflection on what's important),life,0.4713516007854781
+(self-reflection on what's important),meditation_yoga,0.12104974007467138
+(self-reflection on what's important),mind_tolerance,0.12104974007467138
+(self-reflection on what's important),peace,0.12104974007467138
+(self-reflection on what's important),people,0.2897100738016547
+(self-reflection on what's important),personal_development,0.12104974007467138
+(self-reflection on what's important),predilection,0.12104974007467138
+(shared humanity),biological_being,0.19159242926713654
+(shared humanity),experiment,0.15348473643375024
+(shared humanity),humanity,0.13119316513721893
+(shared humanity),line,0.15348473643375024
+(shared humanity),mask,0.3069694728675005
+(shared humanity),natural_tendencie,0.1693008579706052
+(shared humanity),neighbor,0.15348473643375024
+(shared humanity),people,0.3152468691147055
+(shared humanity),person,0.15466365996893863
+(shared humanity),rather_than,0.15466365996893863
+(shared humanity),ripple_effect,0.1693008579706052
+(shared humanity),wear_mask,0.15348473643375024
+(shared humanity),workable_solution,0.1693008579706052
+(strive for socio-economic equality),apparent_gain,0.12246256093998603
+(strive for socio-economic equality),benecessary,0.12246256093998603
+(strive for socio-economic equality),bring_greater,0.12246256093998603
+(strive for socio-economic equality),citizens_whose,0.1350819444210096
+(strive for socio-economic equality),classic_trade,0.12246256093998603
+(strive for socio-economic equality),education_matter,0.1350819444210096
+(strive for socio-economic equality),enact_education,0.1350819444210096
+(strive for socio-economic equality),equity,0.24492512187997206
+(strive for socio-economic equality),foundation,0.15286796648273973
+(strive for socio-economic equality),iactually_thinki,0.15286796648273973
+(strive for socio-economic equality),inequality,0.15286796648273973
+(strive for socio-economic equality),leader,0.1350819444210096
+(strive for socio-economic equality),liberty,0.1350819444210096
+(strive for socio-economic equality),long_term,0.1415200034178007
+(strive for socio-economic equality),off_between,0.12246256093998603
+(strive for socio-economic equality),racial_discrimination,0.22534841331865937
+(strive for socio-economic equality),scaffolding,0.15286796648273973
+(strive for socio-economic equality),society,0.2761714661916971
+(strive for socio-economic equality),solution_lie,0.15286796648273973
+(strive for socio-economic equality),structure,0.24492512187997206
+(strive for socio-economic equality),sustain_effort,0.12246256093998603
+(strive for socio-economic equality),termmuch_largergain,0.12246256093998603
+(strive for socio-economic equality),value,0.24492512187997206
+(strive for socio-economic equality),wise_leadership,0.20935307775651188
+(sympathy & compassion),compassion,0.36110806457707895
+(sympathy & compassion),country,0.15093132784738686
+(sympathy & compassion),couple,0.2516946480656029
+(sympathy & compassion),empathy,0.20124177046318248
+(sympathy & compassion),group,0.14190230764271136
+(sympathy & compassion),partner,0.12584732403280144
+(sympathy & compassion),people,0.4934648060433775
+(sympathy & compassion),solidarity,0.12584732403280144
+(sympathy & compassion),support,0.16135456672304566
+(sympathy & compassion),technology,0.20822324512953647
+(political engagement & structural change),alternative,0.138572120092126
+(political engagement & structural change),case,0.12244940424912072
+(political engagement & structural change),country,0.22189466845961245
+(political engagement & structural change),couple,0.22202031062251498
+(political engagement & structural change),government,0.18977487893650447
+(political engagement & structural change),long_term,0.2244994349075197
+(political engagement & structural change),people,0.1243674886682235
+(political engagement & structural change),problem,0.16831368671845934
+(political engagement & structural change),resilience,0.15320577674699987
+(political engagement & structural change),way,0.12967016297226575
+(political engagement & structural change),workable_solution,0.12244940424912072
+(political engagement & structural change),year,0.16651523296688625
+(self-distancing),community,0.17470219603096843
+(self-distancing),concept,0.18183442514128273
+(self-distancing),freedom,0.14566759722263936
+(self-distancing),idea,0.3735340773605941
+(self-distancing),inconvenient_truth,0.2727516377119241
+(self-distancing),nonjudgmental_acceptance,0.18183442514128273
+(self-distancing),people,0.21759346486356132
+(self-distancing),privilege,0.18183442514128273
+(self-distancing),solid_science,0.16067818703884137
+(self-distancing),world,0.1467864769410421

@@ -1,0 +1,268 @@
+Theme,Word,TFIDF Weight
+(estrangement & alienation),barrier,0.27989625605386736
+(estrangement & alienation),deindividuation,0.17523281284052344
+(estrangement & alienation),evaluation,0.20612346049974425
+(estrangement & alienation),face,0.15907721408162462
+(estrangement & alienation),feeling,0.20612346049974425
+(estrangement & alienation),interaction,0.2600753494953386
+(estrangement & alienation),isolation,0.38576698999858117
+(estrangement & alienation),lockdown,0.13994812802693368
+(estrangement & alienation),outcome,0.14861448542590777
+(estrangement & alienation),people,0.44306548785616545
+(career disruptions),bureaucracy,0.14576838372332582
+(career disruptions),career,0.3644209593083146
+(career disruptions),case,0.16777442690812142
+(career disruptions),decade,0.18952791947646183
+(career disruptions),government,0.2115393865071958
+(career disruptions),idea,0.13524735194149112
+(career disruptions),increase,0.1263519463176412
+(career disruptions),inequality,0.14576838372332582
+(career disruptions),job,0.20592989812713602
+(career disruptions),life,0.20619278740685862
+(career disruptions),loss,0.22369923587749518
+(career disruptions),people,0.1808131256966985
+(career disruptions),student,0.29661598868626676
+(career disruptions),take_care,0.14576838372332582
+(decline in quality of education),child,0.395003670845284
+(decline in quality of education),college,0.2304813790539204
+(decline in quality of education),education,0.51711248449927
+(decline in quality of education),internet,0.1536542527026136
+(decline in quality of education),loneliness,0.1309925905923241
+(decline in quality of education),no_doubt,0.14118264007590225
+(decline in quality of education),parent,0.12545498888392376
+(decline in quality of education),people,0.2626873584743355
+(decline in quality of education),repercussion,0.1309925905923241
+(decline in quality of education),specie,0.14118264007590225
+(decreased trust in science),anxiety,0.12415917879747149
+(decreased trust in science),datum,0.12048742865650827
+(decreased trust in science),don,0.12048742865650827
+(decreased trust in science),expert,0.1833886703954609
+(decreased trust in science),fear,0.23592312440307506
+(decreased trust in science),group,0.12048742865650827
+(decreased trust in science),lack,0.1844736229800997
+(decreased trust in science),location,0.12225911359697393
+(decreased trust in science),masks_aren,0.12225911359697393
+(decreased trust in science),people,0.39945266973807025
+(decreased trust in science),politic,0.14153148171447189
+(decreased trust in science),province,0.12225911359697393
+(decreased trust in science),science,0.1264543218074414
+(decreased trust in science),suspicion,0.3320327349569209
+(decreased well-being),anxiety,0.18273893052444437
+(decreased well-being),barrier,0.24434483005121846
+(decreased well-being),class,0.16289655336747896
+(decreased well-being),consequence,0.12350243910029884
+(decreased well-being),depression,0.2036206917093487
+(decreased well-being),interaction,0.12973800256032747
+(decreased well-being),memory,0.13495679426581725
+(decreased well-being),mental_health,0.22704150448057306
+(decreased well-being),people,0.4332035533488965
+(decreased well-being),resource,0.2316528485808778
+(decreased well-being),school,0.18017443778512718
+(decreased well-being),study,0.12217241502560923
+(decreased well-being),work,0.13958771162408232
+(economic hardship),career,0.2399175326311747
+(economic hardship),crisis,0.12541443220006407
+(economic hardship),decade,0.1247762227831752
+(economic hardship),government,0.20890129821888465
+(economic hardship),job,0.21691921627088215
+(economic hardship),life,0.13574758404371828
+(economic hardship),loss,0.14727300214859868
+(economic hardship),partner,0.2307474201180974
+(economic hardship),people,0.37695624599893834
+(economic hardship),relationship,0.2399175326311747
+(economic hardship),student,0.19527794526318262
+(educational inequality),access,0.17401163610710962
+(educational inequality),child,0.18722259939880997
+(educational inequality),class,0.21848568043510172
+(educational inequality),education,0.12254967570598978
+(educational inequality),environment,0.12067424147392998
+(educational inequality),inequality,0.25093989134739775
+(educational inequality),people,0.1867615938006135
+(educational inequality),resource,0.310705347661623
+(educational inequality),school,0.517842246102705
+(educational inequality),student,0.24509935141197955
+(educational inequality),summer,0.12067424147392998
+(erosion of democratic institutions),cdc,0.13209135326536914
+(erosion of democratic institutions),community,0.14051070894823472
+(erosion of democratic institutions),don,0.15187338492432442
+(erosion of democratic institutions),expert,0.13209135326536914
+(erosion of democratic institutions),faith,0.17612180435382552
+(erosion of democratic institutions),government,0.3454693420619619
+(erosion of democratic institutions),guidance,0.17612180435382552
+(erosion of democratic institutions),institution,0.30821315761919466
+(erosion of democratic institutions),people,0.27257506227015577
+(erosion of democratic institutions),society,0.155417400286963
+(erosion of democratic institutions),trust,0.2980982760514244
+(exacerbated social inequality),access,0.17040754702718744
+(exacerbated social inequality),class,0.17116836412293449
+(exacerbated social inequality),group,0.18633978420702177
+(exacerbated social inequality),inequality,0.19659398551695753
+(exacerbated social inequality),inequity,0.1607433822308802
+(exacerbated social inequality),people,0.26011510118746006
+(exacerbated social inequality),resource,0.2704623020377602
+(exacerbated social inequality),school,0.3786472228528643
+(exacerbated social inequality),society,0.14831295447661957
+(exacerbated social inequality),student,0.1920183279070431
+(mistrust),barrier,0.2570333476141612
+(mistrust),cdc,0.1419649296698744
+(mistrust),community,0.1510136161117676
+(mistrust),faith,0.18928657289316586
+(mistrust),government,0.14280481370982767
+(mistrust),guidance,0.18928657289316586
+(mistrust),institution,0.2839298593397488
+(mistrust),people,0.4556992652239727
+(mistrust),suspicion,0.2570333476141612
+(mistrust),trust,0.2883424976228304
+(prejudice & racism),answer,0.1211521877929077
+(prejudice & racism),case,0.12812397405593184
+(prejudice & racism),easy_answer,0.1211521877929077
+(prejudice & racism),foreign_place,0.1338298083032395
+(prejudice & racism),globalization,0.1338298083032395
+(prejudice & racism),group,0.29675351196896116
+(prejudice & racism),group_member,0.1211521877929077
+(prejudice & racism),people,0.34520303023330323
+(prejudice & racism),place,0.20193234577026972
+(prejudice & racism),prejudice,0.1549261278726467
+(prejudice & racism),question,0.1447364219051996
+(prejudice & racism),suspicion,0.3634565633787231
+(prejudice & racism),tentativeness,0.1211521877929077
+(prejudice & racism),uncertainty,0.135909697107149
+(prejudice & racism),way,0.18370665781991577
+(prejudice & racism),wealth_disparity,0.1338298083032395
+(despair),brink,0.12203552254620258
+(despair),consequence,0.1435858077605475
+(despair),despair,0.2336650754095605
+(despair),individual,0.1262230584369191
+(despair),job,0.2294443846382459
+(despair),loss,0.2336650754095605
+(despair),nation,0.2336650754095605
+(despair),people,0.41970751472247786
+(despair),relative,0.12203552254620258
+(despair),war,0.16524281713568556
+(prioritize self over others),coin,0.24266759149280204
+(prioritize self over others),consideration_altogether,0.13753351038392686
+(prioritize self over others),desperate_enough,0.13753351038392686
+(prioritize self over others),eyes_open,0.13753351038392686
+(prioritize self over others),health,0.12549725253212962
+(prioritize self over others),immigrant,0.12133379574640102
+(prioritize self over others),insurance,0.12133379574640102
+(prioritize self over others),lack,0.14646194779426253
+(prioritize self over others),people,0.5007529427699546
+(prioritize self over others),problem,0.12549725253212962
+(prioritize self over others),resource,0.20826902096105435
+(prioritize self over others),situation_gets,0.13753351038392686
+(prioritize self over others),sort,0.13189321113471442
+(prioritize self over others),throat,0.13753351038392686
+(prioritize self over others),tribe,0.12133379574640102
+(prioritize self over others),turn,0.13753351038392686
+(prioritize self over others),uncertainty,0.16429264040976613
+(prioritize self over others),united_state,0.12133379574640102
+(prioritize self over others),way,0.2855203256790151
+(prioritize self over others),welfare,0.23232145805805973
+(irrationality),anxiety,0.1901261375511707
+(irrationality),behavior,0.12675075836744715
+(irrationality),fear,0.24084755733835703
+(irrationality),life,0.146851446373875
+(irrationality),people,0.4185217894335484
+(irrationality),politic,0.21672851110074098
+(irrationality),question,0.13498265120414168
+(irrationality),right,0.31831876398031855
+(irrationality),society,0.146851446373875
+(irrationality),threat,0.1557253645088488
+(irrationality),world,0.12042377866917851
+(loneliness),anxiety,0.1295113043850495
+(loneliness),child,0.1648817300604407
+(loneliness),connection,0.12752933313720094
+(loneliness),cultural_context,0.12752933313720094
+(loneliness),effort_rather,0.12752933313720094
+(loneliness),evaluation,0.2550586662744019
+(loneliness),feeling,0.12752933313720094
+(loneliness),interaction,0.13792248229490936
+(loneliness),isolation,0.5303898596780313
+(loneliness),loneliness,0.19684329944750278
+(loneliness),outcome,0.13792248229490936
+(loneliness),people,0.32895147053370266
+(loneliness),tool,0.12752933313720094
+(misperception about the world),behavior,0.14078995050679136
+(misperception about the world),conflict,0.28238068727971166
+(misperception about the world),conspiracy_theorie,0.17297384760645074
+(misperception about the world),fear,0.13376218065318324
+(misperception about the world),lack,0.1882650098901515
+(misperception about the world),mask,0.21118492576018702
+(misperception about the world),people,0.536397901428161
+(misperception about the world),threat,0.17297384760645074
+(misperception about the world),uncertainty,0.14078995050679136
+(misperception about the world),way,0.20389629353234026
+(political conflict),authoritarian_state,0.14485737980207447
+(political conflict),fear,0.14494197180857477
+(political conflict),group,0.19034429091649238
+(political conflict),people,0.4317707307766174
+(political conflict),politic,0.14905958698868502
+(political conflict),question,0.17406966442374225
+(political conflict),society,0.17043778282739452
+(political conflict),way,0.15150025140212847
+(political conflict),world,0.12423597583592125
+(authoritarianism),authoritarian_state,0.186469230881246
+(authoritarianism),child,0.12857849985059278
+(authoritarianism),democracy,0.20680500037320323
+(authoritarianism),government,0.1500579267881646
+(authoritarianism),life,0.12188771205456453
+(authoritarianism),living,0.14091027562395317
+(authoritarianism),nation,0.15868365751704436
+(authoritarianism),people,0.21376982655671575
+(authoritarianism),power,0.22407306061452711
+(authoritarianism),problem,0.160723124813241
+(authoritarianism),question,0.13444383636871626
+(authoritarianism),society,0.17064279687639033
+(authoritarianism),state,0.3102075005598049
+(stunted child development),child,0.5492964791910231
+(stunted child development),education,0.15980052172585626
+(stunted child development),epidemic,0.15980052172585626
+(stunted child development),loneliness,0.18215974717019223
+(stunted child development),no_doubt,0.19633014283293068
+(stunted child development),parent,0.17445909690768385
+(stunted child development),people,0.24353063323717786
+(stunted child development),repercussion,0.18215974717019223
+(stunted child development),school,0.2025744922347198
+(stunted child development),specie,0.19633014283293068
+(pessimism),aspect,0.15172249240104838
+(pessimism),behavior,0.12349266950753778
+(pessimism),conflict,0.24768774166067112
+(pessimism),consequence,0.14307667557443512
+(pessimism),effect,0.1407717147097734
+(pessimism),healthcare,0.15172249240104838
+(pessimism),mask,0.18523900426130666
+(pessimism),nation,0.17462740246864908
+(pessimism),people,0.47049671178348346
+(pessimism),war,0.12349266950753778
+(intimate relations),child,0.28394170918445927
+(intimate relations),couple,0.1826761560979259
+(intimate relations),epidemic,0.14868702599663242
+(intimate relations),loneliness,0.1694912555385728
+(intimate relations),no_doubt,0.1826761560979259
+(intimate relations),partner,0.4392347994997057
+(intimate relations),people,0.2265940386429523
+(intimate relations),relationship,0.4566903902448148
+(intimate relations),specie,0.1826761560979259
+(intimate relations),stress,0.19881317020791245
+(autobiographical memory),bike_across,0.1734695181605296
+(autobiographical memory),collective_fog,0.1734695181605296
+(autobiographical memory),contextual_cue,0.1734695181605296
+(autobiographical memory),couple,0.144290683770133
+(autobiographical memory),effective_episodic,0.1734695181605296
+(autobiographical memory),episodic_memory,0.1734695181605296
+(autobiographical memory),event,0.1734695181605296
+(autobiographical memory),expertise,0.1734695181605296
+(autobiographical memory),folk,0.1734695181605296
+(autobiographical memory),importance_concern,0.1734695181605296
+(autobiographical memory),issue,0.20939494521234386
+(autobiographical memory),lunch,0.1734695181605296
+(autobiographical memory),meeting,0.3469390363210592
+(autobiographical memory),memory,0.5204085544815887
+(autobiographical memory),normal_existence,0.1734695181605296
+(autobiographical memory),offers_bunch,0.1734695181605296
+(autobiographical memory),physical_locationto,0.1734695181605296
+(autobiographical memory),theother_blend,0.1734695181605296
+(autobiographical memory),town,0.1734695181605296
+(autobiographical memory),zoom,0.1734695181605296
+(autobiographical memory),zoom_meeting,0.1734695181605296
