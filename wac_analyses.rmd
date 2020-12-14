@@ -1,0 +1,1906 @@
+---
+title: "World after Covid: Method & Analyses"
+author: "Igor Grossmann"
+date: "Dec 11,2020"
+output:
+  rmdformats::html_clean:
+    toc: true # table of content true
+    toc_depth: 3  # upto three depths of headings (specified by #, ## and ###)
+    number_sections: true  ## if you want number sections at each table header
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# The method
+
+## Recruitment
+
+Since June 2020, I have interviewed 57 of the top social, behavioral, and political scientists, along with several eminent philosophers, wisdom scientists, and futurists. First, the advisory board and I nominated 153 top scholars from around the world. From the list of contacted nominees, 65% responses to the initial inquiry to participate in the interview series. Among those who responded, 37% declined. I ended up scheduling 38% of the scholars on the initial list -- a good response rate considering the pandemic-related challenges and the nature of the project.\
+
+## Quantifying narratives
+
+To quantify themes in interviews, we relied on a novel **Multi-step Bottom-up/Top-down Cross-validation** method for analyzing and cross-referencing unstructured qualitative data. in the method, we first rely on classic *grounded approach*, with two scholars going through the first set of 30 interviews 9June-July) to identify unique themes for each question in an iterative fashion. Hereby, we followed the following guidelines:\
+
+*   Each theme should be present at least twice across interviews;\
+*   Themes should have minimum overlap. In other words, they should not be directly reducible, though they could show natural dependencies (e.g., "importance of social connections" and "social support").
+
+In this initial phase, two independent raters, one of whom was blind to the identity of the interviewees, coded statements on prevalence of determined themes. Initial reliability was good (over 90% agreement), with disagreements resolved via group discussion with the senior scholar. Following iterative procedure, in case additional themes were identified that were not covered by the original categories, they were added to the codebook and statements were recoded for presence of the category.\
+\
+In the second stage, after interviews were extended into September - December 2020, another two coders (one of whom coded the initial set of 30 interviews) coded the new batch of interviews. Once again, agreement was high (90+%), with disagreements resolved in a group discussion. In this stage, coders identified several additional themes, which were again added to the codebook, with all interviewed cross-examined for presense of these themes. The procedure was repeated four times, until we identified the final list of themes for each question. Here, we also included some simple-occurance themes if they were fully distinct and addressed the questions.\
+
+Coding open-ended interviews is inherently subjective. Even in the presence of high reliability between coders (as in our case), validity of the coding may be compromised due to various additional factors (e.g., a particular sentiment in a response, agreement with the opinion raised in the interview response). To address this issue, we introduce a novel *top-down cross-validation approach*: \
+
+*   A new, unbiased person blind to identity of interviewees reviews codes and respective transcripts, with the task to identify one key sentence [or key phrases, in case the theme is not captured by a single sentence] from each person’s response to represent their code, guided by the codebook definitions;
+*   Two further individuals, incl. the senior author of the project, review these key sentences and flag any categories that required adjustment.\ 
+
+The idea behind this cross-validation approach is that this top-down, bird’s eye view allows for greater clarity when matching codes and themes compared to the classical grounded analysis. By matching each code to a core statement/phrase(s), one introduces extra rigor when evaluating each and every code. Indeed, in the process of such cross-validation, several minor inconsistencies were spotted and corrected prior to conducing subsequent analyses.
+
+
+# Descriptives
+
+Beyond US, scientists from Australia, Canada, Korea, Japan, HK, Russia, Germany, Spain, Switzerland, Israel, UK. \
+Past and present presidents/chairs of APS, APA, Psychonomic Society, Society for Personality and Social Psychology, International Association for Cross-cultural Psychology, Society for Affective Science, Cultural Evolution Society, Human Behavior and Evolution Society.
+
+```{r,echo=FALSE,include=FALSE}
+
+#'second, load packages
+#library(haven)
+#BiocManager::install("NetPathMiner") #if need to install for drawing legend better.
+#library(NetPathMiner)
+library(rmdformats)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggpubr)
+library(ggthemes)
+library(ggsci)
+library(plotly)
+library(reshape2)
+library(ggtext)
+library(lubridate)
+library(stringr)
+#library(udpipe)
+library(lattice)
+library(quanteda)
+library(readtext)
+library(psych)
+#library(topicmodels)
+#library(spacyr) #requires anaconda python
+#spacy_install()
+#library(wordcloud)
+library(tm)
+library(igraph)
+library(ggraph)
+library(cluster)
+library(factoextra)
+library(RColorBrewer)
+library(purrr)
+#library(packcircles)
+#library(viridis)
+library(lme4)
+library(emmeans)
+library(packcircles)
+library(viridis)
+library(ggiraph)
+library(edgebundleR)
+#library(GGally)
+library(GPArotation)
+library(heatmaply)
+
+
+
+```
+
+```{r,echo=FALSE,include=FALSE}
+setwd("C:/Users/igrossma/OneDrive - University of Waterloo/videopandemic/analyses") #change to your preferred working directory hosting the csv files
+codes.data<-read.csv("codes.csv")
+transcripts<-read.csv("transcripts.csv")
+
+all.data<- transcripts %>% full_join(codes.data, by = c("Name"))
+all.data$date<-parse_date_time(all.data$RecordingDate, orders = c("dmy", "mdy",("ymd"))) #recode date as date
+
+
+all.data<-all.data[order(as.Date(all.data$date, format="%Y/%m/%d")),] #resort by date
+
+
+all.data$Week <- as.Date(cut(all.data$date,
+                        breaks = "week",
+                        start.on.monday = FALSE)) # changes weekly break point to Sunday
+
+
+all.data %>% group_by(date) %>% count() %>% ggplot() + geom_line(aes(date,n, group = 1)) #how many interviews on what days
+
+all.data <- all.data %>% mutate(month = month(date))
+
+all.data %>% group_by(month) %>% count()  #%>% ggplot() + geom_bar(aes(month,n), stat ='identity')
+
+#how many interviews on different weeks
+all.data %>% group_by(Week) %>% count()  #%>% ggplot() + geom_bar(aes(Week,n), stat ='identity')
+
+#'get tokens for each Q.
+
+all.data$Q1.text<-as.character(all.data$Q1)
+Q1.corpus <- corpus(all.data, text_field = "Q1.text")
+all.data$tokens.Q1<-ntoken(Q1.corpus)
+
+all.data$Q2.text<-as.character(all.data$Q2)
+Q2.corpus <- corpus(all.data, text_field = "Q2.text")
+all.data$tokens.Q2<-ntoken(Q2.corpus)
+
+all.data$Q3.text<-as.character(all.data$Q3)
+Q3.corpus <- corpus(all.data, text_field = "Q3.text")
+all.data$tokens.Q3<-ntoken(Q3.corpus)
+
+all.data$Q4.text<-as.character(all.data$Q4)
+Q4.corpus <- corpus(all.data, text_field = "Q4.text")
+all.data$tokens.Q4<-ntoken(Q4.corpus)
+
+all.data$Q5.text<-as.character(all.data$Q5)
+Q5.corpus <- corpus(all.data, text_field = "Q5.text")
+all.data$tokens.Q5<-ntoken(Q5.corpus)
+
+```
+
+## Breakdown by gender, location, and expertise 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+#gender breakdown
+all.data %>% group_by(Gender)%>% 
+  summarise(count = n() ) %>%
+  mutate( prop = count / sum(count)*100 )%>% ggplot() + geom_bar(aes(Gender,prop, fill=Gender), stat ='identity')+scale_fill_d3()+theme(legend.position = "none")+labs(y="%", x="")+theme_pubclean()+theme(legend.position="none")
+
+
+#location breakdown
+all.data %>% group_by(Location)%>% 
+  summarise(count = n() ) %>%
+  mutate( prop = count / sum(count)*100 )%>% ggplot() + geom_bar(aes(Location,prop, fill=Location), stat ='identity')+scale_fill_d3()+theme(legend.position = "none")+labs(y="%", x="Location")+theme_pubclean()+theme(legend.position="none")
+
+```
+
+*SC - socio-cultural expertise*\
+*Non-SC - no socio-cultural expertise*
+
+Expertise is roughly equally distributed.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+#expertise breakdown
+all.data %>% group_by(Field)%>% 
+  summarise(count = n() ) %>%
+  mutate( prop = count / sum(count)*100 )%>% ggplot() + geom_bar(aes(Field,prop, fill=Field), stat ='identity')+scale_fill_d3()+theme(legend.position = "none")+labs(y="%", x="Expertise (Socio-cultural vs. Rest)")+theme_pubclean()+theme(legend.position="none")
+
+
+```
+
+Only 20% were familiar with wisdom research (either in philosophy or in psychology).
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+#expertise breakdown
+all.data %>% group_by(FamiliarWisdom)%>% 
+  summarise(count = n() ) %>%
+  mutate( prop = count / sum(count)*100 )%>% ggplot() + geom_bar(aes(FamiliarWisdom,prop, fill=FamiliarWisdom), stat ='identity')+scale_fill_d3()+theme(legend.position = "none")+labs(y="%", x="Familiarity with Wisdom Research?")+theme_pubclean()+theme(legend.position="none")
+
+
+```
+
+# Positive Consequences
+
+## Summary
+
+### A great degree of variability in themes
+
+We identified 20 distinct themes.\
+Most themes mentioned by less than 10% of the interviewees.\
+Only three themes were mentioned by at least ten people: greater (appreciation of) social connectedness,  opportunity for political engagement/structural change viewed, and solidarity.\
+
+* Greater (appreciation of) social connectedness, and opportunity for political engagement/structural change viewed, and solidarity as most pos outcomes. \
+* Additionally: opportunity to re-evaluate habits and embracing new technology. \
+* Greater (appreciation of) social connectedness and solidarity, as well as resilience more frequent among women, and opportunity for political engagement/structural change and  reconsider habits more frequent among men. Reflecting gender roles?\
+* Socio-cultural experts are more likely to mention social connectedness and opportunity for political engagement/structural change, whereas non-SC experts folked more on reconsidering habits.\
+
+## Frequency Chart
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+Q1 <- c("shared.humanity_q1","critical.thinking_q1","personal.resilience_q1","gratitude_q1",
+        "nature_q1","improved.care.for.elders_q1","embrace.new.tech_q1","prosocial.behavior_q1",
+        "social.connectedness_q1","improved.work.life.balance_q1","increased.interest.in.science_q1",
+        "learning.from.pandemics_q1","political.engagement...structural.change_q1",
+        "optimism...positivity_q1","reconsidering.habits_q1",
+        "living.in.the.moment_q1","health...well.being_q1","solidarity_q1","bipartisanship.and.international.cooperation_q1","sympathy...compassion_q1") 
+
+
+Q1.q <- c("Shared Humanity","Critical Thinking","Resilience","Gratitude",
+          "Nature","Care for Elders","Embrace New Tech","Prosocial Behavior",
+          "Social Connectedness","Work-Life Balance","Science Interest","Learning from Pandemics","Polit./Structure-Change",
+          "Optimism/Positivity","Reconsider Habits","Live\nin the Moment","Health/Wellbeing","Solidarity","Political Cooperation","Sympathy&Compassion") 
+
+Q1.type <- c("Meta-cognition","Meta-cognition","Psych.\nWellbeing","Psych.\nWellbeing",
+             "Nature","Prosocial","Work","Prosocial","Prosocial","Work",
+             "Quest\nfor Knowledge","Quest\nfor Knowledge","Societal",
+             "Psych.\nWellbeing","Psych.\nWellbeing","Psych.\nWellbeing",
+             "Psych.\nWellbeing","Prosocial","Societal","Meta-cognition") 
+
+Q1.data<-all.data %>% 
+  summarise(across(shared.humanity_q1:sympathy...compassion_q1, mean))
+
+
+
+colnames(Q1.data)[colnames(Q1.data)      # Rename two variable names
+                     %in% Q1] <- Q1.q
+
+Q1.data.long <- Q1.data %>% 
+  pivot_longer(everything(),names_to = "Theme", values_to = "Proportion")
+Q1.summ<-cbind(Q1.data.long, Q1.type)
+colnames(Q1.summ) <- c("Theme","Proportion","Type")  # change column names
+Q1.summ <- Q1.summ[order(Q1.summ$Proportion), ]  # sort
+Q1.summ$Theme <- factor(Q1.summ$Theme, levels = Q1.summ$Theme)  # to retain the order in plot
+Q1.summ$Percent<-Q1.summ$Proportion*100
+Q1.plot<-ggplot(Q1.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() +
+  geom_bar(stat="identity", width=.5) + ggtitle("Positive Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q1.plot
+```
+
+## How many themes per person?
+
+Did people just report 1-2 themes or a great number of themes? How do such trends vary across people?
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+all.data$Q1.pp<-rowSums(all.data[Q1])
+
+ggplot(all.data, aes(x = Q1.pp)) +   geom_vline(xintercept=median(all.data$Q1.pp), color="red")+
+  geom_bar()+theme_pubclean()+scale_fill_d3()+labs(x="Number of Themes per Person",y="Count")
+           
+```
+
+The majority of people mention only one or two themes here. The median was two themes (as indicated by vertical red line). One-fifth mentioned three themes, and only 3 people mentioned 4 themes (and one person mentioned five themes). 
+
+## Frequencies by Gender and Field (Socio-cultural vs. Other fields)
+
+What is important here is that the focus on social-structural issues was not only present among experts in social psychology or cultural matters but also among experts studying other areas of psychology or political science.
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+##By gender
+Q1.data.G<-all.data %>% group_by(Gender)%>% 
+  summarise(across(shared.humanity_q1:sympathy...compassion_q1, mean))
+
+colnames(Q1.data.G)[colnames(Q1.data.G)      # Rename two variable names
+                     %in% Q1] <- Q1.q
+Q1.data.G.long <- Q1.data.G %>% 
+  pivot_longer(-Gender,names_to = "Theme", values_to = "Proportion")
+Q1.G.summ<-cbind(Q1.data.G.long, Q1.type)
+colnames(Q1.G.summ) <- c("Gender","Theme","Proportion","Type")  # change column names
+Q1.G.summ$Percent<-Q1.G.summ$Proportion*100
+Q1.G.plot<-ggplot(Q1.G.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Gender)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Positive Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q1.G.plot
+
+##By socio-cultural vs. non-socio-cultural expertise
+Q1.data.SC<-all.data %>% group_by(Field)%>% 
+  summarise(across(shared.humanity_q1:sympathy...compassion_q1, mean))
+
+colnames(Q1.data.SC)[colnames(Q1.data.SC)      # Rename two variable names
+                     %in% Q1] <- Q1.q
+
+Q1.data.SC.long <- Q1.data.SC %>% 
+  pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
+Q1.SC.summ<-cbind(Q1.data.SC.long, Q1.type)
+colnames(Q1.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
+Q1.SC.summ$Percent<-Q1.SC.summ$Proportion*100
+Q1.SC.plot<-ggplot(Q1.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Positive Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q1.SC.plot
+```
+
+## PCA
+
+We can address the question of diversity by examining the degree to which scores across themes are reducible to common components. To this end, we perform a principal component analysis (PCA), which works on dichotomous data.\
+
+It appears that 8 component is good start to account for 20 themes for Question 1.\
+Keep in mind that reducing 20 items to 8 components is just a 40% reduction and that's not much. Moreover, when we reduce the items to 8 components, the first component explains only 9 % of the variance. Given that each theme by default explains 5% of the variance (1/20), this is not much. \
+Furthermore, each of these components is largely based on 1-2 item (loadings > .6), with two items  for TC4 - solidarity & prosocial behavior,  TC6 - shared humanity &bipartisanship, TC3 - critical thinking & increased interest in science, TC5 - personal resilience & optimism/positivity, 
+TC2 - health/wellbeing & worklife balance.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+vss(all.data[Q1], rotate="oblimin", fm="pc")
+
+principal(all.data[Q1], nfactors = 8, rotate="oblimin")
+
+
+```
+
+In short, principal components (note: identical results with minres factor analyses with tetriconic correlation) show substantial diversity, with the top factors shared humanity and critical thinking not accounting for more than 9% of the variance and showing only weak intercorrelation among themselves. And even with 7 components, we don't account for 90% of the variance.\
+
+
+Three large clusters emerge, similar results are also evident in the dendogram below  .\
+
+
+## Network Graph
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+#first, get correlation matrix., we use spearman and we also control for tokens (length of response for this question)
+Q1.cor<-partial.r(all.data,Q1,cs(tokens.Q1),method="spearman")
+
+##################
+row.names(Q1.cor) <-Q1.q
+colnames(Q1.cor) <-Q1.q
+
+# Keep only meaningful correlations (<.17)
+Q1.cor[Q1.cor<0.17] <- 0
+
+# Make an Igraph object from this matrix:
+Q1.network <- graph_from_adjacency_matrix( Q1.cor,weighted=T,  mode="undirected", diag=F)
+
+
+#color palette
+coul <- brewer.pal(nlevels(as.factor(Q1.type)), "Dark2")
+
+# Map the color to cylinders
+my_color <- coul[as.numeric(as.factor(Q1.type))]
+
+# plot with edges
+
+Q1.net<-plot(Q1.network,
+     edge.color=rep(c("red","pink"),5),           # Edge color
+     edge.width=seq(1,10),                        # Edge width, defaults to 1
+     edge.arrow.size=1,                           # Arrow size, defaults to 1
+     edge.arrow.width=1,                          # Arrow width, defaults to 1
+     edge.lty=c("solid"),
+     edge.label.family = "Times",
+     vertex.color =my_color,
+     vertex.label.color="black"# Line type, could be 0 or "blank", 1 or "solid", 2 or "dashed", 3 or "dotted", 4 or "dotdash", 5 or "longdash", 6 or "twodash"
+     #edge.curved=c(rep(0,5), rep(1,5))            # Edge curvature, range 0-1 (FALSE sets it to 0, TRUE to 0.5)
+)
+
+Q1.ceb <- cluster_edge_betweenness(Q1.network) 
+
+dendPlot(Q1.ceb, mode="hclust")
+plot(Q1.ceb, Q1.network, axes=T, vertex.label.color="black", edge.width=seq(1,10)) 
+
+
+```
+
+
+As we can see above, even after removing negligible correlations (r < .17), cluster analyses on top of the network graphs show five clusters - psych. well-being, civic (poli.structural change, care for elders), solidarity, "pandemic-experience" strategies (social connectedness, change in habits, critical thinking), and adaptive mindsets (shared humanity, focus on nature, optimism/positivity, resilience). Again, this suggests a diversity of topics. Despite forming meaningful dependencies, themes for positive consequences of the pandemic appear largely distinct, except for link between social connectedness and gratitude, linking two networks.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+edgebundle(Q1.network, padding = 120, fontsize = 10)
+```
+
+## Convergence vs. divergence of themes over time
+
+I started to interview people in late June, 2020, in the weeks following the BLM protests and riots following George Floyd's death. Over the course of the summer and the fall, numerous other events occurred, including relaxing and re-introducing lockdown policies and regulations in different parts of the world, start of in-person schooling in the fall, the US Presidential election, and its aftermath.\
+One way to address the diversity and uncertainty of scientific perspectives on World after Covid and wisdom needed is to examine how consistently themes were mentioned over time. In what follows I do this separately for each question.\
+
+First, I bin frequencies of themes by month. Because only two people provided their interviews in early December, 2020, these individuals will be binned with November scores, such that the scores range from 17 (June), and 19 (July), to six (November).
+
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+all.data$date<-parse_date_time(all.data$RecordingDate, orders = c("dmy", "mdy",("ymd"))) #recode date as date
+all.data$month <- as.Date(cut(all.data$date,
+                        breaks = "month",
+                        start.on.monday = FALSE)) # changes weekly break point to Sunday
+
+all.data <- all.data %>% mutate(month = month(date))
+
+all.data %>% group_by(month) %>% count()  #%>% ggplot() + geom_bar(aes(month,n), stat ='identity')
+
+all.data %>% group_by(date) %>% count()
+
+
+#bin dates into June, July, Sept/early Oct [pre-lockdown], Oct-Dec 3 [2nd Lock-down/ US Election]
+all.data$M<-"4. late Oct+"
+all.data$M[all.data$month==6]<-"1. June"
+all.data$M[all.data$month==7]<-"2. July"
+all.data$M[all.data$month==9]<-"3. Sept/early Oct"
+all.data$M[all.data$date=="2020-10-06 UTC"]<-"3. Sept/early Oct"
+all.data$M[all.data$date=="2020-10-07 UTC"]<-"3. Sept/early Oct"
+all.data$M[all.data$date=="2020-10-09 UTC"]<-"3. Sept/early Oct"
+
+table(all.data$M)
+
+Q1 <- c("shared.humanity_q1","critical.thinking_q1","personal.resilience_q1","gratitude_q1",
+        "nature_q1","improved.care.for.elders_q1","embrace.new.tech_q1","prosocial.behavior_q1",
+        "social.connectedness_q1","improved.work.life.balance_q1","increased.interest.in.science_q1",
+        "learning.from.pandemics_q1","political.engagement...structural.change_q1",
+        "optimism...positivity_q1","reconsidering.habits_q1",
+        "living.in.the.moment_q1","health...well.being_q1","solidarity_q1","bipartisanship.and.international.cooperation_q1","sympathy...compassion_q1") 
+
+
+Q1.q <- c("Shared Humanity","Critical Thinking","Resilience","Gratitude",
+          "Nature","Care for Elders","Embrace New Tech","Prosocial Behavior",
+          "Social Connectedness","Work-Life Balance","Science Interest","Learning from Pandemics","Polit./Structure-Change",
+          "Optimism/Positivity","Reconsider Habits","Live\nin the Moment","Health/Wellbeing","Solidarity","Political Cooperation","Sympathy&Compassion") 
+
+Q1.type <- c("Meta-cognition","Meta-cognition","Psych.\nWellbeing","Psych.\nWellbeing",
+             "Nature","Prosocial","Work","Prosocial","Prosocial","Work",
+             "Quest\nfor Knowledge","Quest\nfor Knowledge","Societal",
+             "Psych.\nWellbeing","Psych.\nWellbeing","Psych.\nWellbeing",
+             "Psych.\nWellbeing","Prosocial","Societal","Meta-cognition") 
+
+Q1.data.M<-all.data %>% group_by(M)%>%
+  summarise(across(shared.humanity_q1:sympathy...compassion_q1, sum))
+
+
+colnames(Q1.data.M)[colnames(Q1.data.M)      # Rename two variable names
+                     %in% Q1] <- Q1.q
+
+Q1.data.long.M <- Q1.data.M %>% 
+  pivot_longer(-M,names_to = "Theme", values_to = "Count")
+Q1.summ.M<-cbind(Q1.data.long.M, Q1.type)
+colnames(Q1.summ.M) <- c("Period","Theme","Count","Type")  # change column names
+Q1.summ.M <- Q1.summ.M[order(Q1.summ.M$Count), ]  # sort
+
+Q1.data.T<-Q1.summ.M %>% group_by(Period, Type)%>%
+    summarise(score=sum(Count))
+
+countByMonth<-all.data %>% group_by(M)%>% 
+  summarise(count = n() )
+
+colnames(countByMonth) <- c("Period","N")  # change column names
+
+Q1.data.TT<-full_join(Q1.data.T,countByMonth, by = "Period")
+Q1.data.TT$Percent<-(Q1.data.TT$score/Q1.data.TT$N)*100
+
+ggplot(Q1.data.TT, aes(x=Period, y=Percent, group = Type, color=Type, fill=Type)) + 
+    geom_line( ) +
+    geom_point(shape=21,  size=4) +
+   theme_pubclean()+scale_color_d3()+scale_fill_d3()
+
+#BY EACH THEME
+#Q1.data.T.ALL<-all.data %>% group_by(M)%>%
+#   summarise_at(Q1, funs(sum))
+#colnames(Q1.data.T.ALL)[colnames(Q1.data.T.ALL)      # Rename variable names
+#                  %in% Q1] <- Q1.q
+#
+#Q1.data.T.ALL.long <-Q1.data.T.ALL %>%
+#    gather(domain, frequency, -c(M), convert = TRUE)
+#colnames(Q1.data.T.ALL.long) <- c("Period","Theme","Count")  # change column names
+#Q1.data.TT.ALL.long<-full_join(Q1.data.T.ALL.long,countByMonth,, by = "Period")
+#Q1.data.TT.ALL.long$Percent<-(Q1.data.TT.ALL.long$Count/Q1.data.TT.ALL.long$N)*100
+#ggplot(Q1.data.TT.ALL.long, aes(x=Period, y=Percent, group = Theme, color=Theme, fill=Theme)) + 
+#    geom_line( ) +
+#  geom_point(shape=21,  size=4) +
+#  theme_pubclean()
+
+```
+
+Focus on social issues declines in frequency being mentioned after June/July,  whereas focus on prosociality (social connectedness/solidarity) increases, emerging as dominant in late October right around the time of US election.\
+Quest for knowledge (i.e., appreciation of science and willingness to learn from the pandemic) was chiefly mentioned early on, but re-emerged again in late November (after BioNtech vaccine was announced to be possibly 90% effective - Nov 9, 2020).\
+Other themes remain largely identical in frequency of being mentioned over time.\
+
+It is also interesting to see how ranking of categories changes over time. Prosocial themes are top at the beginning and esp. in the second wave of the pandemic. Societal issues is close second at the beginning, but move to close to last at the end. \
+Psych. Wellbeing emerges as the lead in the summer but becomes relatively less pronounced in late Oct/Nov.\
+
+Though speculative and post-hoc, this observation suggests that for some of the major themes (incl the most frequently mentioned onces), salience of present-day events inform the themes scientists mentioned in their reflections concerning positive consequences -several years- following the pandemic!\
+
+
+
+
+# Negative Consequences
+
+## Summary
+
+### A great degree of variability in themes (again)
+
+We identified 22 distinct themes.\
+More than half of themes mentioned by less than 10% of the interviewees.\
+Only two themes were mentioned by at least ten people: political conflict and prejudice and racism.\
+
+Generally:\
+* Political conflict, prejudice/racism, mistrust, social inequality are among the top negative consequences predicted. \
+* Consequences are either social or societal/ with health/well-being being mentioned relatively less. \
+* Women more likely to focus on well-being-risks, incl. loneliness and estrangement/alienation, as well as economic hardships. Men more likely to consider prejudice, erosion of democracy. \
+
+## Frequency Chart
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+##'QUESTION 3
+
+Q3 <- c("estrangement...alienation_q3","career.disruptions_q3", "decline.in.quality.of.education_q3", "decreased.trust.in.science_q3","decreased.well.being_q3"   ,                     
+        "economic.hardship_q3" ,"educational.inequality_q3", "erosion.of.democratic.institutions_q3", "exacerbated.social.inequality_q3","mistrust_q3",                            
+        "prejudice...racism_q3", "despair_q3", "prioritize.self.over.others_q3","irrationality_q3","loneliness_q3"  ,                                
+        "misperception.about.the.world_q3" ,"political.conflict_q3" , "authoritarianism_q3", "stunted.child.development_q3","pessimism_q3",                                   
+        "intimate.relations_q3" , "autobiographical.memory_q3") 
+
+Q3.q <- c("Estrangement\nAlienation","Career Disruptions", "Low Qual. Education", "Low Trust\nin Science","Low Wellbeing"   ,                     
+          "Economic Hardship" ,"Educational Inequality", "Erosion of Democratic Instit.", "Social Inequality","Mistrust",                            
+          "Prejudice Racism", "Despair", "Self-Centeredness","Irrationality","Loneliness"  ,                                
+          "Misperception of the World" ,"Political Conflict" , "Authoritarianism", "Stunted Child\nDevelopment","Pessimism",                                   
+          "Intimate Relations" , "Autobiographical Memory")
+
+Q3.type <- c("Interpersonal","Work", "Education", "Irrationality","Psych.\nWellbeing"   ,                     
+             "Societal" ,"Education", "Societal", "Societal","Interpersonal",                            
+             "Societal", "Psych.\nWellbeing", "Interpersonal","Irrationality","Psych.\nWellbeing"  ,                                
+             "Irrationality" ,"Societal" , "Societal", "Education","Psych.\nWellbeing",                                   
+             "Interpersonal" , "Psych.\nWellbeing")
+
+Q3.data<-all.data %>% 
+  summarise(across(estrangement...alienation_q3:autobiographical.memory_q3, mean, na.rm=TRUE))
+
+colnames(Q3.data)[colnames(Q3.data)      # Rename two variable names
+                     %in% Q3] <- Q3.q
+Q3.data.long <- Q3.data %>% 
+  pivot_longer(everything(),names_to = "Theme", values_to = "Proportion")
+Q3.summ<-cbind(Q3.data.long, Q3.type)
+colnames(Q3.summ) <- c("Theme","Proportion","Type")  # change column names
+Q3.summ <- Q3.summ[order(Q3.summ$Proportion), ]  # sort
+Q3.summ$Theme <- factor(Q3.summ$Theme, levels = Q3.summ$Theme)  # to retain the order in plot
+Q3.summ$Percent<-Q3.summ$Proportion*100
+Q3.plot<-ggplot(Q3.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() +
+  geom_bar(stat="identity", width=.5) + ggtitle("Negative Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q3.plot
+```
+
+## How many themes per person?
+
+Did people just report 1-2 themes or a great number of themes? How do such trends vary across people?\
+It turns out most people mentioned just one or two (median) negative consequences. Two people mentioned up 5 and 7 themes, respectively.\
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+all.data$Q3.pp<-rowSums(all.data[Q3])
+ggplot(all.data, aes(x = Q3.pp)) +   geom_vline(xintercept=median(all.data$Q3.pp, na.rm=T), color="red")+
+  geom_bar()+theme_pubclean()+scale_fill_d3()+labs(x="Number of Themes per Person",y="Count")
+           
+```
+
+
+## Frequency Chart by Gender and Field
+
+It is possible that socio-cultural experts focus *more* on social-structural issues than mental health and other possible domains of change because of idiosyncratic preferences.\
+As the distribution of themes by field of expertise indicates, this is not likely to be the reason for mentioning political and interpersonal issues most (relative to mental health), with roughly similar distributions. The only exception is that sociocultural experts tended to emphasize mistrust, whereas non-SC experts emphasized irrationality/mispercetion of the world more. 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+##BY gender
+Q3.data.G<-all.data %>% group_by(Gender)%>% 
+  summarise(across(estrangement...alienation_q3:autobiographical.memory_q3, mean, na.rm=TRUE))
+
+colnames(Q3.data.G)[colnames(Q3.data.G)      # Rename two variable names
+                    %in% Q3] <- Q3.q
+
+Q3.data.G.long <- Q3.data.G %>% 
+  pivot_longer(-Gender,names_to = "Theme", values_to = "Proportion")
+Q3.G.summ<-cbind(Q3.data.G.long, Q3.type)
+colnames(Q3.G.summ) <- c("Gender","Theme","Proportion","Type")  # change column names
+Q3.G.summ$Percent<-Q3.G.summ$Proportion*100
+Q3.G.plot<-ggplot(Q3.G.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Gender)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Negative Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q3.G.plot
+
+##BY socio-cultural vs. non-socio-cultural expertise
+Q3.data.SC<-all.data %>% group_by(Field)%>% 
+  summarise(across(estrangement...alienation_q3:autobiographical.memory_q3, mean, na.rm=TRUE))
+
+colnames(Q3.data.SC)[colnames(Q3.data.SC)      # Rename two variable names
+                     %in% Q3] <- Q3.q
+
+Q3.data.SC.long <- Q3.data.SC %>% 
+  pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
+Q3.SC.summ<-cbind(Q3.data.SC.long, Q3.type)
+colnames(Q3.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
+Q3.SC.summ$Percent<-Q3.SC.summ$Proportion*100
+Q3.SC.plot<-ggplot(Q3.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Negative Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q3.SC.plot
+```
+
+## PCA 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+vss(all.data[Q3], rotate="oblimin", fm="pc")
+principal(all.data[Q3], nfactors = 8, rotate="oblimin")
+
+
+```
+
+Similar to positive consequences, we can address the question of diversity by examining the degree to which scores across themes are reducible to common component, examining principal component analysis (PCA).\
+It appears that 7 or 8 components is as good a start to account for 22 themes for Question 3 (neg consequences), as any other. This said, the scree plot line is pretty flat.\
+Again, keep in mind that reducing 22 items to 8 components is not much. Moreover, when we reduce the items to 8 components, the first component explains only 10 % of the variance and in total 8 components account only for 64%.\
+Given that each theme by default explains 4.6% of the variance (1/22), this is not much. \
+Furthermore, each of these components is largely based on 1-2 items (loadings > .6), with an exception of TC1 - decline in education, stunted child dev & intomate relationships \
+
+In short, principal components show substantial diversity, with the top factors political conflict and prejudice/racism not accounting for more than 16% of the variance and showing only weak intercorrelation among themselves\
+
+## Network Graph
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+Q3.cor<-partial.r(all.data,Q3,cs(tokens.Q3),method="spearman")
+
+row.names(Q3.cor) <-Q3.q
+colnames(Q3.cor) <-Q3.q
+
+# Keep only meaningful correlations (<.17)
+Q3.cor[Q3.cor<0.17] <- 0
+
+# Make an Igraph object from this matrix:
+Q3.network <- graph_from_adjacency_matrix( Q3.cor, weighted=T, mode="undirected", diag=F)
+
+
+
+#color palette
+coul <- brewer.pal(nlevels(as.factor(Q3.type)), "Dark2")
+
+# Map the color to types
+my_color <- coul[as.numeric(as.factor(Q3.type))]
+
+# plot with edges
+
+plot(Q3.network,
+     edge.color=rep(c("red","pink"),5),           # Edge color
+     edge.width=seq(1,10),                        # Edge width, defaults to 1
+     edge.arrow.size=1,                           # Arrow size, defaults to 1
+     edge.arrow.width=1,                          # Arrow width, defaults to 1
+     edge.lty=c("solid"),
+     vertex.label.color="black", 
+                vertex.color=my_color                           # Line type, could be 0 or "blank", 1 or "solid", 2 or "dashed", 3 or "dotted", 4 or "dotdash", 5 or "longdash", 6 or "twodash"
+     #edge.curved=c(rep(0,5), rep(1,5))            # Edge curvature, range 0-1 (FALSE sets it to 0, TRUE to 0.5)
+)
+
+
+```
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+Q3.ceb <- cluster_edge_betweenness(Q3.network) 
+
+dendPlot(Q3.ceb, mode="hclust")
+plot(Q3.ceb, Q3.network, axes=T,edge.width=seq(1,10)) 
+
+
+```
+
+As we can see above, even after removing negligible correlations (r < .17), cluster analyses on top of the network graphs show four clusters - Four clusters: irrationality & misperception of the world, prejudice, & decline of democracy / well-being decline and associated factors / family matters & educational (social) inequality (incl stunted child dev) / economic hardships.\
+
+Themes for negative consequences of the pandemic appear largely distinct, except for link between loneliness and gratitude, linking two networks concerning family matters (loneliness) and wellbeing (alienation/estrangement).\
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+edgebundle(Q3.network, padding = 120, fontsize = 10)
+
+```
+
+
+## Convergence vs. divergence of themes over time
+
+As a reminder: I started to interview people in late June, 2020, in the weeks following the BLM protests and riots following George Floyd's death. Over the course of the summer and the fall, numerous other events occurred, including relaxing and re-introducing lockdown policies and regulations in different parts of the world, start of in-person schooling in the fall, the US Presidential election, and its aftermath.\
+Once again, we binned scores in the the same four groups as above: June, July, Sept/early Oct, and second part of Oct-early Dec.\
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+Q3.data.M<-all.data %>% group_by(M)%>%
+  summarise(across(estrangement...alienation_q3:autobiographical.memory_q3, sum,na.rm=T))
+
+
+colnames(Q3.data.M)[colnames(Q3.data.M)      # Rename two variable names
+                     %in% Q3] <- Q3.q
+
+Q3.data.long.M <- Q3.data.M %>% 
+  pivot_longer(-M,names_to = "Theme", values_to = "Count")
+Q3.summ.M<-cbind(Q3.data.long.M, Q3.type)
+colnames(Q3.summ.M) <- c("Period","Theme","Count","Type")  # change column names
+Q3.summ.M <- Q3.summ.M[order(Q3.summ.M$Count), ]  # sort
+
+Q3.data.T<-Q3.summ.M %>% group_by(Period, Type)%>%
+    summarise(score=sum(Count))
+
+countByMonth<-all.data %>% group_by(M)%>% 
+  summarise(count = n() )
+
+colnames(countByMonth) <- c("Period","N")  # change column names
+
+Q3.data.TT<-full_join(Q3.data.T,countByMonth, by = "Period")
+Q3.data.TT$Percent<-(Q3.data.TT$score/Q3.data.TT$N)*100
+
+ggplot(Q3.data.TT, aes(x=Period, y=Percent, group = Type, color=Type, fill=Type)) + 
+    geom_line( ) +
+    geom_point(shape=21,  size=4) +
+   theme_pubclean()+scale_color_d3()+scale_fill_d3()
+
+#BY EACH THEME
+#Q3.data.T.ALL<-all.data %>% group_by(M)%>%
+#   summarise_at(Q3, funs(sum))
+#colnames(Q3.data.T.ALL)[colnames(Q3.data.T.ALL)      # Rename variable names
+#                  %in% Q3] <- Q3.q
+#
+#Q3.data.T.ALL.long <-Q3.data.T.ALL %>%
+#    gather(domain, frequency, -c(M), convert = TRUE)
+#colnames(Q3.data.T.ALL.long) <- c("Period","Theme","Count")  # change column names
+#Q3.data.TT.ALL.long<-full_join(Q3.data.T.ALL.long,countByMonth,, by = "Period")
+#Q3.data.TT.ALL.long$Percent<-(Q3.data.TT.ALL.long$Count/Q3.data.TT.ALL.long$N)*100
+#ggplot(Q3.data.TT.ALL.long, aes(x=Period, y=Percent, group = Theme, color=Theme, fill=Theme)) + 
+#    geom_line( ) +
+#  geom_point(shape=21,  size=4) +
+#  theme_pubclean()
+
+```
+
+Focus on societal issues consistently remains the most frequent topic over time.\
+Whereas discussion of health and well-being was the second most frequent category mentioned for negative consequences in June, it become third/forth frequent from July on.\
+In exchange, irrationality started to increase in frequency being mentioned in the fall, closer to the US Election and second lockdowns.\
+Least frequently mentioned were concerns about work.
+
+Like for positive consequences, one can post-hoc speculate that some of the major themes such as well-being related concerns (e.g., loneliness, well-being decline), and forecasts of irrationality (incl. mispeception of the world, mistrust in science) were likely impacted by societal events unfolding around the time people were making forecasts. \
+
+Notably, one theme remained pretty stable over time, with negative societal consequences (political conflict, prejudice and racism, societal inequality) - the most frequently mentioned topic in response to this question - remained consistently most frequent over time.\
+
+# Comparison of Positive and Negative Consequences Side by Side
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+###EXAMINE Q1=>Q2 and Q3=>Q4 dependencies################
+Q1.summ <- Q1.summ[order(Q1.summ$Percent), ]  # sort
+Q1.summ$Theme <- factor(Q1.summ$Theme, levels = Q1.summ$Theme)  # to retain the order in plot
+
+Q3.summ <- Q3.summ[order(Q3.summ$Percent), ]  # sort
+Q3.summ$Theme <- factor(Q3.summ$Theme, levels = Q3.summ$Theme)  # to retain the order in plot
+
+
+#prepare data for lollipop chart
+Q1.summ2<- Q1.summ[order(Q1.summ$Percent), ]
+Q1.summ3<-Q1.summ2%>%
+  mutate(Theme = factor(Theme, levels = .$Theme))
+Q3.summ2<-Q3.summ%>%
+  mutate(Theme = factor(Theme, levels = .$Theme))
+
+
+data.Q1 <- data.frame(
+  Theme=Q1.summ3$Theme,
+  Frequency=Q1.summ3$Percent,
+  group=Q1.summ3$Type
+)
+
+data.Q3<-data.frame(
+  Theme=Q3.summ2$Theme,
+  Frequency=-Q3.summ2$Percent,
+  group=Q3.summ2$Type
+)
+
+data.Q13<-rbind(data.Q1,data.Q3)
+data.Q13<- data.Q13[order(data.Q13$Frequency), ]
+data.Q13<-data.Q13%>%
+  arrange(Frequency)%>%
+  mutate(Above = ifelse(Frequency > 0, TRUE, FALSE),
+         Theme = factor(Theme, levels = .$Theme))
+# plot Lollipop chart
+fig<-ggplot(data.Q13, aes(x=Theme, y=Frequency,color = group, tooltip=group))+
+  geom_point(size=6)+
+  #geom_text(color = 'black', size = 2)+
+  scale_y_continuous(limits = c(-25, 25))+
+  theme_light() +
+  coord_flip() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.border = element_blank(),
+    axis.ticks.x = element_blank()
+  ) +scale_color_tableau()+
+  xlab("Themes")+geom_hline(yintercept = 0, linetype="dashed", 
+                color = "black", size=1.5)+ylab("<== Negative Consequences vs. Positive Consequences ==>\n%")+
+    theme(legend.title=element_blank(), legend.position="bottom")
+fig
+ggplotly(fig, fontsize_row = 8, height = 1020,
+  fontsize_col = 8)
+
+
+
+```
+
+# Wisdom for Positive Consequences
+
+## Summary
+
+We identified 21 distinct categories. 
+Most themes mentioned by less than 10% of the interviewees.\
+Only one theme was mentioned by at least ten people: Need for solidarity.\
+
+Most common wisdom-related strategies to sustain positive changes (7+ ppl) concern solidarity, willingness to engage in political and structure change, perspective-taking, and critical thinking. \
+
+## Frequency Chart
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+##'QUESTION 2
+
+Q2 <- c("social.connectedness_q2", "social.support_q2",  "evidence.based.decision.making_q2","improved.work.life.balance_q2","acknowledge.of.uncertainty.flexibility_q2","balance.of.personal...others.interest_q2","perspective.taking_q2",
+        "critical.thinking_q2","bipartisanship.and.international.cooperation_q2","solidarity_q2",                        
+        "improve.communication_q2", "intellectual.humility_q2","living.in.the.moment_q2",
+        "learning.from.pandemics_q2","political.engagement...structural.change_q2",
+        "self.reflection.on.what.s.important_q2","shared.humanity_q2","sympathy...compassion_q2", "self.distancing_q2","embrace.new.tech_q2","personal.resilience_q2") 
+
+
+Q2.q <- c("Social Connectedness",  "Social Support", "Evidence-based Judgement", "Work-Life Balance", "Acknowledge Uncertainty","Balance Diverse Interests","Perspective-taking",
+          "Critical Thinking","Polit.Cooperation",
+          "Solidarity", "Improved Communication", "Intellectual Humility","Live in the Moment",
+          "Learning from Pandemics","Polit.Structural Change","What's Important?","Shared Humanity","Sympathy&Compassion", "Self-distancing","Embrace New Tech","Personal Resilience") 
+
+Q2.type <- c("Prosocial","Prosocial","Quest\nfor Knowledge","Work",        "Meta-cognition","Meta-cognition","Meta-cognition",
+             "Meta-cognition","Societal","Prosocial",                        
+             "Interpersonal", "Meta-cognition","Psych.\nWellbeing",
+             "Quest\nfor Knowledge","Societal",
+             "Insight","Meta-cognition","Meta-cognition", "Meta-cognition","Work","Psych.\nWellbeing") 
+
+
+Q2.data<-all.data %>% 
+  summarise(across(social.connectedness_q2:personal.resilience_q2, mean, na.rm = T))
+
+
+
+
+colnames(Q2.data)[colnames(Q2.data)      # Rename two variable names
+                     %in% Q2] <- Q2.q
+
+Q2.data.long <- Q2.data %>% 
+  pivot_longer(everything(),names_to = "Theme", values_to = "Proportion")
+Q2.summ<-cbind(Q2.data.long, Q2.type)
+colnames(Q2.summ) <- c("Theme","Proportion","Type")  # change column names
+Q2.summ <- Q2.summ[order(Q2.summ$Proportion), ]  # sort
+Q2.summ$Theme <- factor(Q2.summ$Theme, levels = Q2.summ$Theme)  # to retain the order in plot
+Q2.summ$Percent<-Q2.summ$Proportion*100
+Q2.plot<-ggplot(Q2.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() +
+  geom_bar(stat="identity", width=.5) + ggtitle("Wisdom for Positive Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q2.plot
+```
+
+## How many themes per person?
+
+Did people just report 1-2 themes or a great number of themes? How do such trends vary across people?\
+It turns out most people mentioned just one or two (median) negative consequences. Two people mentioned up to 4 and 5 themes, respectively.\
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+all.data$Q2.pp<-rowSums(all.data[Q2])
+ggplot(all.data, aes(x = Q2.pp)) +   geom_vline(xintercept=median(all.data$Q2.pp, na.rm=T), color="red")+
+  geom_bar()+theme_pubclean()+scale_fill_d3()+labs(x="Number of Themes per Person",y="Count")
+           
+```
+
+## Frequencies by Gender and Field
+
+It is not surprising that wisdom experts would mention meta-cognitive and moral considerations. The question is whether scientists without much familiarity with the science of wisdom would mention similar constructs. It appears that is the case, with non-wisdom experts emphasizing such meta-cognitive categories as critical thinking, intellectual humility, acknowledgment of uncertainty, sympathy and compassion and perspective-taking, along with moral aspirations about solidarity, social support, and paying greater attention to one's family and relationships, and promoting societal change toward fair and just society.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+##BY gender
+Q2.data.G<-all.data %>% group_by(Gender)%>% 
+  summarise(across(social.connectedness_q2:personal.resilience_q2, mean, na.rm = TRUE))
+
+colnames(Q2.data.G)[colnames(Q2.data.G)      # Rename two variable names
+                    %in% Q2] <- Q2.q
+
+Q2.data.G.long <- Q2.data.G %>% 
+  pivot_longer(-Gender,names_to = "Theme", values_to = "Proportion")
+Q2.G.summ<-cbind(Q2.data.G.long, Q2.type)
+colnames(Q2.G.summ) <- c("Gender","Theme","Proportion","Type")  # change column names
+Q2.G.summ$Percent<-Q2.G.summ$Proportion*100
+Q2.G.plot<-ggplot(Q2.G.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Gender)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom for Positive Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+
+Q2.G.plot
+##BY socio-cultural vs. non-socio-cultural expertise
+Q2.data.SC<-all.data %>% group_by(Field)%>% 
+  summarise(across(social.connectedness_q2:personal.resilience_q2, mean, na.rm = TRUE))
+
+colnames(Q2.data.SC)[colnames(Q2.data.SC)      # Rename two variable names
+                     %in% Q2] <- Q2.q
+
+Q2.data.SC.long <- Q2.data.SC %>% 
+  pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
+Q2.SC.summ<-cbind(Q2.data.SC.long, Q2.type)
+colnames(Q2.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
+Q2.SC.summ$Percent<-Q2.SC.summ$Proportion*100
+Q2.SC.plot<-ggplot(Q2.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom for Positive Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q2.SC.plot
+
+##BY wisdom familiarity
+Q2.data.W<-all.data %>% group_by(FamiliarWisdom)%>% 
+  summarise(across(social.connectedness_q2:personal.resilience_q2, mean, na.rm = TRUE))
+
+colnames(Q2.data.W)[colnames(Q2.data.W)      # Rename two variable names
+                     %in% Q2] <- Q2.q
+
+Q2.data.W.long <- Q2.data.W %>% 
+  pivot_longer(-FamiliarWisdom,names_to = "Theme", values_to = "Proportion")
+Q2.W.summ<-cbind(Q2.data.W.long, Q2.type)
+colnames(Q2.W.summ) <- c("FamiliarWisdom","Theme","Proportion","Type")  # change column names
+Q2.W.summ$Percent<-Q2.W.summ$Proportion*100
+Q2.W.plot<-ggplot(Q2.W.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ FamiliarWisdom)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom for Positive Consequences\nby Wisdom Familarity")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q2.W.plot
+
+```
+
+
+
+## PCA 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+vss(all.data[Q2], rotate="oblimin", fm="pc")
+principal(all.data[Q2], nfactors = 8, rotate="oblimin")
+
+
+```
+
+Similar to prior results, we can address the question of diversity by examining the degree to which scores across themes are reducible to common component, examining principal component analysis (PCA).\
+It appears that 7 or 8 components is as good a start to account for 21 themes for Question 2 (wisdom for pos consequences), as any other. Once again, the scree plot line is pretty flat.\
+Again, keep in mind that reducing 21 items to 8 components is not parsimonious. Moreover, when we reduce the items to 8 components, the first component explains only 11 % of the variance, and in total 8 components explain 61% of variance.\
+Given that each theme by default explains 4.8% of the variance (1/21), this is not much. \
+Furthermore, each of these components is largely based on 1-2 items (loadings > .6), with an exception of TC1 - social connectedness, social support, and balance of personal and others interests, and improved work-life balance. \
+
+In short, principal components show substantial diversity, with the top factor solidarity not even loading squarely on any of the components.\
+
+
+
+## Network Graph
+
+Even after removing negligible correlations (r < .17), cluster analyses on top of the network graphs show seven clusters, two of which are strongly inter-related (social connectedness and improved communication): \
+•	Critical thinking/intellectual humility \
+•	Willingness to adopt/learn new tech \
+•	Meta-cognition: perspective-taking, balancing different interests, acknowledge uncertainty, and resilience \
+•	Social cognitions: Balance of different interests, social connectedness, sympathy, social support \
+•	Big picture focus: Shared humanity and self-distancing \
+•	Solidarity, political engagement & cooperation \
+•	Focus on what's important/mindfulness of the present \
+•	Key is social connectedness - it connects two clusters. Solidarity also appears critical and close to the center of the network (proximity to most themes) \
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+#create correlation matrix, adjusting for number of words in each narrative
+Q2.cor<-partial.r(all.data,Q2,cs(tokens.Q2),method="spearman")
+row.names(Q2.cor) <-Q2.q
+colnames(Q2.cor) <-Q2.q
+
+# Keep only meaningful correlations (<.19)
+Q2.cor[Q2.cor<0.17] <- 0
+
+# Make an Igraph object from this matrix:
+Q2.network <- graph_from_adjacency_matrix( Q2.cor, weighted=T,  mode="undirected", diag=F)
+
+
+#color palette
+coul <- brewer.pal(nlevels(as.factor(Q2.type)), "Dark2")
+
+# Map the color to types
+my_color <- coul[as.numeric(as.factor(Q2.type))]
+
+# plot with edges
+
+plot(Q2.network,
+     edge.color=rep(c("red","pink"),5),           # Edge color
+     edge.width=seq(1,10),                        # Edge width, defaults to 1
+     edge.arrow.size=1,                           # Arrow size, defaults to 1
+     edge.arrow.width=1,                          # Arrow width, defaults to 1
+     edge.lty=c("solid"),
+     vertex.label.color="black", 
+     vertex.color=my_color# Line type, could be 0 or "blank", 1 or "solid", 2 or "dashed", 3 or "dotted", 4 or "dotdash", 5 or "longdash", 6 or "twodash"
+     #edge.curved=c(rep(0,5), rep(1,5))            # Edge curvature, range 0-1 (FALSE sets it to 0, TRUE to 0.5)
+)
+
+
+
+Q2.ceb <- cluster_edge_betweenness(Q2.network) 
+
+dendPlot(Q2.ceb, mode="hclust")
+plot(Q2.ceb, Q2.network, axes=T, vertex.label.color="black", edge.width=seq(1,10)) 
+
+
+
+```
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+edgebundle(Q2.network, padding = 120, fontsize = 10)
+
+```
+
+
+## Convergence vs. divergence of themes over time
+
+Once again, we binned scores in the the same four groups as above: June, July, Sept/early Oct, and second part of Oct-early Dec.\
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+Q2.data.M<-all.data %>% group_by(M)%>%
+  summarise(across(social.connectedness_q2:personal.resilience_q2, sum,na.rm=T))
+
+
+colnames(Q2.data.M)[colnames(Q2.data.M)      # Rename two variable names
+                     %in% Q2] <- Q2.q
+
+Q2.data.long.M <- Q2.data.M %>% 
+  pivot_longer(-M,names_to = "Theme", values_to = "Count")
+Q2.summ.M<-cbind(Q2.data.long.M, Q2.type)
+colnames(Q2.summ.M) <- c("Period","Theme","Count","Type")  # change column names
+Q2.summ.M <- Q2.summ.M[order(Q2.summ.M$Count), ]  # sort
+
+Q2.data.T<-Q2.summ.M %>% group_by(Period, Type)%>%
+    summarise(score=sum(Count))
+
+countByMonth<-all.data %>% group_by(M)%>% 
+  summarise(count = n() )
+
+colnames(countByMonth) <- c("Period","N")  # change column names
+
+Q2.data.TT<-full_join(Q2.data.T,countByMonth, by = "Period")
+Q2.data.TT$Percent<-(Q2.data.TT$score/Q2.data.TT$N)*100
+
+ggplot(Q2.data.TT, aes(x=Period, y=Percent, group = Type, color=Type, fill=Type)) + 
+    geom_line( ) +
+    geom_point(shape=21,  size=4) +
+   theme_pubclean()+scale_color_d3()+scale_fill_d3()
+
+#BY EACH THEME
+#Q2.data.T.ALL<-all.data %>% group_by(M)%>%
+#   summarise_at(Q2, funs(sum))
+#colnames(Q2.data.T.ALL)[colnames(Q2.data.T.ALL)      # Rename variable names
+#                  %in% Q2] <- Q2.q
+#
+#Q2.data.T.ALL.long <-Q2.data.T.ALL %>%
+#    gather(domain, frequency, -c(M), convert = TRUE)
+#colnames(Q2.data.T.ALL.long) <- c("Period","Theme","Count")  # change column names
+#Q2.data.TT.ALL.long<-full_join(Q2.data.T.ALL.long,countByMonth,, by = "Period")
+#Q2.data.TT.ALL.long$Percent<-(Q2.data.TT.ALL.long$Count/Q2.data.TT.ALL.long$N)*100
+#ggplot(Q2.data.TT.ALL.long, aes(x=Period, y=Percent, group = Theme, color=Theme, fill=Theme)) + 
+#    geom_line( ) +
+#  geom_point(shape=21,  size=4) +
+#  theme_pubclean()
+
+```
+
+Focus on meta-cognition consistently remains the most frequent recommendation over time (sharing it with prosocial category in September).\
+Whereas discussion of societal strategies for wisdom decline in prevalence over time, one strategy clearly picks up in the fall - prosocial strategies!\
+
+One can post-hoc speculate about it. It may be due to greater fatigue and U.S. election, with topics like solidarity becoming more important. It may also have something to do with the fact that prosocial themes equally picked up in answer to the question about type of positive change. \
+In other words, scientists forecast greater prosociality OR they recommend greater prosociality. Both communicate some hope for what may be missing in a current society they live in.\
+
+
+# Wisdom against Negative Consequences
+
+## Summary
+
+
+We identified 23 distinct categories. 
+Except for five themes, categories were mentioned by less than 10% of the interviewees.\
+Only two theme was mentioned by at least ten people: Long-term orientation (16%) and Willingness to introduce political-structural change (24%).\
+
+Overall, necessity for political/structure change, long-term focus, and sympathy/compassion are key strategies for mitigating negative consequences of the pandemic, followed by two other social strategies: solidarity, and social support. \
+Importantly, ten out of 23 identified themes were meta-cognitive in nature, consistent with recent research on meta-cognition being at the heart of wisdom. It appears leading scholars share this intuition for the context of post-pandemic challenges.\
+
+## Frequency Chart
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+Q4 <- c("social.awareness_q4" , "balance.of.personal...others.interest_q4" ,  "solidarity_q4",                    "context.sensitivity_q4",                          "bipartisanship.and.international.cooperation_q4", "critical.thinking_q4",                            "evidence.based.decision.making_q4",               "gratitude_q4",                                   
+        "optimism...positivity_q4",                              "improve.communication_q4",                        "long.term.orientation_q4",    "social.support_q4"  ,                  "social.connectedness_q4",               "acknowledge.uncertainty.flexibility_q4",         
+        "living.in.the.moment_q4",                         "patience_q4",                                     "perspective.taking_q4",                           "self.reflection.on.what.s.important_q4",          "shared.humanity_q4",                             
+        "strive.for.socio.economic.equality_q4",           "sympathy...compassion_q4",                        "political.engagement...structural.change_q4",     "self.distancing_q4") 
+
+Q4.q <- c("Social Awareness" ,"Balance Diverse Interests" ,   "Solidarity"    ,                    
+          "Context Sensitivity",  "Polit.Cooperation", "Critical Thinking",  
+          "Evidence-based Judgement", "Gratitude","Optimism/Positivity","Improved Communication",                        "Long-term Orientation",   "Social Support","Social Connectedness",
+          "Acknowledge Uncertainty",  "Live in the Moment", "Patience",                                     "Perspective-taking", "What's Important?", "Shared Humanity",                             
+          "Socio-econ Equality",           "Sympathy&Compassion",                        "Polit.Structural Change",     "Self-distancing") 
+
+Q4.type <- c("Meta-cognition" , "Meta-cognition" ,       "Prosocial"    ,                    
+             "Meta-cognition", "Societal", "Meta-cognition","Quest for Knowledge",             
+             "Psych.\nWellbeing","Psych.\nWellbeing","Interpersonal","Meta-cognition",
+             "Prosocial","Prosocial", "Meta-cognition",   "Psych.\nWellbeing","Self-regulation",                                     "Meta-cognition","Insight","Meta-cognition", "Prosocial",           "Meta-cognition", "Societal",     "Meta-cognition") 
+
+Q4.data<-all.data %>% 
+  summarise(across(social.awareness_q4:self.distancing_q4, mean, na.rm=T))
+
+colnames(Q4.data)[colnames(Q4.data)      # Rename two variable names
+                     %in% Q4] <- Q4.q
+
+Q4.data.long <- Q4.data %>% 
+  pivot_longer(everything(),names_to = "Theme", values_to = "Proportion")
+Q4.summ<-cbind(Q4.data.long, Q4.type)
+colnames(Q4.summ) <- c("Theme","Proportion","Type")  # change column names
+Q4.summ <- Q4.summ[order(Q4.summ$Proportion), ]  # sort
+Q4.summ$Theme <- factor(Q4.summ$Theme, levels = Q4.summ$Theme)  # to retain the order in plot
+Q4.summ$Percent<-Q4.summ$Proportion*100
+Q4.plot<-ggplot(Q4.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() +
+  geom_bar(stat="identity", width=.5) + ggtitle("Wisdom against Negative Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q4.plot
+```
+
+## How many themes per person?
+
+Did people just report 1-2 themes or a great number of themes? How do such trends vary across people?\
+It turns out most people mentioned just one or two (median) negative consequences. Two people mentioned up to 5 and 6 themes, respectively.\
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+all.data$Q4.pp<-rowSums(all.data[Q4])
+ggplot(all.data, aes(x = Q4.pp)) +   geom_vline(xintercept=median(all.data$Q4.pp, na.rm=T), color="red")+
+  geom_bar()+theme_pubclean()+scale_fill_d3()+labs(x="Number of Themes per Person",y="Count")
+           
+```
+
+## Frequencies by Gender and Field
+
+Once again, it is not surprising that wisdom experts mention meta-cognitive and moral considerations. The question is whether scientists without much familiarity with the science of wisdom would mention similar constructs for this question, too. It appears that is the case, with non-wisdom experts emphasizing such meta-cognitive categories as long-term orientation, sympathy and compassion, context sensitivity, appreciation of the idea of shared humanity, critical thinking and acknowledging uncertainty, along with moral aspirations about solidarity, social support, and paying greater attention to one's family and relationships, and promoting political cooperation and societal change toward fair and just society. In fact, the latter categories were strongly prevalent among non-wisdom experts. 
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+##BY gender
+Q4.data.G<-all.data %>% group_by(Gender)%>% 
+  summarise(across(social.awareness_q4:self.distancing_q4, mean, na.rm=T))
+
+colnames(Q4.data.G)[colnames(Q4.data.G)      # Rename two variable names
+                    %in% Q4] <- Q4.q
+
+Q4.data.G.long <- Q4.data.G %>% 
+  pivot_longer(-Gender,names_to = "Theme", values_to = "Proportion")
+Q4.G.summ<-cbind(Q4.data.G.long, Q4.type)
+colnames(Q4.G.summ) <- c("Gender","Theme","Proportion","Type")  # change column names
+Q4.G.summ$Percent<-Q4.G.summ$Proportion*100
+Q4.G.plot<-ggplot(Q4.G.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Gender)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom against Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q4.G.plot
+
+##BY socio-cultural vs. non-socio-cultural expertise
+Q4.data.SC<-all.data %>% group_by(Field)%>% 
+  summarise(across(social.awareness_q4:self.distancing_q4, mean, na.rm=T))
+
+colnames(Q4.data.SC)[colnames(Q4.data.SC)      # Rename two variable names
+                     %in% Q4] <- Q4.q
+
+Q4.data.SC.long <- Q4.data.SC %>% 
+  pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
+Q4.SC.summ<-cbind(Q4.data.SC.long, Q4.type)
+colnames(Q4.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
+Q4.SC.summ$Percent<-Q4.SC.summ$Proportion*100
+Q4.SC.plot<-ggplot(Q4.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom against Negative Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q4.SC.plot
+
+
+##BY wisdom familiarity
+Q4.data.W<-all.data %>% group_by(FamiliarWisdom)%>% 
+  summarise(across(social.awareness_q4:self.distancing_q4, mean, na.rm = TRUE))
+
+colnames(Q4.data.W)[colnames(Q4.data.W)      # Rename two variable names
+                     %in% Q4] <- Q4.q
+
+Q4.data.W.long <- Q4.data.W %>% 
+  pivot_longer(-FamiliarWisdom,names_to = "Theme", values_to = "Proportion")
+Q4.W.summ<-cbind(Q4.data.W.long, Q4.type)
+colnames(Q4.W.summ) <- c("FamiliarWisdom","Theme","Proportion","Type")  # change column names
+Q4.W.summ$Percent<-Q4.W.summ$Proportion*100
+Q4.W.plot<-ggplot(Q4.W.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ FamiliarWisdom)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom against Negative Consequences\nby Wisdom Familarity")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q4.W.plot
+
+
+```
+
+## PCA 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+vss(all.data[Q4], rotate="oblimin", fm="pc")
+principal(all.data[Q4], nfactors = 8, rotate="oblimin")
+
+
+```
+
+Similar to prior results, we can address the question of diversity by examining the degree to which scores across themes are reducible to common component, examining principal component analysis (PCA).\
+It appears that 8 components is as good a start to account for 23 themes for Question 4 (wisdom against neg consequences), as any other. Once again, the scree plot line is pretty flat.\
+Again, keep in mind that reducing 23 items to 8 components is not parsimonious. Moreover, when we reduce the items to 8 components, the first component explains only 10 % of the variance, and in total 8 components explain 60% of variance.\
+Given that each theme by default explains 4.4% of the variance (1/23), this is not much. \
+Furthermore, each of these components is largely based on 1-2 items (loadings > .6). \
+
+In short, principal components show substantial diversity, with the top factor political engagement and structural change not even loading squarely on any of the components (and negatively loading on the component it has highest loading for - the one with positive loading for self-distancing).\
+
+
+## Network Graph
+
+Even after removing negligible correlations (r < .17), cluster analyses on top of the network graphs show four clusters, three of which are strongly inter-related (perspective-taking, balance of diverse interests, and socio-econ equality): \
+•	Four clusters: \
+•	Context-sensitivity & perspective-taking \
+•	Meta-cognition : balance, self-distancing, focus on the big picture shared humanity \
+•	Political engagement and structural change, cooperation, as well as fight against inequality, linked with patience /long-term focus \
+•	Psych well-being enhancement: Gratitude, acknowledge uncertainty and focus on the present \
+
+Balance of diverse interests appears in the center of everything, connecting to other themes mentioned by experts.\
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+Q4.cor<-partial.r(all.data,Q4,cs(tokens.Q4),method="spearman")
+
+row.names(Q4.cor) <-Q4.q
+colnames(Q4.cor) <-Q4.q
+
+# Keep only meaningful correlations (<.17)
+Q4.cor[Q4.cor<0.17] <- 0
+
+# Make an Igraph object from this matrix:
+Q4.network <- graph_from_adjacency_matrix( Q4.cor, weighted=T, mode="undirected", diag=F)
+
+
+
+#color palette
+coul <- brewer.pal(nlevels(as.factor(Q4.type)), "Dark2")
+
+# Map the color to types
+my_color <- coul[as.numeric(as.factor(Q4.type))]
+
+# plot with edges
+
+plot(Q4.network,
+     edge.color=rep(c("red","pink"),5),           # Edge color
+     edge.width=seq(1,10),                        # Edge width, defaults to 1
+     edge.arrow.size=1,                           # Arrow size, defaults to 1
+     edge.arrow.width=1,                          # Arrow width, defaults to 1
+     edge.lty=c("solid"),
+     vertex.label.color="black",
+     vertex.color=my_color
+     # Line type, could be 0 or "blank", 1 or "solid", 2 or "dashed", 3 or "dotted", 4 or "dotdash", 5 or "longdash", 6 or "twodash"
+     #edge.curved=c(rep(0,5), rep(1,5))            # Edge curvature, range 0-1 (FALSE sets it to 0, TRUE to 0.5)
+)
+
+# title and legend
+#legend("topleft", 
+#       legend=paste(levels(as.factor(Q4.type))), 
+#       col = coul , 
+#       bty = "n", pch=20 , pt.cex = 2, cex = 1,
+#       text.col="black" , horiz = F)
+
+##KEY NETWORK PLOT#####
+
+
+Q4.ceb <- cluster_edge_betweenness(Q4.network) 
+
+dendPlot(Q4.ceb, mode="hclust")
+plot(Q4.ceb, Q4.network, axes=T, vertex.label.color="black", edge.width=seq(1,10)) 
+
+
+```
+
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+edgebundle(Q4.network, padding = 120, fontsize = 10)
+
+```
+
+
+## Convergence vs. divergence of themes over time
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+Q4.data.M<-all.data %>% group_by(M)%>%
+  summarise(across(social.awareness_q4:self.distancing_q4, sum,na.rm=T))
+
+
+colnames(Q4.data.M)[colnames(Q4.data.M)      # Rename two variable names
+                     %in% Q4] <- Q4.q
+
+Q4.data.long.M <- Q4.data.M %>% 
+  pivot_longer(-M,names_to = "Theme", values_to = "Count")
+Q4.summ.M<-cbind(Q4.data.long.M, Q4.type)
+colnames(Q4.summ.M) <- c("Period","Theme","Count","Type")  # change column names
+Q4.summ.M <- Q4.summ.M[order(Q4.summ.M$Count), ]  # sort
+
+Q4.data.T<-Q4.summ.M %>% group_by(Period, Type)%>%
+    summarise(score=sum(Count))
+
+countByMonth<-all.data %>% group_by(M)%>% 
+  summarise(count = n() )
+
+colnames(countByMonth) <- c("Period","N")  # change column names
+
+Q4.data.TT<-full_join(Q4.data.T,countByMonth, by = "Period")
+Q4.data.TT$Percent<-(Q4.data.TT$score/Q4.data.TT$N)*100
+
+ggplot(Q4.data.TT, aes(x=Period, y=Percent, group = Type, color=Type, fill=Type)) + 
+    geom_line( ) +
+    geom_point(shape=21,  size=4) +
+   theme_pubclean()+scale_color_d3()+scale_fill_d3()
+
+#BY EACH THEME
+#Q4.data.T.ALL<-all.data %>% group_by(M)%>%
+#   summarise_at(Q4, funs(sum))
+#colnames(Q4.data.T.ALL)[colnames(Q4.data.T.ALL)      # Rename variable names
+#                  %in% Q4] <- Q4.q
+#
+#Q4.data.T.ALL.long <-Q4.data.T.ALL %>%
+#    gather(domain, frequency, -c(M), convert = TRUE)
+#colnames(Q4.data.T.ALL.long) <- c("Period","Theme","Count")  # change column names
+#Q4.data.TT.ALL.long<-full_join(Q4.data.T.ALL.long,countByMonth,, by = "Period")
+#Q4.data.TT.ALL.long$Percent<-(Q4.data.TT.ALL.long$Count/Q4.data.TT.ALL.long$N)*100
+#ggplot(Q4.data.TT.ALL.long, aes(x=Period, y=Percent, group = Theme, color=Theme, fill=Theme)) + 
+#    geom_line( ) +
+#  geom_point(shape=21,  size=4) +
+#  theme_pubclean()
+
+```
+
+Once again, focus on meta-cognition consistently remains the most frequent recommendation over time and in fact, increases in importance over time.\
+As with wisdom to sustain positive change (Q2), discussion of societal strategies for wisdom against negative changes is less prevalent over time, whereas prosocial tendencies becoming relatively more prevant over time!\
+
+One can post-hoc speculate about it. It may be due to greater fatigue and U.S. election, with topics like solidarity becoming more important and focus becoming increasingly within-country centric and less about international cooperation (which would be captured by societal theme). This said both societal and prosocial themes tap into the same general foundation of wisdom - moral aspirations (Grossmannn et al., 2020) - it captures both prosocial concerns on the interpersonal level and broader societal concerns with bipartisanship and the common good. \
+
+# Wisdom Now
+
+
+## Summary
+
+
+We identified 24 distinct categories.\
+Except for four themes, categories were mentioned by less than 10% of the interviewees.\
+Only two theme was mentioned by at least ten people: Agency & Control (18%) and Social connectedness (25%).\
+
+Once again, seven categories were meta-cognitive, whereas 3 were (pro)social and one was socielal.\
+
+
+
+## Frequency Chart
+
+```{r,echo=FALSE,fig.width = 10,fig}
+###Q5################################################
+
+
+Q5 <- c("balance.of.personal...others.interest_q5",       
+ "clear.governmental.communication_q5",             "solidarity_q5",                                   "bipartisanship.and.international.cooperation_q5",
+ "critical.thinking_q5",                            "embrace.new.tech_q5",                             "agency...control_q5",                            
+ "follow.rules_q5",                                 "optimism...positivity_q5",                        "learning.from.the.pandemics_q5",                  "improve.communication_q5",
+ "prosocial.behavior_q5",                           "long.term.orientation_q5",         "acknowledge.uncertainty.flexibility_q5",          "living.in.the.moment_q5",
+ "patience_q5",                                     "perspective.taking_q5",                           "self.reflection.on.what.is.important_q5",         "social.connectedness_q5",                        
+ "self.distancing_q5",                              "strive.for.socio.economic.equality_q5",           "sympathy...compassion_q5",                        "take.science.seriously_q5",                       "personal.resilience_q5") 
+
+
+
+
+Q5.q <- c("Balance Diverse Interests",
+          "Clear Government Communication"  ,           "Solidarity"      ,                   "Polit.Cooperation",
+        "Critical Thinking" ,                           "Embrace New Tech"   , "Agency/Control" ,                            
+        "Follow Rules",                                 "Optimism/Positivity"  ,         "Learning from Pandemics" ,    "Improved Communication",
+          "Prosocial Behavior"   ,                        "Long-term Orientation"     ,                   "Acknowledge Uncertainty"  ,        "Live in the Moment" ,                       
+        "Patience"        ,                             "Perspective-taking" ,                          "What's Important?" , "Social Connectedness",       
+        "Self-distancing" ,   "Socio-econ Equality"     ,      "Sympathy&Compassion"          ,              "Take Science Seriously" ,   "Personal Resilience")
+
+
+
+
+Q5.type <- c("Meta-cognition",  "Quest\nfor Knowledge"  ,           "Prosocial"      ,                   "Societal",
+             "Meta-cognition" ,                           "Work"   ,                         
+             "Agency/Control" ,                            "Agency/Control",                                 "Psych.\nWellbeing"  ,                            "Quest for Knowledge" ,                 "Interpersonal", 
+             
+             "Prosocial"   ,                        "Meta-cognition"     ,                   "Meta-cognition"  ,        "Psych.\nWellbeing" ,                       
+             "Self-regulation"        ,                             "Meta-cognition" ,                          "Insight"  , "Prosocial"     ,        "Meta-cognition" ,                            
+             "Prosocial"     ,      "Meta-cognition"          ,              "Quest\nfor Knowledge" , "Psych.\nWellbeing" )
+
+
+Q5.data<-all.data %>% 
+  summarise(across(balance.of.personal...others.interest_q5:personal.resilience_q5, sum, na.rm=T))
+
+
+colnames(Q5.data)[colnames(Q5.data)      # Rename two variable names
+                     %in% Q5] <- Q5.q
+
+Q5.data.long <- Q5.data %>% 
+  pivot_longer(everything(),names_to = "Theme", values_to = "Count")
+Q5.summ<-cbind(Q5.data.long, Q5.type)
+colnames(Q5.summ) <- c("Theme","Count","Type")  # change column names
+Q5.summ <- Q5.summ[order(Q5.summ$Count), ]  # sort
+Q5.summ$Theme <- factor(Q5.summ$Theme, levels = Q5.summ$Theme)  # to retain the order in plot
+Q5.summ$Percent<-Q5.summ$Count/length(all.data$Q5)*100
+Q5.plot<-ggplot(Q5.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() +
+  geom_bar(stat="identity", width=.5) + ggtitle("Wisdom Now")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q5.plot
+```
+
+
+## How many themes per person?
+
+Did people just report 1-2 themes or a great number of themes? How do such trends vary across people?\
+
+Most people reported 1-2 themes, with the max being 4 themes mentioned by 4 people.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+all.data$Q5.pp<-rowSums(all.data[Q5])
+
+ggplot(all.data, aes(x = Q5.pp)) +   geom_vline(xintercept=median(all.data$Q5.pp,na.rm=T), color="red")+
+  geom_bar()+theme_pubclean()+scale_fill_d3()+labs(x="Number of Themes per Person",y="Count")
+           
+```
+
+
+The majority of people mention only one or two themes here. The median was two themes (as indicated by vertical red line). One-fifth mentioned three themes, and only 3 people mentioned 4 themes (and one person mentioned five themes). 
+
+
+## Frequencies by Gender and Field
+
+Once again, it is not surprising that wisdom experts mention meta-cognitive and moral considerations. The question is whether scientists without much familiarity with the science of wisdom would mention similar constructs for this question, too. It appears that is the case, with non-wisdom experts emphasizing meta-cognitive categories such as sympathy and compassion, long-term orientation, context sensitivity, critical thinking and acknowledging uncertainty, along with moral aspirations about solidarity, and paying greater attention to one's family and relationship. In fact, the latter categories were strongly prevalent among non-wisdom experts. 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+##BY gender
+Q5.data.G<-all.data %>% group_by(Gender)%>% 
+  summarise(across(balance.of.personal...others.interest_q5:personal.resilience_q5, mean, na.rm=T))
+
+colnames(Q5.data.G)[colnames(Q5.data.G)      # Rename two variable names
+                     %in% Q5] <- Q5.q
+
+Q5.data.G.long <- Q5.data.G %>% 
+  pivot_longer(-Gender,names_to = "Theme", values_to = "Proportion")
+Q5.G.summ<-cbind(Q5.data.G.long, Q5.type)
+colnames(Q5.G.summ) <- c("Gender","Theme","Proportion","Type")  # change column names
+Q5.G.summ$Percent<-Q5.G.summ$Proportion*100
+Q5.G.plot<-ggplot(Q5.G.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Gender)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom Now")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q5.G.plot
+
+##BY socio-cultural vs. non-socio-cultural expertise
+Q5.data.SC<-all.data %>% group_by(Field)%>% 
+  summarise(across(balance.of.personal...others.interest_q5:personal.resilience_q5, mean, na.rm=T))
+
+colnames(Q5.data.SC)[colnames(Q5.data.SC)      # Rename two variable names
+                     %in% Q5] <- Q5.q
+
+Q5.data.SC.long <- Q5.data.SC %>% 
+  pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
+Q5.SC.summ<-cbind(Q5.data.SC.long, Q5.type)
+colnames(Q5.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
+Q5.SC.summ$Percent<-Q5.SC.summ$Proportion*100
+Q5.SC.plot<-ggplot(Q5.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom Now")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q5.SC.plot
+
+
+
+##BY sfamiliarity with wisdom
+Q5.data.W<-all.data %>% group_by(FamiliarWisdom)%>% 
+  summarise(across(balance.of.personal...others.interest_q5:personal.resilience_q5, mean, na.rm=T))
+
+colnames(Q5.data.W)[colnames(Q5.data.W)      # Rename two variable names
+                     %in% Q5] <- Q5.q
+
+Q5.data.W.long <- Q5.data.W %>% 
+  pivot_longer(-FamiliarWisdom,names_to = "Theme", values_to = "Proportion")
+Q5.W.summ<-cbind(Q5.data.W.long, Q5.type)
+colnames(Q5.W.summ) <- c("FamiliarWisdom","Theme","Proportion","Type")  # change column names
+Q5.W.summ$Percent<-Q5.W.summ$Proportion*100
+Q5.W.plot<-ggplot(Q5.W.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ FamiliarWisdom)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom Now by Wisdom Familiarity")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+Q5.W.plot
+
+
+```
+
+## PCA 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+vss(all.data[Q5], rotate="oblimin", fm="pc")
+principal(all.data[Q5], nfactors = 8, rotate="oblimin")
+
+
+```
+
+Similar to prior results, we can address the question of diversity by examining the degree to which scores across themes are reducible to common component, examining principal component analysis (PCA).\
+It appears that 8 components is as good a start to account for 25 themes for Question 5 (wisdom now), as any other. Once again, the scree plot line is pretty flat.\
+Again, keep in mind that reducing 24 items to 8 components is not parsimonious. Moreover, when we reduce the items to 8 components, the first component explains only 9 % of the variance, and in total 8 components explain 57% of variance.\
+Given that each theme by default explains 4.2% of the variance (1/23), this is not much. \
+Furthermore, each of these components is largely based on 1-2 items (loadings > .6), with exception of TC2 : bipartisanship & int.cooperation, learning from the pandemic, long-term orientation.\
+
+In short, principal components show substantial diversity, with the top factor social connectedness not even loading squarely on any of the components (and negatively loading on the component it has highest loading for - the one with positive loading for critical thinking).\
+
+
+## Network Graph
+
+Even after removing negligible correlations (r < .17), cluster analyses on top of the network graphs show five clusters, four of which are strongly inter-related (embrace new tech. and optimism/positivity, solidarity and prosocial behavior, self-distancing and pol. cooperation): \
+
+Five clusters: \
+*	Solidarity & pol. cooperation\
+*	Resilience-building: Establish agency, patience, prosociality,, optimism \
+* Focus on here & now (incl. role of new tech.)\
+*	Meta-cognition: self-distancing, balancing different interests, critical thinking\
+*	Social capital: social connectedness, improved communication, socio-econ equality, sympathy & compassion\
+
+Solidarity is in the center, connecting to other clusters.\
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+#create new variables, adjusting for number of words in each narrative
+Q5.cor<-partial.r(all.data,Q5,cs(tokens.Q5),method="spearman")
+
+row.names(Q5.cor) <-Q5.q
+colnames(Q5.cor) <-Q5.q
+
+# Keep only meaningful correlations (<.19)
+Q5.cor[is.na(Q5.cor)==TRUE] <- 0
+Q5.cor[Q5.cor<0.17] <- 0
+
+# Make an Igraph object from this matrix:
+Q5.network <- graph_from_adjacency_matrix( Q5.cor, weighted=T, mode="undirected", diag=F)
+
+
+#color palette
+coul <- brewer.pal(nlevels(as.factor(Q5.type)), "Set3")
+
+# Map the color to types
+my_color <- coul[as.numeric(as.factor(Q5.type))]
+
+# plot with edges
+
+plot(Q5.network,
+     edge.color=rep(c("red","pink"),5),           # Edge color
+     edge.width=seq(1,10),                        # Edge width, defaults to 1
+     edge.arrow.size=1,                           # Arrow size, defaults to 1
+     edge.arrow.width=1,                          # Arrow width, defaults to 1
+     edge.lty=c("solid"),
+     vertex.label.color="black",
+     vertex.color=my_color
+     # Line type, could be 0 or "blank", 1 or "solid", 2 or "dashed", 3 or "dotted", 4 or "dotdash", 5 or "longdash", 6 or "twodash"
+     #edge.curved=c(rep(0,5), rep(1,5))            # Edge curvature, range 0-1 (FALSE sets it to 0, TRUE to 0.5)
+)
+
+# title and legend
+#legend("topleft", 
+#       legend=paste(levels(as.factor(Q5.type))), 
+#       col = coul , 
+#       bty = "n", pch=20 , pt.cex = 2, cex = 1,
+#       text.col="black" , horiz = F)
+
+
+
+Q5.ceb <- cluster_edge_betweenness(Q5.network) 
+
+dendPlot(Q5.ceb, mode="hclust")
+plot(Q5.ceb, Q5.network, axes=T, edge.width=seq(1,10),
+     vertex.label.color="black") 
+
+```
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+edgebundle(Q5.network, padding = 120, fontsize = 10)
+
+```
+
+## Convergence vs. divergence of themes over time
+
+Once again, we binned scores in the the same four groups as above: June, July, Sept/early Oct, and second part of Oct-early Dec.\
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+Q5.data.M<-all.data %>% group_by(M)%>%
+  summarise(across(balance.of.personal...others.interest_q5:personal.resilience_q5, sum,na.rm=T))
+
+
+colnames(Q5.data.M)[colnames(Q5.data.M)      # Rename two variable names
+                     %in% Q5] <- Q5.q
+
+Q5.data.long.M <- Q5.data.M %>% 
+  pivot_longer(-M,names_to = "Theme", values_to = "Count")
+Q5.summ.M<-cbind(Q5.data.long.M, Q5.type)
+colnames(Q5.summ.M) <- c("Period","Theme","Count","Type")  # change column names
+Q5.summ.M <- Q5.summ.M[order(Q5.summ.M$Count), ]  # sort
+
+Q5.data.T<-Q5.summ.M %>% group_by(Period, Type)%>%
+    summarise(score=sum(Count))
+
+countByMonth<-all.data %>% group_by(M)%>% 
+  summarise(count = n() )
+
+colnames(countByMonth) <- c("Period","N")  # change column names
+
+Q5.data.TT<-full_join(Q5.data.T,countByMonth, by = "Period")
+Q5.data.TT$Percent<-(Q5.data.TT$score/Q5.data.TT$N)*100
+
+ggplot(Q5.data.TT, aes(x=Period, y=Percent, group = Type, color=Type, fill=Type)) + 
+    geom_line( ) +
+    geom_point(shape=21,  size=4) +
+   theme_pubclean()+scale_color_futurama()+scale_fill_futurama()
+
+#BY EACH THEME
+#Q5.data.T.ALL<-all.data %>% group_by(M)%>%
+#   summarise_at(Q5, funs(sum))
+#colnames(Q5.data.T.ALL)[colnames(Q5.data.T.ALL)      # Rename variable names
+#                  %in% Q5] <- Q5.q
+#
+#Q5.data.T.ALL.long <-Q5.data.T.ALL %>%
+#    gather(domain, frequency, -c(M), convert = TRUE)
+#colnames(Q5.data.T.ALL.long) <- c("Period","Theme","Count")  # change column names
+#Q5.data.TT.ALL.long<-full_join(Q5.data.T.ALL.long,countByMonth,, by = "Period")
+#Q5.data.TT.ALL.long$Percent<-(Q5.data.TT.ALL.long$Count/Q5.data.TT.ALL.long$N)*100
+#ggplot(Q5.data.TT.ALL.long, aes(x=Period, y=Percent, group = Theme, color=Theme, fill=Theme)) + 
+#    geom_line( ) +
+#  geom_point(shape=21,  size=4) +
+#  theme_pubclean()
+
+```
+
+Focus on meta-cognition is the top category across the summer and early fall, but becomes second frequent in late fall.\
+Focus on well-being enhancement and agency/control are more prevalent among researchers surveyed in late fall. \
+
+# Total wisdom frequencies across questions
+
+When examining categories over time, it becomes apparent that most frequent themes for wisdom either concern interpersonal prosociality (solidarity, social connectedness) or societal level-prosocility (asking for structural changes for a fair and just society), as well as meta-cognitive strategies (perspective-taking, sympathy & compassion, long-term focus, acknowledge unceryainty, self-distancing, critical thinking)
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+# STACKED BAR CHART for wisdom
+Q2.summ <- Q2.summ[order(Q2.summ$Percent), ]  # sort
+Q2.summ$Theme <- factor(Q2.summ$Theme, levels = Q2.summ$Theme)  # to retain the order in plot
+
+Q4.summ <- Q4.summ[order(Q4.summ$Percent), ]  # sort
+Q4.summ$Theme <- factor(Q4.summ$Theme, levels = Q4.summ$Theme)  # to retain the order in plot
+
+
+Q5.summ <- Q5.summ[order(Q5.summ$Percent), ]  # sort
+Q5.summ$Theme <- factor(Q5.summ$Theme, levels = Q5.summ$Theme)  # to retain the order in plot
+
+data.245<-full_join(Q4.summ,Q2.summ,by=c("Theme"))
+data.245<-data.frame(data.245$Theme,data.245$Percent.x,data.245$Percent.y)
+colnames(data.245)<-c("Theme","Percent.Q4","Percent.Q2")
+data.245.j<-full_join(data.245,Q5.summ,by=c("Theme"))
+data.245.j<-data.frame(data.245.j$Theme,data.245.j$Percent.Q2,data.245.j$Percent.Q4,data.245.j$Percent)
+colnames(data.245.j)<-c("Theme","Wisdom for Positive","Wisdom against Negative","Wisdom Now")
+data.245.j[is.na(data.245.j)]<-0
+
+
+## Reorder fullname based on the the sum of the other columns
+data.245.j$Theme <- reorder(data.245.j$Theme, rowSums(data.245.j[-1]))
+
+md <- melt(data.245.j, id=(c("Theme")))
+colnames(md)<-c("Theme","Variable","Percent")
+
+g<-ggplot(md, aes(x =Percent , y=Theme,fill = Variable), width = 0.9)+geom_bar(stat = "identity")+theme_pubclean()+scale_fill_aaas()+theme(legend.position="bottom")
+
+fig <- ggplotly(tooltip=c("Percent"), height=1020)
+fig <- fig %>% layout(autosize = T) %>% layout(legend = list(x = 0.6, y = 0.1))
+
+fig
+```
+
+
+# Relationship of Forecasts & Given Advice
+
+A key question concerns type of advice scientists recommend for different (positive and negative forecasts) for positive and negative changes after the pandemic.\
+\
+To address this question, we can examine **dependencies** between themes mentioned for a particular type of outcome, and subsequent mentioning of themes needed for this outcome.\
+
+
+## Positive Consequences
+
+Given that some themes are mentioned *both* as outcomes of the pandemic (i.e., forecasts) and the advice/wisdom needed to sustain positive change (e.g., critical thinking, live in the moment, political/structural change), it would be trivial to see relevant relationships. However, it would be more interesting to see relationships *across* themes from forecast (Q1) and corresponding advice (Q2).\
+
+
+### Heatmap
+
+One way to address this question is to examine the heatmap, with forecast themes on the vertical axis and the advice themes on the horizontal axis.\
+\
+As one can see below, some of the results are indeed quite trivial. Beyond same themes mentioned for forecasts and advice about wisdom needed, another trivial observation is that greater care for elderly depends on *willingness to learn from the pandemic*. Nevertheless, some further observations are noteworthy. I focus on r > .3 as a cut off:\
+
+* greater science interest in the future depends on *critical thinking*;\
+* greater social connectedness and optimism/positivity depend on *improved communication*;\
+* greater health & wellbeing depends on *improved work-life balance* , *focus on living in the moment* & *ability to compromise/balance diverse interests*;\
+* greater resilience depends on *sympathy & compassion*;\
+* greater resilience depends on *sympathy & compassion*;\
+* learning from the pandemic in the future depends on *political cooperation*;\
+* greater solidarity depends on *awareness of shared humanity*;\
+* greater transition to new technologies and reconsideration of habits depend on *personal resilience*;\
+* **strongest relationship**: greater resilience, embacing new tech, and reconsideration of habits depend on *acknowledgement of uncertainty*.
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE, out.height="300%"}
+
+##Heatmap
+
+#create a subset of the matrix with Q1 in rows and Q2 in columns
+
+Q12<-c("shared.humanity_q1","critical.thinking_q1","personal.resilience_q1","gratitude_q1",
+       "nature_q1","improved.care.for.elders_q1","embrace.new.tech_q1","prosocial.behavior_q1",
+       "social.connectedness_q1","improved.work.life.balance_q1","increased.interest.in.science_q1",
+       "learning.from.pandemics_q1","political.engagement...structural.change_q1",
+       "optimism...positivity_q1","reconsidering.habits_q1",
+       "living.in.the.moment_q1","health...well.being_q1","solidarity_q1","bipartisanship.and.international.cooperation_q1","sympathy...compassion_q1",
+       "social.connectedness_q2", "social.support_q2",  "evidence.based.decision.making_q2","improved.work.life.balance_q2","acknowledge.of.uncertainty.flexibility_q2","balance.of.personal...others.interest_q2","perspective.taking_q2",
+       "critical.thinking_q2","bipartisanship.and.international.cooperation_q2","solidarity_q2",                        
+       "improve.communication_q2", "intellectual.humility_q2","living.in.the.moment_q2",
+       "learning.from.pandemics_q2","political.engagement...structural.change_q2",
+       "self.reflection.on.what.s.important_q2","shared.humanity_q2","sympathy...compassion_q2", "self.distancing_q2","embrace.new.tech_q2","personal.resilience_q2") 
+
+Q12.cor.data<-partial.r(all.data,Q12,cs(tokens.Q1,tokens.Q2),method="spearman") #correct for tokens (length) in each interview
+write.csv(Q12.cor.data,"corr12.csv") #R is weird with partial.r function so I jsut save and open the file again, scripping it to one layer
+Q12.cor.data<-read.csv("corr12.csv")
+
+Q12.cor.arb<-Q12.cor.data[1:length(Q1),c("X",Q2)]
+Q12.cor.arb <- data.frame(Q12.cor.arb[,-1], row.names=paste("Q1",Q1.q))
+colnames(Q12.cor.arb) <-paste("Q2",Q2.q)
+
+heatmaply_cor(round(Q12.cor.arb,digits=2), #round to 2 decimal points
+              #dendrogram = "row",
+              xlab = "", ylab = "", plot_method="ggplot",fontsize_row = 8,
+  fontsize_col = 8,
+              main = "",
+              distfun="spearman",
+              #scale = "column",
+              grid_color = "white",
+            #  grid_width = 0.00001,
+              titleX = FALSE,
+              hide_colorbar = T,
+             # branches_lwd = 0.1,
+              label_names = c("Q1", "Q2:", "Value"),
+              #fontsize_row = 5, fontsize_col = 5,
+              labCol = colnames(Q12.cor.arb),dendrogram = F, showticklabels = T, margins = c(1,1),
+              labRow = rownames(Q12.cor.arb),
+              heatmap_layers = theme(axis.line=element_blank()))%>% layout(margin = list(l = 130, b = 40))
+```
+
+### Q1-Q2 Edge Binding
+
+A different, and perhaps more intuitive way to examine the relationship between themes mentioned for forecasts and advice is to examine connections between "edges" formed in the network of QUestions concerning forecasts and the advice. Here, full information from the network is used to optimally visualize connections between different themes in the network.\
+\
+Below, you see an edge-binding diagram visualizing the relationships. On the right, you see themes for forecasts (Q1) and on the left you see type of advice recommended (Q2). When you navigate the cursor on each theme, the graph will show you what other themes it is mostly connected to, both within the same question and across questions. As for the other network visualizations, I used r < .17 as a cut-off here.\
+\
+For instance, if you navigate to *Q1_Gratitude*, you will see that it is related not only to Q1_living in a moment and Q1_new tech, but also Q2 focus on what's important, Q2 living in the moment, Q2 critical thinking, and Q2 balance of diverse interests. \
+\
+By inspecting all Q1 themes, we can see that themes followed by greatest number of advice-themes are:\
+
+* Gratitude;\
+* Greater appreciation of Nature;\
+* Resilience;\
+* Solidarity.\
+\
+Conversely, by inspecting all Q2 themes, we can see that themes with greatest number of implications for forecasts are:\
+
+* Acknowledgment of uncertainty;\
+* Solidarity;\
+* Self-distancing.\
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+#edge-bundling
+Q12.cor<-partial.r(all.data,Q12,cs(tokens.Q1,tokens.Q2),method="spearman")
+
+
+Q12.q <- c("Q1_Shared Humanity","Q1_Critical Thinking","Q1_Resilience","Q1_Gratitude","Q1_Nature","Q1_Care for Elders","Q1_Embrace New Tech","Q1_Prosocial Behavior",
+           "Q1_Social Connectedness","Q1_Work-Life Balance","Q1_Science Interest","Q1_Learning from Pandemics","Q1_Polit Change",
+           "Q1_Optimism/Positivity","Q1_Reconsider Habits","Q1_Live\nin the Moment","Q1_Health/Wellbeing","Q1_Solidarity","Q1_Polit\nCooperation","Q1_Sympathy&Compassion",
+           "Q2_Social Connectedness", "Q2_Social Support", "Q2_Evidence-based Judgement", "Q2_Work-Life Balance", "Q2_Uncertainty","Q2_Balance Interests","Q2_Perspective-taking",
+           "Q2_Critical Thinking","Q2_Polit\nCooperation",
+           "Q2_Solidarity", "Q2_Improved Communication", "Q2_Intellectual Humility","Q2_Live in the Moment",
+           "Q2_Learning from Pandemics","Q2_Polit Change","Q2_What's Important?","Q2_Shared Humanity","Q2_Sympathy&Compassion", "Q2_Self-distancing","Q2_Embrace New Tech","Q2_Personal Resilience") 
+
+row.names(Q12.cor) <-Q12.q
+colnames(Q12.cor) <-Q12.q
+
+# Keep only meaningful correlations (<.19)
+Q12.cor[Q12.cor<.17] <- 0
+
+
+# Make an Igraph object from this matrix:
+Q12.network <- graph_from_adjacency_matrix( Q12.cor, weighted=T, mode="undirected", diag=F)
+
+edgebundle(Q12.network, padding = 120, fontsize = 10) #revise so that Q1 / Q2 appears first.
+
+
+```
+
+## Negative Consequences
+
+We can do the same analysis for Questions 3 (negative forecasts) and 4 (wisdom needed to prevent these forecasts).\
+
+### Heatmap
+
+Again, I will start with a heatmap, with forecast themes on the vertical axis and the advice themes on the horizontal axis.\
+\
+Given the negative nature of the forecasts, we would not expect as many trivial results (except for things like: who do you need to reduce socio-econ or edu equality? Fight against socio-econ inequality! Or: "how do we prevent dispair? Be optimistic/positive :)). Once again, I focus on r > .3 as a cut off:\
+
+* combating estrangement/alienation, loneliness, decline in wellbeing was linked to the notion of *social connectedness*;\
+* combating economic hardships and rise in despair was linked to *social support*;\
+* combating rising social inequality was linked to *solidarity*;\
+* **strongest relationships**: combating problems in intimate relations, educational inequality, and child development issues were linked to *ability to balance/reach a compromise across diverse interests*;\
+* combating decline in autobiographic memory, estrangement/alienation, and well-being were linked to *contextualizing one's life experiences*;\
+* combating irrationality depends on *living in a moment/mindfulness*,*gratitude*, and *self-distancing*;\
+* combating low trust in science was linked to *self-distancing*;\
+* combating political conflict was linked to *appreciation of the concept of shared humanity*;\
+
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+##Heatmap
+
+#create a subset of the matrix with Q3 in rows and Q4 in columns
+
+Q34<-c("estrangement...alienation_q3","career.disruptions_q3", "decline.in.quality.of.education_q3", "decreased.trust.in.science_q3","decreased.well.being_q3"   ,                     
+        "economic.hardship_q3" ,"educational.inequality_q3", "erosion.of.democratic.institutions_q3", "exacerbated.social.inequality_q3","mistrust_q3",                            
+        "prejudice...racism_q3", "despair_q3", "prioritize.self.over.others_q3","irrationality_q3","loneliness_q3"  ,                                
+        "misperception.about.the.world_q3" ,"political.conflict_q3" , "authoritarianism_q3", "stunted.child.development_q3","pessimism_q3",                                   
+        "intimate.relations_q3" , "autobiographical.memory_q3","social.awareness_q4" , "balance.of.personal...others.interest_q4" ,  "solidarity_q4",                    "context.sensitivity_q4",                          "bipartisanship.and.international.cooperation_q4", "critical.thinking_q4",                            "evidence.based.decision.making_q4",               "gratitude_q4",                                   
+        "optimism...positivity_q4",                              "improve.communication_q4",                        "long.term.orientation_q4",    "social.support_q4"  ,                  "social.connectedness_q4",               "acknowledge.uncertainty.flexibility_q4",         
+        "living.in.the.moment_q4",                         "patience_q4",                                     "perspective.taking_q4",                           "self.reflection.on.what.s.important_q4",          "shared.humanity_q4",                             
+        "strive.for.socio.economic.equality_q4",           "sympathy...compassion_q4",                        "political.engagement...structural.change_q4",     "self.distancing_q4")
+
+Q34.cor.data<-partial.r(all.data,Q34,cs(tokens.Q3,tokens.Q4),method="spearman") #correct for tokens (length) in each interview
+write.csv(Q34.cor.data,"corr34.csv") #R is weird with partial.r function so I jsut save and open the file again, scripping it to one layer
+Q34.cor.data<-read.csv("corr34.csv")
+
+Q34.cor.arb<-Q34.cor.data[1:length(Q3),c("X",Q4)]
+Q34.cor.arb <- data.frame(Q34.cor.arb[,-1], row.names=paste("Q3",Q3.q))
+colnames(Q34.cor.arb) <-paste("Q4",Q4.q)
+
+heatmaply_cor(round(Q34.cor.arb,digits=2), #round to 2 decimal points
+              #dendrogram = "row",
+              xlab = "", ylab = "", plot_method="ggplot",fontsize_row = 8,
+  fontsize_col = 8,
+              main = "",
+              distfun="spearman",
+              #scale = "column",
+              grid_color = "white",
+            #  grid_width = 0.00001,
+              titleX = FALSE,
+              hide_colorbar = T,
+             # branches_lwd = 0.1,
+              label_names = c("Q3", "Q4:", "Value"),dendrogram = F, 
+              #fontsize_row = 5, fontsize_col = 5,
+              labCol = colnames(Q34.cor.arb),margins = c(1,1),
+              labRow = rownames(Q34.cor.arb),
+              heatmap_layers = theme(axis.line=element_blank()))%>% layout(margin = list(l = 150, b = 70))
+```
+
+### Q3-Q4 Edge Binding
+
+Once again, below you see an edge-binding diagram  - a different way to visualize the relationships. On the right, you see themes for *negative* forecasts (Q3) and on the left you see type of advice recommended (Q4). When you navigate the cursor on each theme, the graph will show you what other themes it is mostly connected to, both within the same question and across questions. As for the other network visualizations, I used r < .17 as a cut-off here.\
+\
+For instance, if you navigate to *Q1_Gratitude*, you will see that it is related not only to Q1_living in a moment and Q1_new tech, but also Q2 focus on what's important, Q2 living in the moment, Q2 critical thinking, and Q2 balance of diverse interests. \
+\
+By inspecting all Q3 themes, we can see that themes followed by greatest number of advice-themes are:\
+
+* Estrangement/alienation;\
+* Despair;\
+* Self-centeredness;\
+* Irrationality;
+* Loneliness;\
+* Pessimism;\
+\
+Conversely, by inspecting all Q4 themes, we can see that themes with greatest number of implications for forecasts are:\
+
+* Self-distancing;\
+* Political/structural change;\
+* Perspective-taking;\
+* Patience;\
+* Gratitude.\
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+#edge-bundling
+Q34.cor<-partial.r(all.data,Q34,cs(tokens.Q3,tokens.Q4),method="spearman")
+
+
+Q34.q <- c("Q3_Estrangement","Q3_CareerDisruptions","Q3_Low QualEducation","Q3_LowTrust\nin Science","Q3_LowWellbeing"   ,                     
+          "Q3_EconomicHardship" ,"Q3_EducationalInequality","Q3_ErosionofDemoc","Q3_SocialInequality","Q3_Mistrust",                            
+          "Q3_PrejudiceRacism","Q3_Despair","Q3_Self-Centeredness","Q3_Irrationality","Q3_Loneliness"  ,                                
+          "Q3_MispercWorld" ,"Q3_PolitConflict" ,"Q3_Authoritarianism","Q3_StuntedDev","Q3_Pessimism",                                   
+          "Q3_IntimateRelations" ,"Q3_AutobioMemory","Q4_SocialAwareness" ,"Q4_BalanceInterests" ,   "Q4_Solidarity"    ,                    
+          "Q4_ContextSensitivity",  "Q4_PolCoop","Q4_CriticalThinking",  
+          "Q4_Evidence-bJudgement","Q4_Gratitude","Optimism/Positivity","ImprovedComm","Q4_Long-termOrien",   "Q4_SocialSupport","Q4_SocialConnectedness",
+          "Q4_Uncertainty",  "Q4_LivetheMoment","Q4_Patience", "Q4_Persp-taking","Q4_What's Important?","Q4_SharedHumanity",                             
+          "Q4_Socio-econEquality",           "Q4_Sympathy&Compassion", "Q4_PolitChange",     "Q4_Self-distancing") 
+
+row.names(Q34.cor) <-Q34.q
+colnames(Q34.cor) <-Q34.q
+
+# Keep only meaningful correlations (<.19)
+Q34.cor[Q34.cor<.17] <- 0
+
+
+# Make an Igraph object from this matrix:
+Q34.network <- graph_from_adjacency_matrix( Q34.cor, weighted=T, mode="undirected", diag=F)
+
+edgebundle(Q34.network, padding = 130, fontsize = 9) #revise so that Q1 / Q2 appears first.
+
+
+```
