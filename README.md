@@ -8,6 +8,12 @@ This repository contains the data behind [World after Covid](https://worldafterc
 ## Method
 
 * [Set-up & Codebook](https://github.com/grossmania/wac/blob/main/codebook.md)
-* [Coding procedures & detailed analyses](https://grossmania.github.io/wac/wac_analyses.html)
+* [Recruitment & Coding procedures](https://grossmania.github.io/wac/wac_analyses.html)
 
 For analytic script, see `wac_analyses.Rmd`.
+
+## Analyses
+
+* [Interactive visualizations](https://igorgrossmann.com/wac/)
+* [Detailed analyses](https://grossmania.github.io/wac/wac_analyses.html#descriptives)
+
