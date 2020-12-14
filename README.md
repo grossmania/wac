@@ -1,4 +1,4 @@
-This repository contains the data behind **World after Covid**, including [thematic classification of videos](https://worldaftercovid.info/) and [interactive visualizations](http://igorgrossmann.com/wac)
+This repository contains the data behind **World after Covid**, including [thematic classification of videos](https://worldaftercovid.info/) and [interactive visualizations](http://igorgrossmann.com/wac).
 
 ## Data
 
