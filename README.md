@@ -8,5 +8,5 @@ This repository contains the data behind **World after Covid**, including [thema
 
 ## Method
 
-* [Set-up & Codebook] (https://github.com/grossmania/wac/blob/main/codebook.md)
+* [Set-up & Codebook](https://github.com/grossmania/wac/blob/main/codebook.md)
 * [Coding procedures & analyses]
