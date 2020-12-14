@@ -1,6 +1,3 @@
 name: World after Covid
 theme: kramdown
-relative_links:
-  enabled: true
-  collections: true
 
