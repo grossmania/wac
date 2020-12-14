@@ -1,7 +1,7 @@
 ---
 title: "World after Covid: Method & Analyses"
 author: "Igor Grossmann"
-date: "Dec 11,2020"
+date: "Dec 13,2020"
 output:
   rmdformats::html_clean:
     toc: true # table of content true
@@ -95,7 +95,7 @@ library(heatmaply)
 ```
 
 ```{r,echo=FALSE,include=FALSE}
-setwd("C:/Users/igrossma/OneDrive - University of Waterloo/videopandemic/analyses") #change to your preferred working directory hosting the csv files
+setwd("C:/Users/igrossma/Documents/GitHub/wac") #change to your preferred working directory hosting the csv files
 codes.data<-read.csv("codes.csv")
 transcripts<-read.csv("transcripts.csv")
 
@@ -239,7 +239,7 @@ Q1.summ <- Q1.summ[order(Q1.summ$Proportion), ]  # sort
 Q1.summ$Theme <- factor(Q1.summ$Theme, levels = Q1.summ$Theme)  # to retain the order in plot
 Q1.summ$Percent<-Q1.summ$Proportion*100
 Q1.plot<-ggplot(Q1.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() +
-  geom_bar(stat="identity", width=.5) + ggtitle("Positive Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+  geom_bar(stat="identity", width=.5) + ggtitle("Positive Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="%") 
 Q1.plot
 ```
 
@@ -274,7 +274,7 @@ Q1.G.summ<-cbind(Q1.data.G.long, Q1.type)
 colnames(Q1.G.summ) <- c("Gender","Theme","Proportion","Type")  # change column names
 Q1.G.summ$Percent<-Q1.G.summ$Proportion*100
 Q1.G.plot<-ggplot(Q1.G.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Gender)+
-  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Positive Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Positive Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="%")
 Q1.G.plot
 
 ##By socio-cultural vs. non-socio-cultural expertise
@@ -290,7 +290,7 @@ Q1.SC.summ<-cbind(Q1.data.SC.long, Q1.type)
 colnames(Q1.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
 Q1.SC.summ$Percent<-Q1.SC.summ$Proportion*100
 Q1.SC.plot<-ggplot(Q1.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
-  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Positive Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Positive Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="%")
 Q1.SC.plot
 ```
 
@@ -781,11 +781,11 @@ fig<-ggplot(data.Q13, aes(x=Theme, y=Frequency,color = group, tooltip=group))+
     axis.ticks.x = element_blank()
   ) +scale_color_tableau()+
   xlab("Themes")+geom_hline(yintercept = 0, linetype="dashed", 
-                color = "black", size=1.5)+ylab("<== Negative Consequences vs. Positive Consequences ==>\n%")+
-    theme(legend.title=element_blank(), legend.position="bottom")
+                color = "black", size=1)+ylab("<== Negative Consequences vs. Positive Consequences ==>\n%")+
+    theme(text = element_text(size = 7.5),legend.title=element_blank(), legend.position="bottom",legend.text=element_text(size=6))
 fig
-ggplotly(fig, fontsize_row = 8, height = 1020,
-  fontsize_col = 8)
+ggplotly(fig, fontsize_row = 10, height = 1020,width = 700,
+  fontsize_col = 10)
 
 
 
@@ -842,7 +842,7 @@ Q2.summ <- Q2.summ[order(Q2.summ$Proportion), ]  # sort
 Q2.summ$Theme <- factor(Q2.summ$Theme, levels = Q2.summ$Theme)  # to retain the order in plot
 Q2.summ$Percent<-Q2.summ$Proportion*100
 Q2.plot<-ggplot(Q2.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() +
-  geom_bar(stat="identity", width=.5) + ggtitle("Wisdom for Positive Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+  geom_bar(stat="identity", width=.5) + ggtitle("Wisdom for Positive Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
 Q2.plot
 ```
 
@@ -877,7 +877,7 @@ Q2.G.summ<-cbind(Q2.data.G.long, Q2.type)
 colnames(Q2.G.summ) <- c("Gender","Theme","Proportion","Type")  # change column names
 Q2.G.summ$Percent<-Q2.G.summ$Proportion*100
 Q2.G.plot<-ggplot(Q2.G.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Gender)+
-  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom for Positive Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom for Positive Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
 
 Q2.G.plot
 ##BY socio-cultural vs. non-socio-cultural expertise
@@ -893,7 +893,7 @@ Q2.SC.summ<-cbind(Q2.data.SC.long, Q2.type)
 colnames(Q2.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
 Q2.SC.summ$Percent<-Q2.SC.summ$Proportion*100
 Q2.SC.plot<-ggplot(Q2.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
-  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom for Positive Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom for Positive Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
 Q2.SC.plot
 
 ##BY wisdom familiarity
@@ -909,7 +909,7 @@ Q2.W.summ<-cbind(Q2.data.W.long, Q2.type)
 colnames(Q2.W.summ) <- c("FamiliarWisdom","Theme","Proportion","Type")  # change column names
 Q2.W.summ$Percent<-Q2.W.summ$Proportion*100
 Q2.W.plot<-ggplot(Q2.W.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ FamiliarWisdom)+
-  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom for Positive Consequences\nby Wisdom Familarity")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom for Positive Consequences\nby Wisdom Familarity")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
 Q2.W.plot
 
 ```
@@ -1105,7 +1105,7 @@ Q4.summ <- Q4.summ[order(Q4.summ$Proportion), ]  # sort
 Q4.summ$Theme <- factor(Q4.summ$Theme, levels = Q4.summ$Theme)  # to retain the order in plot
 Q4.summ$Percent<-Q4.summ$Proportion*100
 Q4.plot<-ggplot(Q4.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() +
-  geom_bar(stat="identity", width=.5) + ggtitle("Wisdom against Negative Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+  geom_bar(stat="identity", width=.5) + ggtitle("Wisdom against Negative Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
 Q4.plot
 ```
 
@@ -1141,7 +1141,7 @@ Q4.G.summ<-cbind(Q4.data.G.long, Q4.type)
 colnames(Q4.G.summ) <- c("Gender","Theme","Proportion","Type")  # change column names
 Q4.G.summ$Percent<-Q4.G.summ$Proportion*100
 Q4.G.plot<-ggplot(Q4.G.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Gender)+
-  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom against Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom against Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
 Q4.G.plot
 
 ##BY socio-cultural vs. non-socio-cultural expertise
@@ -1157,7 +1157,7 @@ Q4.SC.summ<-cbind(Q4.data.SC.long, Q4.type)
 colnames(Q4.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
 Q4.SC.summ$Percent<-Q4.SC.summ$Proportion*100
 Q4.SC.plot<-ggplot(Q4.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
-  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom against Negative Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom against Negative Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
 Q4.SC.plot
 
 
@@ -1174,7 +1174,7 @@ Q4.W.summ<-cbind(Q4.data.W.long, Q4.type)
 colnames(Q4.W.summ) <- c("FamiliarWisdom","Theme","Proportion","Type")  # change column names
 Q4.W.summ$Percent<-Q4.W.summ$Proportion*100
 Q4.W.plot<-ggplot(Q4.W.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ FamiliarWisdom)+
-  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom against Negative Consequences\nby Wisdom Familarity")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom against Negative Consequences\nby Wisdom Familarity")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
 Q4.W.plot
 
 
@@ -1434,7 +1434,7 @@ Q5.G.summ<-cbind(Q5.data.G.long, Q5.type)
 colnames(Q5.G.summ) <- c("Gender","Theme","Proportion","Type")  # change column names
 Q5.G.summ$Percent<-Q5.G.summ$Proportion*100
 Q5.G.plot<-ggplot(Q5.G.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Gender)+
-  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom Now")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom Now")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=7))+labs(x="",y="%")
 Q5.G.plot
 
 ##BY socio-cultural vs. non-socio-cultural expertise
@@ -1450,7 +1450,7 @@ Q5.SC.summ<-cbind(Q5.data.SC.long, Q5.type)
 colnames(Q5.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
 Q5.SC.summ$Percent<-Q5.SC.summ$Proportion*100
 Q5.SC.plot<-ggplot(Q5.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
-  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom Now")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom Now")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=7))+labs(x="",y="%")
 Q5.SC.plot
 
 
@@ -1468,7 +1468,7 @@ Q5.W.summ<-cbind(Q5.data.W.long, Q5.type)
 colnames(Q5.W.summ) <- c("FamiliarWisdom","Theme","Proportion","Type")  # change column names
 Q5.W.summ$Percent<-Q5.W.summ$Proportion*100
 Q5.W.plot<-ggplot(Q5.W.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ FamiliarWisdom)+
-  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom Now by Wisdom Familiarity")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom Now by Wisdom Familiarity")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=7))+labs(x="",y="%")
 Q5.W.plot
 
 
@@ -1655,8 +1655,8 @@ colnames(md)<-c("Theme","Variable","Percent")
 
 g<-ggplot(md, aes(x =Percent , y=Theme,fill = Variable), width = 0.9)+geom_bar(stat = "identity")+theme_pubclean()+scale_fill_aaas()+theme(legend.position="bottom")
 
-fig <- ggplotly(tooltip=c("Percent"), height=1020)
-fig <- fig %>% layout(autosize = T) %>% layout(legend = list(x = 0.6, y = 0.1))
+fig <- ggplotly(tooltip=c("Percent"), height=1020, width = 690)
+fig <- fig %>% layout(autosize = T) %>% layout(legend = list(x = 0.6, y = 0.07))
 
 fig
 ```
