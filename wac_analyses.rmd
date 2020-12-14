@@ -782,10 +782,9 @@ fig<-ggplot(data.Q13, aes(x=Theme, y=Frequency,color = group, tooltip=group))+
   ) +scale_color_tableau()+
   xlab("Themes")+geom_hline(yintercept = 0, linetype="dashed", 
                 color = "black", size=1)+ylab("<== Negative Consequences vs. Positive Consequences ==>\n%")+
-    theme(text = element_text(size = 7.5),legend.title=element_blank(), legend.position="bottom",legend.text=element_text(size=6))
+    theme(text = element_text(size = 8),legend.title=element_blank(), legend.position="bottom",legend.text=element_text(size=7))
 fig
-ggplotly(fig, fontsize_row = 10, height = 1020,width = 700,
-  fontsize_col = 10)
+ggplotly(fig, height = 920)
 
 
 
@@ -1864,7 +1863,8 @@ By inspecting all Q3 themes, we can see that themes followed by greatest number 
 * Irrationality;
 * Loneliness;\
 * Pessimism;\
-\
+
+
 Conversely, by inspecting all Q4 themes, we can see that themes with greatest number of implications for forecasts are:\
 
 * Self-distancing;\
