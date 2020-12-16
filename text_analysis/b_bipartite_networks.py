@@ -155,17 +155,18 @@ def construct_edgelist(prepped_df, theme='Theme',text='Prepped', threshold = .12
     
     return edges
    
-def construct_network(wel):
+def construct_kcore_network(wel, k=2):
     B = nx.Graph()
     B.add_nodes_from(wel['Theme'], bipartite=0)
     B.add_nodes_from(wel['Token'], bipartite=1)
     B.add_weighted_edges_from([wel.loc[index].tolist() for index in list(wel.index)])
-    B.name = 'Theme-Token Network'
+    B.name = 'K-core Theme-Token Network'
+    B = nx.k_core(B,k)
     
     theme_nodes = [n for n, d in B.nodes(data=True) if d["bipartite"] == 0]
     word_nodes = [n for n, d in B.nodes(data=True) if d["bipartite"] == 1]
 
-    return B, theme_nodes, word_nodes    
+    return B, theme_nodes, word_nodes  
 
 
 def for_r(B, filepath):
@@ -180,22 +181,23 @@ def bipartite_pipeline(code_text_question_dict, image_path, csv_path):
     # construct
     df = construct_dataframe(code_text_question_dict)
     el = construct_edgelist(df)
-    B, theme_nodes, word_nodes = construct_network(el)
+    B, theme_nodes, word_nodes = construct_kcore_network(el, 2)
     
     # draw
-    fig, ax = plt.subplots(figsize=(20,18))
-    pos = nx.spring_layout(B, seed=12)
-    nx.draw_networkx_nodes(B, pos=pos, nodelist=theme_nodes, node_shape='s', node_color='crimson', alpha=.6)
-    nx.draw_networkx_nodes(B, pos=pos, nodelist=word_nodes, node_shape='s', node_color='darkgray', alpha=.6)
-    nx.draw_networkx_edges(B, pos=pos, alpha=.8, edge_color='lightgray')
-    labs = nx.draw_networkx_labels(B, pos=pos, font_size=10)
+    fig, ax = plt.subplots(figsize=(20,22))
+    pos = nx.kamada_kawai_layout(B) # if spring, seed was 12
+    weights = [w*8 for w in nx.get_edge_attributes(B,'weight').values()]
+    nx.draw_networkx_nodes(B, pos=pos, nodelist=theme_nodes, node_shape='s', node_color='crimson', alpha=.6, node_size=500)
+    nx.draw_networkx_nodes(B, pos=pos, nodelist=word_nodes, node_shape='s', node_color='darkgray', alpha=.6, node_size=500)
+    nx.draw_networkx_edges(B, pos=pos, alpha=.8, edge_color='lightgray', width=weights)
+    labs = nx.draw_networkx_labels(B, pos=pos, font_size=14)
     fig.tight_layout()
     plt.axis('off')
     plt.savefig(image_path)
     plt.close()
     
     # write
-    for_r(B, csv_path)    
+    for_r(B, csv_path)   
 
 
 # PROCESSING
