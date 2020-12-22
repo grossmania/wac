@@ -85,6 +85,7 @@ expression of positive
 emotions when they\'re in
 ordinary day to day
 interactions with others.
+
 **Q4**
 
 * > I think that one that is 
@@ -159,6 +160,7 @@ individual, and realize that
 they\'re special, that 
 they\'re wonderful and we
 have taken them for granted. 
+
 **Q2**
 
 * > We need to slow down, and
@@ -206,6 +208,7 @@ concern for the world, as we
 know it. It allows us to see 
 what\'s important and
 what\'s not important. 
+
 **Q5**
 
 * > My advice is that, not to be 
@@ -282,6 +285,7 @@ general, the Japanese
 businesspeople stay in their 
 office longer time than
 other countries. 
+
 **Q2**
 
 * > Work life balance. We need 
@@ -327,6 +331,7 @@ birthday party at the end of
 March, and we had 20 people
 on zoom, and that was kind 
 of fun.
+
 **Q2**
 
 * > For the second question, the 
@@ -337,6 +342,7 @@ familiarity with computers,
 teleconferencing, social 
 media, and information 
 technology in general.   
+
 **Q5**
 
 * > And if I were young, and had 
@@ -446,6 +452,7 @@ more likely to help each
 other, and as a result,
 increase the cohesion of the 
 group. 
+
 **Q5**
 
 * > Caring about other people, 
@@ -474,6 +481,7 @@ with the community. Tighter
 family relationships would 
 be the most positive outcome 
 of this. 
+
 **Q2**
 
 * > I think there\'s a force in
@@ -493,6 +501,7 @@ be, don\'t pay attention to
 your cultural value that you 
 should separate yourself 
 from your family.
+
 **Q4**
 
 * > What I\'m saying is call 
@@ -514,6 +523,7 @@ they too are coping well.
 * > And also, very important to
 maintain social connections
 and social support.
+
 **Q5**
 
 * > If we are to learn something 
@@ -554,11 +564,13 @@ ones, protect our friends,
 protect their neighbors, and 
 in doing so we will protect
 ourselves. 
+
 **Q2**
 
 * > I think stressing the common 
 humanity would help us enjoy 
 this unifying effect.
+
 **Q4**
 
 * > This pandemic taught us that 
@@ -598,6 +610,7 @@ will be where people will
 look to their community
 rather than the central
 government.
+
 **Q2**
 
 * > The realization that what
@@ -616,6 +629,7 @@ good, doing what will help
 not just ourselves or our
 tribe, but what\'s good for
 all. 
+
 **Q4**
 
 * > The main thing is the
@@ -630,6 +644,7 @@ using the established
 connections to work on 
 global warming and maybe 
 other global problems. 
+
 **Q5**
 
 * > It might be also a good time 
@@ -655,6 +670,7 @@ everybody will feel empathy
 for others who are affected
 more severely no matter
 where they live. 
+
 **Q2**
 
 * > I think that people will 
@@ -668,6 +684,7 @@ comes out of COVID for some
 people, as wisdom, I expect
 it will have some payoff in
 enhancing empathy. 
+
 **Q4**
 
 * > People who haven\'t lost 
@@ -680,6 +697,7 @@ and empathy, as it\'s time
 for those around us who
 haven\'t been as lucky as
 the luckiest among us. 
+
 **Q5**
 
 * > So being friendly, open and
@@ -753,6 +771,7 @@ distribution of resources
 and rights not just where we 
 live, but much more
 globally.
+
 **Q2**
 
 * > Proactive efforts towards
@@ -767,7 +786,8 @@ terms of civic and
 government involvement, and
 that we can try to do this 
 together in a way that\'s
-not as divisive
+not as divisive.
+
 **Q4**
 
 * > And finally, emerging out of 
@@ -801,6 +821,7 @@ appreciation, greater
 appreciation, of the need
 for collaboration at 
 transnational levels.
+
 **Q2**
 
 * > Those that divide other
@@ -836,6 +857,7 @@ countries. Globalization
 must be detached from
 international business 
 competition. 
+
 **Q4**
 
 * > As moral decent creatures we 
@@ -843,6 +865,7 @@ do better by working
 together to combat a common
 problem, rather than to
 fight each other.
+
 **Q5**
 
 * > Benjamin Franklin \[...\]
@@ -900,6 +923,7 @@ and more to the point, how
 do you do it in a scientific 
 way? What does science look
 like?  
+
 **Q2**
 
 * > Some who may be more 
@@ -919,7 +943,8 @@ experts to follow, who has a
 sound voice and who is 
 giving us information
 that\'s going to mislead and 
-maybe harm us. 
+maybe harm us.
+ 
 **Q4**
 
 * > It\'s really reflecting on 
@@ -945,6 +970,7 @@ creating impediments for
 understanding that we\'re
 going to have to kind of 
 tackle in a reasoned way.  
+
 **Q5**
 
 * > Yes, people are getting
@@ -1001,6 +1027,7 @@ which these challenges can
 be met. So, it\'s really 
 been an unprecedented
 learning opportunity.
+
 **Q2**
 
 * > if we have the wisdom to 
@@ -1012,6 +1039,7 @@ prepared to respond swiftly
 and sensibly, and
 thoughtfully to future 
 challenges.
+
 **Q5**
 
 * > knowledge of how pandemics 
@@ -1063,6 +1091,7 @@ lot of uncertainties and
 that we need to handle and 
 try to able to be adapted to 
 deal with.   
+
 **Q4**
 
 * > Flexibility. A willingness 
@@ -1079,6 +1108,7 @@ those who assess the
 situation accurately, and
 refocus their goals, those 
 flexible.  
+
 **Q5**
 
 * > Things might change so 
@@ -1154,6 +1184,7 @@ have some idea what kind of
 subjects and what kind of
 people it would make sense 
 for. 
+
 **Q4**
 
 * > You just need to do the
@@ -1187,6 +1218,7 @@ one, but you can find sort
 of solace in being able to 
 communicate with them
 directly over video. 
+
 **Q4**
 
 * > People are going to have to
@@ -1204,6 +1236,7 @@ deindividuation. And that\'s
 part of the wisdom. The
 other part is to counteract
 it.
+
 **Q5**
 
 * > To try to support each other 
@@ -1242,6 +1275,7 @@ don\'t look like us, who
 don\'t act like us, and who
 we might consider to be
 strangers. 
+
 **Q4**
 
 * > And also very important to 
@@ -1293,6 +1327,7 @@ persistently aware of those
 things that we care about
 and the way we want to 
 structure our lives. 
+
 **Q4**
 
 * > A third piece of wisdom is 
@@ -1310,6 +1345,7 @@ integrate this in the story
 of our lives, and who we 
 are, and share those stories 
 with others. 
+
 **Q5**
 
 * > It is important to, stop and 
@@ -1368,6 +1404,7 @@ better to interact with
 people on the other side,
 whatever the other side
 looks like.
+
 **Q4**
 
 * > It\'s really reflecting on 
@@ -1377,6 +1414,7 @@ asking in a careful way,
 what is influencing me? And
 are these the influences I 
 want to shape my worldview?
+
 **Q5**
 
 * > Remember you're a social 
@@ -1421,6 +1459,7 @@ learn to open to others,
 even if they come from the 
 other side, whatever the 
 other side is. 
+
 **Q4**
 
 * > And you have to balance
@@ -1451,6 +1490,7 @@ and learning to ask other
 people about what their
 states are like and learning 
 to learn about other people. 
+
 **Q5**
 
 * > So, the first one has to do
@@ -1507,12 +1547,14 @@ two will require us to
 develop a kind of judgment,
 a situation by situation 
 judgment.
+
 **Q4**
 
 * > We need wise leaders who can 
 balance the values of
 liberty and privacy against
 the values of saved lives. 
+
 **Q5**
 
 * > And so each of us has to 
@@ -2273,6 +2315,7 @@ we can learn from our
 mistakes and plan for what 
 we can do better next time 
 we face a collective threat. 
+
 **Q5**
 
 * > The future is more important 
@@ -2310,6 +2353,7 @@ restore the infrastructure
 and the base that\'s 
 necessary for people to have 
 trust in our institutions. 
+
 **Q5**
 
 * > Patience and resilience are
@@ -2372,6 +2416,7 @@ not fairly distributed
 locally, nationally or 
 internationally ever and 
 never has been.
+
 **Q5**
 
 * > the most important part is 

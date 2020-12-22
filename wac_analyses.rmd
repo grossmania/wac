@@ -1336,7 +1336,7 @@ We identified 24 distinct categories.\
 Except for four themes, categories were mentioned by less than 10% of the interviewees.\
 Only two theme was mentioned by at least ten people: Agency & Control (18%) and Social connectedness (25%).\
 
-Once again, seven categories were meta-cognitive, whereas 3 were (pro)social and one was socielal.\
+Once again, seven categories were meta-cognitive, whereas 3 were (pro)social and one was societal.\
 
 
 
@@ -1358,7 +1358,7 @@ Q5 <- c("balance.of.personal...others.interest_q5",
 
 
 Q5.q <- c("Balance Diverse Interests",
-          "Clear Government Communication"  ,           "Solidarity"      ,                   "Polit.Cooperation",
+          "Clear Government\nCommunication"  ,           "Solidarity"      ,                   "Polit.Cooperation",
         "Critical Thinking" ,                           "Embrace New Tech"   , "Agency/Control" ,                            
         "Follow Rules",                                 "Optimism/Positivity"  ,         "Learning from Pandemics" ,    "Improved Communication",
           "Prosocial Behavior"   ,                        "Long-term Orientation"     ,                   "Acknowledge Uncertainty"  ,        "Live in the Moment" ,                       
@@ -1394,6 +1394,23 @@ Q5.summ$Percent<-Q5.summ$Count/length(all.data$Q5)*100
 Q5.plot<-ggplot(Q5.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() +
   geom_bar(stat="identity", width=.5) + ggtitle("Wisdom Now")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
 Q5.plot
+
+
+#create the graph for Conversation article
+
+ggplot(Q5.summ, aes(x=Theme, y=Percent, color=Type)) +
+  geom_segment(aes(x=Theme, xend=Theme, y=0, yend=Percent), color="black") +
+  geom_point( size=4, alpha=0.9) +
+  theme_light() +
+  coord_flip() +scale_color_d3(palette = "category20c")+
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.border = element_blank(),
+    axis.ticks.y = element_blank(),
+   legend.position="none")
+  
+
+
 ```
 
 
@@ -1502,8 +1519,6 @@ Five clusters: \
 * Focus on here & now (incl. role of new tech.)\
 *	Meta-cognition: self-distancing, balancing different interests, critical thinking\
 *	Social capital: social connectedness, improved communication, socio-econ equality, sympathy & compassion\
-
-Solidarity is in the center, connecting to other clusters.\
 
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
