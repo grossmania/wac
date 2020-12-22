@@ -1,271 +1,140 @@
 Theme,Word,TFIDF Weight
-(shared humanity),ecological_vulnerability,0.17351638461597985
-(shared humanity),external_threat,0.17351638461597985
-(shared humanity),freedom,0.26027457692396977
-(shared humanity),people,0.19582561723336203
-(shared humanity),problem,0.19240658969061178
-(shared humanity),realization,0.14704956626202212
-(shared humanity),sense,0.1527063621596752
-(shared humanity),society,0.1660514699430051
-(shared humanity),vulnerability,0.1369873489206504
-(shared humanity),wealth,0.26027457692396977
-(shared humanity),welfare,0.1369873489206504
-(shared humanity),world,0.27522607229523516
-(critical thinking),community,0.16800028201679745
-(critical thinking),connectedness,0.13658321239178012
-(critical thinking),guidance,0.16116623677236194
-(critical thinking),information,0.16116623677236194
-(critical thinking),observation,0.13658321239178012
-(critical thinking),people,0.5456627833096185
-(critical thinking),question,0.23639563659401847
-(critical thinking),routine,0.13658321239178012
-(critical thinking),science,0.26791225521892925
-(critical thinking),situation,0.17860817014595284
-(critical thinking),stronger_sense,0.20487481858767018
-(critical thinking),way,0.1468813981108221
-(critical thinking),week,0.16116623677236194
-(critical thinking),work,0.2691159883618955
-(personal resilience),ability,0.12136224130901656
-(personal resilience),community,0.1716037295143714
-(personal resilience),couple,0.2052440401866897
-(personal resilience),friend,0.12870279713577856
-(personal resilience),life,0.16878584866470536
-(personal resilience),people,0.5109195071179332
-(personal resilience),stress,0.1825451205188102
-(personal resilience),stronger_sense,0.1569518925705253
-(personal resilience),understanding,0.12346732533684805
-(personal resilience),value,0.12136224130901656
-(personal resilience),work,0.20616620424882687
-(personal resilience),world,0.1631998955241082
-(gratitude),coronavirus,0.2058861927877007
-(gratitude),country,0.14515481020061172
-(gratitude),each_other,0.18144351275076465
-(gratitude),fact,0.15441464459077553
-(gratitude),family,0.14515481020061172
-(gratitude),feeling,0.13592307836242812
-(gratitude),gratitude,0.16575695997103054
-(gratitude),issue,0.1445055449638526
-(gratitude),life,0.14854567166295088
-(gratitude),people,0.4414764330445483
-(gratitude),relationship,0.22951120499256436
-(gratitude),wearing_masks,0.130393894386422
-(nature),bit,0.13856067505851902
-(nature),climate,0.1512579431754763
 (nature),credit,0.22688691476321446
 (nature),ecological_vulnerability,0.1512579431754763
 (nature),freedom,0.22688691476321446
 (nature),happiness,0.13856067505851902
-(nature),no_doubt,0.1512579431754763
 (nature),people,0.28450896389737446
 (nature),pleasure,0.20784101258777854
 (nature),wealth,0.22688691476321446
 (nature),world,0.1999337108508826
-(improved care for elders),area,0.25575234514197914
-(improved care for elders),body,0.12787617257098957
-(improved care for elders),care,0.1706006029131653
-(improved care for elders),cdc,0.12787617257098957
-(improved care for elders),clue,0.12787617257098957
-(improved care for elders),confidence,0.12787617257098957
-(improved care for elders),don,0.12787617257098957
-(improved care for elders),enact_legislation,0.12787617257098957
-(improved care for elders),fairly_low,0.12787617257098957
-(improved care for elders),frail_elderly,0.12787617257098957
-(improved care for elders),function,0.25575234514197914
-(improved care for elders),funding,0.12787617257098957
-(improved care for elders),guess,0.12787617257098957
-(improved care for elders),home,0.1429537011300623
-(improved care for elders),immune_system,0.12787617257098957
-(improved care for elders),incidence,0.12787617257098957
-(improved care for elders),inequality,0.27328991069674724
-(improved care for elders),lifestyle,0.12787617257098957
-(improved care for elders),movement,0.12787617257098957
-(improved care for elders),nightclub,0.12787617257098957
-(improved care for elders),non_institutional,0.12787617257098957
-(improved care for elders),people,0.260448213490822
-(improved care for elders),respect,0.12787617257098957
-(improved care for elders),scam,0.12787617257098957
-(improved care for elders),setting,0.21140447143691682
-(improved care for elders),statistic,0.25575234514197914
-(improved care for elders),tough_nut,0.12787617257098957
-(improved care for elders),year_olds,0.38362851771296874
-(embrace new tech),class,0.1672138240933358
-(embrace new tech),connection,0.22479912384194736
-(embrace new tech),contact,0.1768398335583015
-(embrace new tech),coronavirus,0.13961113837367162
-(embrace new tech),each_other,0.12303659134526147
-(embrace new tech),education,0.14698351084558336
-(embrace new tech),end,0.12149633037774468
-(embrace new tech),face,0.13961113837367162
-(embrace new tech),family,0.14764390961431378
-(embrace new tech),hand,0.13262987516872612
-(embrace new tech),life,0.16116577835974333
-(embrace new tech),people,0.3991527328631327
-(embrace new tech),relationship,0.18156976365818267
-(embrace new tech),skill,0.13262987516872612
-(embrace new tech),way,0.2820401121295508
-(embrace new tech),zoom,0.2024938839629078
-(prosocial behavior),behavior,0.2248914110668795
-(prosocial behavior),community,0.36882834838214784
-(prosocial behavior),identity,0.1470438522743883
-(prosocial behavior),nation,0.1470438522743883
-(prosocial behavior),order,0.12154620850439557
-(prosocial behavior),people,0.49914574727115124
-(prosocial behavior),preventive_behavior,0.22056577841158245
-(prosocial behavior),stress_buffering,0.1470438522743883
-(prosocial behavior),wearing_masks,0.13268432397134255
-(prosocial behavior),worker,0.12154620850439557
-(social connectedness),community,0.16738180088512652
-(social connectedness),connection,0.17860551315512363
-(social connectedness),contact,0.15053710752554397
-(social connectedness),family,0.15082045701953753
-(social connectedness),group,0.1381057917279519
-(social connectedness),life,0.1646332477351945
-(social connectedness),people,0.5663062129638178
-(social connectedness),relationship,0.22963722874151538
-(social connectedness),way,0.13719437311266208
-(social connectedness),work,0.13406262846181113
-(improved work-life balance),balance,0.12227298594138672
-(improved work-life balance),bond,0.12227298594138672
-(improved work-life balance),business,0.21331699085599484
+poverty,(political engagement & structural change),0.19133484551723962
+poverty,(sympathy & compassion),0.41506574271475255
+life,(personal resilience),0.16878584866470536
+life,(gratitude),0.14854567166295088
+life,(embrace new tech),0.16116577835974333
+life,(social connectedness),0.1646332477351945
+life,(improved work-life balance),0.16436525041909752
+life,(reconsidering habits),0.23882506168105025
+life,(health & well-being),0.1407691121286873
+family,(gratitude),0.14515481020061172
+family,(embrace new tech),0.14764390961431378
+family,(social connectedness),0.15082045701953753
+family,(improved work-life balance),0.2007665930372468
+family,(reconsidering habits),0.15911821831403047
+family,(living in the moment),0.13875575403219398
+cause,(political engagement & structural change),0.19289380492524394
+cause,(sympathy & compassion),0.5021371419718136
+question,(critical thinking),0.23639563659401847
+question,(reconsidering habits),0.19568065739020973
+country,(gratitude),0.14515481020061172
+country,(bipartisanship and international cooperation),0.1586905634386298
 (improved work-life balance),coronavirus,0.22781233042029633
 (improved work-life balance),day,0.15998774314199612
 (improved work-life balance),each_other,0.16061327442979745
-(improved work-life balance),family,0.2007665930372468
-(improved work-life balance),hour,0.17085924781522224
-(improved work-life balance),japan,0.12227298594138672
-(improved work-life balance),life,0.16436525041909752
 (improved work-life balance),people,0.27138449018241245
 (improved work-life balance),work,0.1204599558223481
-(improved work-life balance),working,0.12227298594138672
 (improved work-life balance),workplace,0.3986715782355186
-(increased interest in science),datum,0.12957088717678752
-(increased interest in science),does_gaining,0.18188409246304804
-(increased interest in science),evidence,0.18188409246304804
-(increased interest in science),generation_went,0.18188409246304804
-(increased interest in science),information,0.3282444995329347
-(increased interest in science),kid,0.16412224976646736
-(increased interest in science),knowledge,0.18188409246304804
-(increased interest in science),people,0.1852236659574028
-(increased interest in science),point,0.18188409246304804
-(increased interest in science),science,0.5456522773891441
-(increased interest in science),situation,0.3637681849260961
-(increased interest in science),sputnik,0.18188409246304804
-(increased interest in science),story,0.18188409246304804
-(increased interest in science),tremendous_uncertainty,0.18188409246304804
-(increased interest in science),week,0.3282444995329347
-(learning from pandemics),bird_flu,0.12226445843883564
-(learning from pandemics),challenge,0.2909314456787359
-(learning from pandemics),civilization,0.12226445843883564
-(learning from pandemics),community,0.2695715700504666
-(learning from pandemics),coordinated_combination,0.12226445843883564
-(learning from pandemics),event,0.12014409794302326
-(learning from pandemics),folk,0.12226445843883564
-(learning from pandemics),future,0.12226445843883564
-(learning from pandemics),greatest_blessing,0.12226445843883564
-(learning from pandemics),individual,0.16437004107219527
-(learning from pandemics),infectious_diseases,0.19395429711915727
-(learning from pandemics),invisible_force,0.12226445843883564
-(learning from pandemics),mean,0.12226445843883564
-(learning from pandemics),modernized_part,0.12226445843883564
-(learning from pandemics),people,0.2553731359215861
-(learning from pandemics),pose,0.12226445843883564
-(learning from pandemics),preparation,0.12226445843883564
-(learning from pandemics),radar,0.12226445843883564
-(learning from pandemics),relatively_wealthy,0.12226445843883564
-(learning from pandemics),scale,0.12226445843883564
-(learning from pandemics),sensible_thoughtful,0.12226445843883564
-(learning from pandemics),world,0.15382201375112273
-(political engagement & structural change),cause,0.19289380492524394
+credit,(living in the moment),0.37393669100824606
+credit,(health & well-being),0.23168925759866807
+day,(optimism / positivity),0.315478078006891
+(prosocial behavior),behavior,0.2248914110668795
+(prosocial behavior),community,0.36882834838214784
+(prosocial behavior),order,0.12154620850439557
+(prosocial behavior),people,0.49914574727115124
+(prosocial behavior),wearing_masks,0.13268432397134255
+challenge,(learning from pandemics),0.2909314456787359
+challenge,(sympathy & compassion),0.18124042914519542
+(living in the moment),happiness,0.2283645153768556
+(living in the moment),people,0.28134281952663137
+(living in the moment),pleasure,0.3425467730652834
+(living in the moment),relationship,0.2193933515780003
+sense,(shared humanity),0.1527063621596752
+sense,(optimism / positivity),0.12519194303850087
+sense,(bipartisanship and international cooperation),0.12545661554519885
+information,(critical thinking),0.16116623677236194
+information,(increased interest in science),0.3282444995329347
+connection,(embrace new tech),0.22479912384194736
+connection,(social connectedness),0.17860551315512363
+example,(solidarity),0.1608220797198833
+example,(sympathy & compassion),0.12595046298787302
+ability,(personal resilience),0.12136224130901656
+ability,(optimism / positivity),0.13982707954417511
 (political engagement & structural change),inequality,0.2473452074554897
 (political engagement & structural change),people,0.4714452665527238
-(political engagement & structural change),poverty,0.19133484551723962
-(political engagement & structural change),video,0.13924544934803185
 (political engagement & structural change),way,0.14276648463541866
-(optimism / positivity),ability,0.13982707954417511
-(optimism / positivity),baseline_pretty,0.19546670759694734
-(optimism / positivity),day,0.315478078006891
-(optimism / positivity),emotion,0.2690182951089899
-(optimism / positivity),event,0.1321764346267832
-(optimism / positivity),expression,0.2690182951089899
-(optimism / positivity),globe,0.19546670759694734
-(optimism / positivity),importance,0.1808315710912731
-(optimism / positivity),interaction,0.16845773948635775
-(optimism / positivity),manage_climate,0.19546670759694734
-(optimism / positivity),medium_run,0.19546670759694734
-(optimism / positivity),meet_need,0.19546670759694734
-(optimism / positivity),people,0.3210840618745636
-(optimism / positivity),place,0.1321764346267832
-(optimism / positivity),realization,0.1808315710912731
-(optimism / positivity),run,0.19546670759694734
-(optimism / positivity),sense,0.12519194303850087
-(optimism / positivity),society,0.20419882190134664
-(optimism / positivity),world,0.4512724457343421
+relationship,(gratitude),0.22951120499256436
+relationship,(embrace new tech),0.18156976365818267
+relationship,(social connectedness),0.22963722874151538
+relationship,(health & well-being),0.1359349964084416
+(health & well-being),couple,0.2567634212407747
+(health & well-being),happiness,0.14149348352760743
+(health & well-being),people,0.29053094884005304
+(health & well-being),pleasure,0.21224022529141115
+(health & well-being),workplace,0.3658270916844848
+wealth,(shared humanity),0.26027457692396977
+society,(shared humanity),0.1660514699430051
+society,(optimism / positivity),0.20419882190134664
+situation,(critical thinking),0.17860817014595284
+situation,(increased interest in science),0.3637681849260961
+order,(solidarity),0.15142401312919718
 (reconsidering habits),coronavirus,0.15046117142822213
 (reconsidering habits),each_other,0.13259851526169206
-(reconsidering habits),family,0.15911821831403047
-(reconsidering habits),life,0.23882506168105025
 (reconsidering habits),people,0.4122494375849424
-(reconsidering habits),question,0.19568065739020973
 (reconsidering habits),stronger_sense,0.12113481740535663
 (reconsidering habits),way,0.23882506168105025
 (reconsidering habits),work,0.29171673357572253
-(living in the moment),actual_environment,0.12464556366941534
-(living in the moment),credit,0.37393669100824606
-(living in the moment),experience,0.23163336464457884
-(living in the moment),family,0.13875575403219398
-(living in the moment),gain_fulfillment,0.12464556366941534
-(living in the moment),getting_sick,0.12464556366941534
-(living in the moment),happiness,0.2283645153768556
-(living in the moment),influence,0.12464556366941534
-(living in the moment),interesting_instead,0.12464556366941534
-(living in the moment),landscape,0.12464556366941534
-(living in the moment),making_bread,0.12464556366941534
-(living in the moment),mishap,0.12464556366941534
-(living in the moment),people,0.28134281952663137
-(living in the moment),planning_trip,0.12464556366941534
-(living in the moment),pleasure,0.3425467730652834
-(living in the moment),rain,0.12464556366941534
-(living in the moment),relationship,0.2193933515780003
-(living in the moment),store,0.12464556366941534
-(living in the moment),strengthening,0.2283645153768556
-(living in the moment),telling_stories,0.12464556366941534
-(living in the moment),trip,0.12464556366941534
-(health & well-being),couple,0.2567634212407747
-(health & well-being),credit,0.23168925759866807
-(health & well-being),happiness,0.14149348352760743
-(health & well-being),life,0.1407691121286873
-(health & well-being),people,0.29053094884005304
-(health & well-being),pleasure,0.21224022529141115
-(health & well-being),relationship,0.1359349964084416
-(health & well-being),workplace,0.3658270916844848
-(solidarity),behavior,0.16810377090851
-(solidarity),capacity,0.1250417434806605
-(solidarity),community,0.3905679078911452
-(solidarity),example,0.1608220797198833
-(solidarity),germ,0.2084029058011008
-(solidarity),group,0.12998537370797852
-(solidarity),neighbor,0.1466366028672048
-(solidarity),order,0.15142401312919718
-(solidarity),people,0.5347849322628216
-(bipartisanship and international cooperation),appreciation,0.15798075391802197
-(bipartisanship and international cooperation),country,0.1586905634386298
-(bipartisanship and international cooperation),external_threat,0.14255318539248307
-(bipartisanship and international cooperation),fortune,0.3594493810061888
-(bipartisanship and international cooperation),joy,0.15798075391802197
-(bipartisanship and international cooperation),meaning,0.1305866335681281
-(bipartisanship and international cooperation),populace,0.1797246905030944
-(bipartisanship and international cooperation),populism,0.1797246905030944
-(bipartisanship and international cooperation),problem,0.21076336056374337
-(bipartisanship and international cooperation),sense,0.12545661554519885
-(bipartisanship and international cooperation),threat,0.14255318539248307
-(bipartisanship and international cooperation),united_states,0.1305866335681281
-(bipartisanship and international cooperation),wave,0.1797246905030944
-(sympathy & compassion),attitude,0.20085485678872544
-(sympathy & compassion),cause,0.5021371419718136
-(sympathy & compassion),challenge,0.18124042914519542
-(sympathy & compassion),dispositional_cause,0.20085485678872544
-(sympathy & compassion),economic_hardship,0.20085485678872544
-(sympathy & compassion),example,0.12595046298787302
+ecological_vulnerability,(shared humanity),0.17351638461597985
+problem,(shared humanity),0.19240658969061178
+problem,(bipartisanship and international cooperation),0.21076336056374337
+external_threat,(shared humanity),0.17351638461597985
+external_threat,(bipartisanship and international cooperation),0.14255318539248307
+contact,(embrace new tech),0.1768398335583015
+contact,(social connectedness),0.15053710752554397
+(increased interest in science),people,0.1852236659574028
+(increased interest in science),science,0.5456522773891441
+(increased interest in science),week,0.3282444995329347
+(learning from pandemics),community,0.2695715700504666
+(learning from pandemics),event,0.12014409794302326
+(learning from pandemics),people,0.2553731359215861
+(learning from pandemics),world,0.15382201375112273
+(social connectedness),community,0.16738180088512652
+(social connectedness),group,0.1381057917279519
+(social connectedness),people,0.5663062129638178
+(social connectedness),way,0.13719437311266208
+(social connectedness),work,0.13406262846181113
+each_other,(gratitude),0.18144351275076465
+each_other,(embrace new tech),0.12303659134526147
+stronger_sense,(critical thinking),0.20487481858767018
+stronger_sense,(personal resilience),0.1569518925705253
+way,(critical thinking),0.1468813981108221
+way,(embrace new tech),0.2820401121295508
+wearing_masks,(gratitude),0.130393894386422
+coronavirus,(gratitude),0.2058861927877007
+coronavirus,(embrace new tech),0.13961113837367162
+week,(critical thinking),0.16116623677236194
 (sympathy & compassion),people,0.17045229371059997
-(sympathy & compassion),person,0.16602629708590103
-(sympathy & compassion),poverty,0.41506574271475255
+couple,(personal resilience),0.2052440401866897
+(critical thinking),community,0.16800028201679745
+(critical thinking),people,0.5456627833096185
+(critical thinking),science,0.26791225521892925
+(critical thinking),work,0.2691159883618955
+realization,(shared humanity),0.14704956626202212
+realization,(optimism / positivity),0.1808315710912731
+world,(shared humanity),0.27522607229523516
+world,(personal resilience),0.1631998955241082
+world,(optimism / positivity),0.4512724457343421
+freedom,(shared humanity),0.26027457692396977
+(solidarity),behavior,0.16810377090851
+(solidarity),community,0.3905679078911452
+(solidarity),group,0.12998537370797852
+(solidarity),people,0.5347849322628216
+people,(shared humanity),0.19582561723336203
+people,(personal resilience),0.5109195071179332
+people,(gratitude),0.4414764330445483
+people,(improved care for elders),0.260448213490822
+people,(embrace new tech),0.3991527328631327
+people,(optimism / positivity),0.3210840618745636
+(optimism / positivity),event,0.1321764346267832
+inequality,(improved care for elders),0.27328991069674724
+work,(personal resilience),0.20616620424882687
+(personal resilience),community,0.1716037295143714
