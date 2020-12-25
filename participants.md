@@ -173,7 +173,7 @@
 **Michele Gelfand**
 
 - *Cultural Psychology & Organizational Behavior / University of Maryland, College Park, US*
-- Distinguished  Professor of Psychology at the University of Maryland, College Park. She the  co – founder of the Society for the Study of Cultural Evolution, author of  the book **Rule Makers, Rule Breakers**, and a recipient of numerous awards for her research on the  evolution of culture and its multilevel consequences, including 2017 **Outstanding International Psychologist Award**. She is an elected member of the **American Academy of Arts and Sciences**.
+- Distinguished  Professor of Psychology at the University of Maryland, College Park. She the  **co-founder of the Society for the Study of Cultural Evolution**, author of  the book **Rule Makers, Rule Breakers**, and a recipient of numerous awards for her research on the  evolution of culture and its multilevel consequences, including 2017 **Outstanding International Psychologist Award**. She is an elected member of the **American Academy of Arts and Sciences**.
 
 **Monika Ardelt**
 
@@ -213,7 +213,7 @@
 **Ralph Hertwig**
 
 - *Judgment & Decision-making / Max Planck Institute for Human Development, Germany*
-- Director of the Center of Adaptive Rationality at the Max Planck Institute for Human  evelopment in Berlin. Prior to this, he was a professor of cognitive and  decision sciences and later Dean at the University of Basel, Psychology Department. He is the recipient of multiple prizes for his research and teaching on models of bounded and ecological rationality, including the **Gottfried Wilhelm Leibniz Prize** from the German Research Foundation.
+- Director of the Center of Adaptive Rationality at the Max Planck Institute for Human  evelopment in Berlin. Prior to this, he was a professor of cognitive and  decision sciences and later Dean at the University of Basel, Psychology Department. He is the recipient of multiple prizes for his research and teaching on models of bounded and ecological rationality, including the **Gottfried Wilhelm Leibniz Prize** from the German Research Foundation. Hertwig is an elected member of the **German National Academy of Sciences Leopoldina**.
 
 **Richard Nisbett**
 
