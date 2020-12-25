@@ -1,4 +1,4 @@
-# Participants in World after Covid project
+# Participants in the World after Covid project
 
 **Alex (Sandy) Pentland**
 
