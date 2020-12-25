@@ -14,36 +14,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-# The method
-
-## Recruitment
-
-Since June 2020, I have interviewed 57 of the top social, behavioral, and political scientists, along with several eminent philosophers, wisdom scientists, and futurists. First, the advisory board and I nominated 153 top scholars from around the world. From the list of contacted nominees, 65% responses to the initial inquiry to participate in the interview series. Among those who responded, 37% declined. I ended up scheduling 38% of the scholars on the initial list -- a good response rate considering the pandemic-related challenges and the nature of the project.\
-
-## Quantifying narratives
-
-To quantify themes in interviews, we relied on a novel **Multi-step Bottom-up/Top-down Cross-validation** method for analyzing and cross-referencing unstructured qualitative data. in the method, we first rely on classic *grounded approach*, with two scholars going through the first set of 30 interviews 9June-July) to identify unique themes for each question in an iterative fashion. Hereby, we followed the following guidelines:\
-
-*   Each theme should be present at least twice across interviews;\
-*   Themes should have minimum overlap. In other words, they should not be directly reducible, though they could show natural dependencies (e.g., "importance of social connections" and "social support").
-
-In this initial phase, two independent raters, one of whom was blind to the identity of the interviewees, coded statements on prevalence of determined themes. Initial reliability was good (over 90% agreement), with disagreements resolved via group discussion with the senior scholar. Following iterative procedure, in case additional themes were identified that were not covered by the original categories, they were added to the codebook and statements were recoded for presence of the category.\
-\
-In the second stage, after interviews were extended into September - December 2020, another two coders (one of whom coded the initial set of 30 interviews) coded the new batch of interviews. Once again, agreement was high (90+%), with disagreements resolved in a group discussion. In this stage, coders identified several additional themes, which were again added to the codebook, with all interviewed cross-examined for presense of these themes. The procedure was repeated four times, until we identified the final list of themes for each question. Here, we also included some simple-occurance themes if they were fully distinct and addressed the questions.\
-
-Coding open-ended interviews is inherently subjective. Even in the presence of high reliability between coders (as in our case), validity of the coding may be compromised due to various additional factors (e.g., a particular sentiment in a response, agreement with the opinion raised in the interview response). To address this issue, we introduce a novel *top-down cross-validation approach*: \
-
-*   A new, unbiased person blind to identity of interviewees reviews codes and respective transcripts, with the task to identify one key sentence [or key phrases, in case the theme is not captured by a single sentence] from each person’s response to represent their code, guided by the codebook definitions;
-*   Two further individuals, incl. the senior author of the project, review these key sentences and flag any categories that required adjustment.\ 
-
-The idea behind this cross-validation approach is that this top-down, bird’s eye view allows for greater clarity when matching codes and themes compared to the classical grounded analysis. By matching each code to a core statement/phrase(s), one introduces extra rigor when evaluating each and every code. Indeed, in the process of such cross-validation, several minor inconsistencies were spotted and corrected prior to conducing subsequent analyses.
-
-
-# Descriptives
-
-Beyond US, scientists from Australia, Canada, Korea, Japan, HK, Russia, Germany, Spain, Switzerland, Israel, UK. \
-Past and present presidents/chairs of APS, APA, Psychonomic Society, Society for Personality and Social Psychology, International Association for Cross-cultural Psychology, Society for Affective Science, Cultural Evolution Society, Human Behavior and Evolution Society.
-
 ```{r,echo=FALSE,include=FALSE}
 
 #'second, load packages
@@ -143,6 +113,45 @@ Q5.corpus <- corpus(all.data, text_field = "Q5.text")
 all.data$tokens.Q5<-ntoken(Q5.corpus)
 
 ```
+
+
+# The method
+
+## Recruitment
+
+Since June 2020, I have interviewed 57 of the [top social, behavioral, and political scientists](https://github.com/grossmania/wac/blob/main/participants.md), along with several eminent philosophers, wisdom scientists, and futurists. First, the advisory board and I nominated 153 top scholars from around the world. From the list of contacted nominees, 65% responses to the initial inquiry to participate in the interview series. Among those who responded, 37% declined. I ended up scheduling 38% of the scholars on the initial list -- a reasonable response rate considering the pandemic-related challenges and the nature of the project.\
+
+## Quantifying narratives
+
+To quantify themes in interviews, we relied on a novel **Multi-step Bottom-up/Top-down Cross-validation** method for analyzing and cross-referencing unstructured qualitative data. in the method, we first rely on classic *grounded approach*, with two scholars going through the first set of 30 interviews 9June-July) to identify unique themes for each question in an iterative fashion. Hereby, we followed the following guidelines:\
+
+*   Each theme should be present at least twice across interviews;\
+*   Themes should have minimum overlap. In other words, they should not be directly reducible, though they could show natural dependencies (e.g., "importance of social connections" and "social support").
+
+In this initial phase, two independent raters, one of whom was blind to the identity of the interviewees, coded statements on prevalence of determined themes. Initial reliability was good (over 90% agreement), with disagreements resolved via group discussion with the senior scholar. Following iterative procedure, in case additional themes were identified that were not covered by the original categories, they were added to the codebook and statements were recoded for presence of the category.\
+\
+In the second stage, after interviews were extended into September - December 2020, another two coders (one of whom coded the initial set of 30 interviews) coded the new batch of interviews. Once again, agreement was high (90+%), with disagreements resolved in a group discussion. In this stage, coders identified several additional themes, which were again added to the codebook, with all interviewed cross-examined for presense of these themes. The procedure was repeated four times, until we identified the final list of themes for each question. Here, we also included some simple-occurance themes if they were fully distinct and addressed the questions.\
+
+Coding open-ended interviews is inherently subjective. Even in the presence of high reliability between coders (as in our case), validity of the coding may be compromised due to various additional factors (e.g., a particular sentiment in a response, agreement with the opinion raised in the interview response). To address this issue, we introduce a novel *top-down cross-validation approach*: \
+
+*   A new, unbiased person blind to identity of interviewees reviews codes and respective transcripts, with the task to identify one key sentence [or key phrases, in case the theme is not captured by a single sentence] from each person’s response to represent their code, guided by the codebook definitions;
+*   Two further individuals, incl. the senior author of the project, review these key sentences and flag any categories that required adjustment.\ 
+
+The idea behind this cross-validation approach is that this top-down, bird’s eye view allows for greater clarity when matching codes and themes compared to the classical grounded analysis. By matching each code to a core statement/phrase(s), one introduces extra rigor when evaluating each and every code. Indeed, in the process of such cross-validation, several minor inconsistencies were spotted and corrected prior to conducing subsequent analyses.
+
+## Quantifying reasoning style
+
+Prior research on forecasting suggests that certain cogntive style may be more conducive for accurate forecasting of [geopolitical events](https://doi.org/10.1177/1745691615577794), [affect](https://doi.org/10.1037/0022-3514.78.5.821) and emotions toward close others in [social conflict situations](https://psyarxiv.com/a5fgu). Specifically, research suggests that superior forecasters tend to show greater likelihood of embracing:\
+
+*   an **outsider viewpoint** and consider additional baserate information (rather than focus on the focal event alone);\
+*   more complex, **dialectical thinking** (aspects of which are central to the notions of [integrative complexity](https://doi.org/10.1037/0022-3514.49.6.1565) and [wisdom](https://doi.org/10.1080/1047840X.2020.1750917)) -- i.e., recognize the uncertainty and qualify forecasts by expressing multi-determined nature of predictions and considering both positive and negative aspects of the same forecast.\
+
+I sought to quantify the extent to which top experts in behaviral and social sciences apply these aspects of reasoning in their reflections. To this end, my team focused on the forecast-related questions (Q1: positive consequences / Q3: negative consequences). Here, we could categorize responses as those invoking *outsider viewpoint* and *dialectical reasoning* and compare % frequencies and type of forecasts among these two groups. A codebook for both categorization types is [here]( ). Because dialectical reasoning categorization involved both questions, each participant received only one code (yes=1 / no = 0). For outsider viewpoint, we separately categorized positive and negative responses, which allowed us to compare likelihood of invoking baserate and other outsider-view information across questions. Two research assistants, who did not engage in coding prior categories), independently categorized responses on both categories, with disagreements resolved in a discussion with the senior author and another co-author on the project.
+
+# Descriptives
+
+Beyond US, scientists from Australia, Canada, Korea, Japan, HK, Russia, Germany, Spain, Switzerland, Israel, UK. \
+Past and present presidents/chairs of APS, APA, Psychonomic Society, Society for Personality and Social Psychology, International Association for Cross-cultural Psychology, Society for Affective Science, Cultural Evolution Society, Human Behavior and Evolution Society.
 
 ## Breakdown by gender, location, and expertise 
 
