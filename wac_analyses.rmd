@@ -196,6 +196,41 @@ all.data %>% group_by(Field)%>%
 Only 20% were familiar with wisdom research (either in philosophy or in psychology).
 
 
+## Breakdown by % of experts applying outsider viewpoint and dialectical thinking
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+#dialectical thinking
+
+all.data$Dialectic_Final<-as.factor(all.data$Dialectic_Final)
+
+all.data %>% group_by(Dialectic_Final)%>% 
+  summarise(count = n() ) %>%
+  mutate( prop = count / sum(count)*100 )%>% ggplot() + geom_bar(aes(Dialectic_Final,prop, fill=Dialectic_Final), stat ='identity')+scale_fill_d3()+theme(legend.position = "none")+labs(y="%", x="Dialectical Thinking")+theme_pubclean()+theme(legend.position="none")
+
+#outsider viewpoint: positive consequences
+all.data$Q1_Outside_Final<-as.factor(all.data$Q1_Outside_Final)
+
+all.data %>% group_by(Q1_Outside_Final)%>% 
+  summarise(count = n() ) %>%
+  mutate( prop = count / sum(count)*100 )%>% ggplot() + geom_bar(aes(Q1_Outside_Final,prop, fill=Q1_Outside_Final), stat ='identity')+scale_fill_d3()+theme(legend.position = "none")+labs(y="%", x="Outsider Viewpoint/Baserate Considerations for Pos Consequences")+theme_pubclean()+theme(legend.position="none")
+
+#outsider viewpoint: negative consequences
+all.data$Q3_Outside_Final<-as.factor(all.data$Q3_Outside_Final)
+
+all.data %>% filter(!is.na(Q3_Outside_Final))%>% group_by(Q3_Outside_Final)%>% 
+  summarise(count = n() ) %>%
+  mutate( prop = count / sum(count)*100 )%>% ggplot() + geom_bar(aes(Q3_Outside_Final,prop, fill=Q3_Outside_Final), stat ='identity')+scale_fill_d3()+theme(legend.position = "none")+labs(y="%", x="Outsider Viewpoint/Baserate Considerations for Neg Consequences")+theme_pubclean()+theme(legend.position="none")
+
+table(all.data$Q1_Outside_Final,all.data$Q3_Outside_Final)
+table(all.data$Q3_Outside_Final)
+
+all.data %>% filter(!is.na(Q3_Outside_Final))%>%ggplot(aes(x = Q3_Outside_Final,fill = Q1_Outside_Final)) + 
+    geom_bar(position = "fill")+scale_fill_d3()+theme(legend.position = "bottom")+labs(y="%", x="Outsider Viewpoint/Baserate Considerations for Neg Consequences")+theme_pubclean()
+
+
+
+```
+
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 #expertise breakdown
 all.data %>% group_by(FamiliarWisdom)%>% 
