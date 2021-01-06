@@ -1,7 +1,7 @@
 ---
 title: "World after Covid: Method & Analyses"
 author: "Igor Grossmann"
-date: "Dec 13,2020"
+date: "Dec 26,2020"
 output:
   rmdformats::html_clean:
     toc: true # table of content true
@@ -33,15 +33,10 @@ library(reshape2)
 library(ggtext)
 library(lubridate)
 library(stringr)
-#library(udpipe)
 library(lattice)
 library(quanteda)
 library(readtext)
 library(psych)
-#library(topicmodels)
-#library(spacyr) #requires anaconda python
-#spacy_install()
-#library(wordcloud)
 library(tm)
 library(igraph)
 library(ggraph)
@@ -49,8 +44,6 @@ library(cluster)
 library(factoextra)
 library(RColorBrewer)
 library(purrr)
-#library(packcircles)
-#library(viridis)
 library(lme4)
 library(emmeans)
 library(packcircles)
@@ -60,7 +53,12 @@ library(edgebundleR)
 #library(GGally)
 library(GPArotation)
 library(heatmaply)
-
+library(vcd)
+library(tibble)
+library(lme4)
+library(ggwordcloud)
+library(showtext)
+library(maptools)
 
 
 ```
@@ -70,6 +68,8 @@ setwd("C:/Users/igrossma/Documents/GitHub/wac") #change to your preferred workin
 codes.data<-read.csv("codes.csv")
 transcripts<-read.csv("transcripts.csv")
 codes.outsider<-read.csv("outside_dialectic_codes.csv")
+country_names<-read.csv("Country_Names.csv")
+
 all.data<- transcripts %>% full_join(codes.data, by = c("Name"))
 all.data<- all.data %>% full_join(codes.outsider, by = c("Name"))
 
@@ -184,6 +184,8 @@ all.data %>% group_by(Location)%>%
 
 Expertise is roughly equally distributed.
 
+
+
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 #expertise breakdown
 all.data %>% group_by(Field)%>% 
@@ -191,12 +193,31 @@ all.data %>% group_by(Field)%>%
   mutate( prop = count / sum(count)*100 )%>% ggplot() + geom_bar(aes(Field,prop, fill=Field), stat ='identity')+scale_fill_d3()+theme(legend.position = "none")+labs(y="%", x="Expertise (Socio-cultural vs. Rest)")+theme_pubclean()+theme(legend.position="none")
 
 
+#wordcloud of subfields
+table(all.data$Domain)
+all.data$Domain_B[all.data$Domain_B==""]<-NA
+table(all.data$Domain_B)
+domain<-as.data.frame(table(all.data$Domain))
+domain2<-as.data.frame(table(all.data$Domain_B))
+domains<-full_join(domain,domain2,by = c("Var1"))
+domains$Freq<-rowSums(domains[c("Freq.x","Freq.y")], na.rm=T)
+domains$Type<-c(1,2,3,4,5,2,6,7,8,6,8,6,2,3,4,6,3,6,9,10,3,7,8,6,6,2,6,4,2,6,3,4)
+ggplot(domains, aes(label = Var1, size = Freq, color=as.factor(Type))) +
+  geom_text_wordcloud() +
+  scale_size_area(max_size = 15) +scale_color_d3(palette="category10")+
+  theme_minimal()
+
 ```
 
 Only 20% were familiar with wisdom research (either in philosophy or in psychology).
 
 
-## Breakdown by % of experts applying outsider viewpoint and dialectical thinking
+# Cognitive Style Differences amogn Experts: Breakdown by dialectical thinking & outsider viewpoint
+
+Almost half of the experts invoked dialectical thinking when reflecting on future consequences of the pandemic. In other words, they pointed out that the same theme could have both positive and negative consequences. This way, they also communicated their uncertainty in the downstream impact of selected themes.\
+
+Less than a third of experts invoked baserates or other outsider view information when qualifying their prediction for positive (25%) or negative forecasts (27%). Ten percent of experts brought baserate or other outsider view considerations in reflection on both scenarios. These was no substantial difference between consideration of baserates when forecasting positive vs. negative consequences.
+
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 #dialectical thinking
@@ -205,28 +226,32 @@ all.data$Dialectic_Final<-as.factor(all.data$Dialectic_Final)
 
 all.data %>% group_by(Dialectic_Final)%>% 
   summarise(count = n() ) %>%
-  mutate( prop = count / sum(count)*100 )%>% ggplot() + geom_bar(aes(Dialectic_Final,prop, fill=Dialectic_Final), stat ='identity')+scale_fill_d3()+theme(legend.position = "none")+labs(y="%", x="Dialectical Thinking")+theme_pubclean()+theme(legend.position="none")
+  mutate( prop = count / sum(count)*100 )%>% ggplot() + geom_bar(aes(Dialectic_Final,prop, fill=Dialectic_Final), stat ='identity')+scale_fill_d3()+theme_pubclean()+scale_x_discrete(labels=c("No","Yes"))+theme(legend.position = "none")+labs(y="%", x="Dialectical Thinking")
 
-#outsider viewpoint: positive consequences
-all.data$Q1_Outside_Final<-as.factor(all.data$Q1_Outside_Final)
+#outsider viewpoint
+all.data$'Positive Consequences'<-as.factor(all.data$Q1_Outside_Final)
+all.data$'Negative Consequences'<-as.factor(all.data$Q3_Outside_Final)
 
-all.data %>% group_by(Q1_Outside_Final)%>% 
+all.data %>% filter(!is.na(Q3_Outside_Final))%>% 
+  pivot_longer(c("Positive Consequences","Negative Consequences"),names_to = "Outside.type", values_to = "Code")%>% 
+  ggplot(aes(Code, group = Outside.type)) + 
+          geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+          scale_y_continuous(labels=scales::percent) +
+          facet_grid(~Outside.type)+scale_x_discrete(labels=c("No","Yes"))+scale_fill_d3()+theme_pubclean()+theme(legend.position = "none")+labs(y="Relative Rrequencies", x="Outsider Viewpoint")
+
+prop.table(table(all.data$Q1_Outside_Final))
+prop.table(table(all.data$Q3_Outside_Final))
+
+
+#outsider viewpoint in total (pos and neg consequences combined)
+
+all.data$Outsider_total<-as.factor(rowSums(all.data[c("Q1_Outside_Final","Q3_Outside_Final")],na.rm=T))
+
+prop.table(table(all.data$Outsider_total))
+
+all.data %>% group_by(Outsider_total)%>% 
   summarise(count = n() ) %>%
-  mutate( prop = count / sum(count)*100 )%>% ggplot() + geom_bar(aes(Q1_Outside_Final,prop, fill=Q1_Outside_Final), stat ='identity')+scale_fill_d3()+theme(legend.position = "none")+labs(y="%", x="Outsider Viewpoint/Baserate Considerations for Pos Consequences")+theme_pubclean()+theme(legend.position="none")
-
-#outsider viewpoint: negative consequences
-all.data$Q3_Outside_Final<-as.factor(all.data$Q3_Outside_Final)
-
-all.data %>% filter(!is.na(Q3_Outside_Final))%>% group_by(Q3_Outside_Final)%>% 
-  summarise(count = n() ) %>%
-  mutate( prop = count / sum(count)*100 )%>% ggplot() + geom_bar(aes(Q3_Outside_Final,prop, fill=Q3_Outside_Final), stat ='identity')+scale_fill_d3()+theme(legend.position = "none")+labs(y="%", x="Outsider Viewpoint/Baserate Considerations for Neg Consequences")+theme_pubclean()+theme(legend.position="none")
-
-table(all.data$Q1_Outside_Final,all.data$Q3_Outside_Final)
-table(all.data$Q3_Outside_Final)
-
-all.data %>% filter(!is.na(Q3_Outside_Final))%>%ggplot(aes(x = Q3_Outside_Final,fill = Q1_Outside_Final)) + 
-    geom_bar(position = "fill")+scale_fill_d3()+theme(legend.position = "bottom")+labs(y="%", x="Outsider Viewpoint/Baserate Considerations for Neg Consequences")+theme_pubclean()
-
+  mutate( prop = count / sum(count)*100 )%>% ggplot() + geom_bar(aes(Outsider_total,prop, fill=Outsider_total), stat ='identity')+scale_fill_d3()+theme(legend.position = "none")+labs(y="%", x="Outsider Viewpoint in Total")+theme_pubclean()+theme(legend.position="none")
 
 
 ```
@@ -346,6 +371,58 @@ Q1.SC.summ$Percent<-Q1.SC.summ$Proportion*100
 Q1.SC.plot<-ggplot(Q1.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
   geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Positive Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="%")
 Q1.SC.plot
+```
+
+## Frequencies by Cognitive Style: Dialectical Thinking and Consideration of Outsider Viewpoint
+
+It appears that **people invoking dialecticism** in their reasoning were similar in their positive forecasts as those who did not show dialecticism.\
+The only noticeable exception is the much greater emphasis on social connectedness among scholars showing dialecticism in their reasoning.\
+\
+It also appears that **people invoking baserate/outsider view information** in their reasoning were also quite similar in their positive forecasts as those who did not mention baserate info. There are some differences, but they may be due to differences in sub-sample size.\
+The only noticeable exceptions are:\
+
+ - greater focus on *resilience* and *wellbeing* among *baseraters* and greater focus on *reconsidering habits* among *non-baseraters*.\ 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+#Dialectical thinking
+
+Q1.data.Dia<-all.data %>% group_by(Dialectic_Final)%>% 
+  summarise(across(shared.humanity_q1:sympathy...compassion_q1, mean))
+
+colnames(Q1.data.Dia)[colnames(Q1.data.Dia)      # Rename two variable names
+                     %in% Q1] <- Q1.q
+Q1.data.Dia$Dialecticism[Q1.data.Dia$Dialectic_Final==0]<-"Not Dialectical"
+Q1.data.Dia$Dialecticism[Q1.data.Dia$Dialectic_Final==1]<-"Dialectical"
+
+Q1.data.Dia.long <- Q1.data.Dia %>% 
+  pivot_longer(-c("Dialectic_Final","Dialecticism"),names_to = "Theme", values_to = "Proportion")
+Q1.Dia.summ<-cbind(Q1.data.Dia.long, Q1.type)
+colnames(Q1.Dia.summ) <- c("Dialectical Code","Dialecticism","Theme","Proportion","Type")  # change column names
+Q1.Dia.summ$Percent<-Q1.Dia.summ$Proportion*100
+Q1.Dia.plot<-ggplot(Q1.Dia.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Dialecticism)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Positive Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="%")
+Q1.Dia.plot
+
+#outsider Viewpoint
+
+Q1.data.Outsider<-all.data %>% group_by(Q1_Outside_Final)%>% 
+  summarise(across(shared.humanity_q1:sympathy...compassion_q1, mean))
+
+colnames(Q1.data.Outsider)[colnames(Q1.data.Outsider)      # Rename two variable names
+                     %in% Q1] <- Q1.q
+Q1.data.Outsider$OutsiderV[Q1.data.Outsider$Q1_Outside_Final==0]<-"No Baserate Info (25%)"
+Q1.data.Outsider$OutsiderV[Q1.data.Outsider$Q1_Outside_Final==1]<-"Mentioned Baserates (75%)"
+
+Q1.data.Outsider.long <- Q1.data.Outsider %>% 
+  pivot_longer(-c("Q1_Outside_Final","OutsiderV"),names_to = "Theme", values_to = "Proportion")
+Q1.Outsider.summ<-cbind(Q1.data.Outsider.long, Q1.type)
+colnames(Q1.Outsider.summ) <- c("Outsider Code","Baserates","Theme","Proportion","Type")  # change column names
+Q1.Outsider.summ$Percent<-Q1.Outsider.summ$Proportion*100
+Q1.Outsider.plot<-ggplot(Q1.Outsider.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Baserates)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Positive Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="%")
+Q1.Outsider.plot
+
+
 ```
 
 ## PCA
@@ -535,8 +612,6 @@ Psych. Wellbeing emerges as the lead in the summer but becomes relatively less p
 Though speculative and post-hoc, this observation suggests that for some of the major themes (incl the most frequently mentioned onces), salience of present-day events inform the themes scientists mentioned in their reflections concerning positive consequences -several years- following the pandemic!\
 
 
-
-
 # Negative Consequences
 
 ## Summary
@@ -644,6 +719,59 @@ Q3.SC.plot<-ggplot(Q3.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip()
   geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Negative Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
 Q3.SC.plot
 ```
+
+
+## Frequencies by Cognitive Style: Dialectical Thinking and Consideration of Outsider Viewpoint
+
+It appears that **people invoking dialecticism** in their reasoning were more likely to focus on *negative consequences (incl. socio-economic inequality, prejudice/racism, political conflict, authoritarianism)* as well as *low trust in science* in their negative forecasts as those who did not show dialecticism.\
+\
+It is hard to tell how similar **experts invoking baserate/outsider view information** were in their reasoning compared to experts who did not mention baserate info. There are some differences, but they may be due to differences in sub-sample size.\
+Key differences that stand out are:\
+
+ - greater focus on *low wellbeing*, *low trust in science*, and *estrangement/alienation* among *baseraters* and greater focus on *interpersinal mustruct* among *non-baseraters*.\ 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+#Dialectical thinking
+
+Q3.data.Dia<-all.data %>% group_by(Dialectic_Final)%>% 
+  summarise(across(estrangement...alienation_q3:autobiographical.memory_q3, mean, na.rm=TRUE))
+
+colnames(Q3.data.Dia)[colnames(Q3.data.Dia)      # Rename two variable names
+                     %in% Q3] <- Q3.q
+Q3.data.Dia$Dialecticism[Q3.data.Dia$Dialectic_Final==0]<-"Not Dialectical"
+Q3.data.Dia$Dialecticism[Q3.data.Dia$Dialectic_Final==1]<-"Dialectical"
+
+Q3.data.Dia.long <- Q3.data.Dia %>% 
+  pivot_longer(-c("Dialectic_Final","Dialecticism"),names_to = "Theme", values_to = "Proportion")
+Q3.Dia.summ<-cbind(Q3.data.Dia.long, Q3.type)
+colnames(Q3.Dia.summ) <- c("Dialectical Code","Dialecticism","Theme","Proportion","Type")  # change column names
+Q3.Dia.summ$Percent<-Q3.Dia.summ$Proportion*100
+Q3.Dia.plot<-ggplot(Q3.Dia.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Dialecticism)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Negative Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="%")
+Q3.Dia.plot
+
+#outsider Viewpoint
+
+Q3.data.Outsider<-all.data %>% group_by(Q3_Outside_Final)%>% 
+  summarise(across(estrangement...alienation_q3:autobiographical.memory_q3, mean, na.rm=TRUE))
+
+colnames(Q3.data.Outsider)[colnames(Q3.data.Outsider)      # Rename two variable names
+                     %in% Q3] <- Q3.q
+Q3.data.Outsider$OutsiderV[Q3.data.Outsider$Q3_Outside_Final==0]<-"No Baserate Info (25%)"
+Q3.data.Outsider$OutsiderV[Q3.data.Outsider$Q3_Outside_Final==1]<-"Mentioned Baserates (75%)"
+
+Q3.data.Outsider.long <- Q3.data.Outsider %>% drop_na(OutsiderV)%>% 
+  pivot_longer(-c("Q3_Outside_Final","OutsiderV"),names_to = "Theme", values_to = "Proportion")
+Q3.Outsider.summ<-cbind(Q3.data.Outsider.long, Q3.type)
+colnames(Q3.Outsider.summ) <- c("Outsider Code","Baserates","Theme","Proportion","Type")  # change column names
+Q3.Outsider.summ$Percent<-Q3.Outsider.summ$Proportion*100
+Q3.Outsider.plot<-ggplot(Q3.Outsider.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Baserates)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Negative Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="%")
+Q3.Outsider.plot
+
+
+```
+
 
 ## PCA 
 
@@ -788,7 +916,7 @@ Notably, one theme remained pretty stable over time, with negative societal cons
 # Comparison of Positive and Negative Consequences Side by Side
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
-###EXAMINE Q1=>Q2 and Q3=>Q4 dependencies################
+
 Q1.summ <- Q1.summ[order(Q1.summ$Percent), ]  # sort
 Q1.summ$Theme <- factor(Q1.summ$Theme, levels = Q1.summ$Theme)  # to retain the order in plot
 
@@ -840,6 +968,40 @@ fig<-ggplot(data.Q13, aes(x=Theme, y=Frequency,color = group, tooltip=group))+
 fig
 ggplotly(fig, height = 920)
 
+
+#get a graph with top themes
+
+data.Q1x <-tail(data.Q1,10)
+
+data.Q3x <-tail(data.Q3,10)
+
+data.Q13x<-rbind(data.Q1x,data.Q3x)
+data.Q13x<- data.Q13x[order(data.Q13x$Frequency), ]
+data.Q13x<-data.Q13x%>%
+  arrange(Frequency)%>%
+  mutate(Above = ifelse(Frequency > 0, TRUE, FALSE),
+         Theme = factor(Theme, levels = .$Theme))
+# plot Lollipop chart
+fig13x<-ggplot(data.Q13x, aes(x=Theme, y=Frequency,color=Above))+
+  geom_segment(aes(x=Theme, xend=Theme, y=0, yend=Frequency), color = "burlywood3", size = 0.6) +
+  geom_point(size=4)+
+  #geom_text(color = 'black', size = 2)+
+  scale_y_continuous(breaks=c(-20,-10,0,10,20),
+        labels=c("20%", "10%", "0","10%","20%")) +
+  theme_light() +
+  coord_flip() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.border = element_blank(),
+    axis.ticks.x = element_blank()
+  ) +scale_color_tableau() +
+  xlab("Themes")+geom_hline(yintercept = 0, linetype="dashed", 
+                color = "black", size=0.7)+ylab("")+
+  theme(legend.title = element_blank())+
+  theme(legend.position="none",legend.text=element_text(size=7)) +
+  scale_color_manual(labels = c("Negative Consequences", "Positive Consequences"),
+                     values = c("#4E79A7","#F28E2B"))+theme(panel.background = element_rect(fill = "#f3f2f0"),plot.background = element_rect(fill = "#f3f2f0"),legend.background = element_rect(fill = "#f3f2f0"))
+fig13x
 
 
 ```
@@ -968,6 +1130,83 @@ Q2.W.plot
 ```
 
 
+## Frequencies by Cognitive Style: Dialectical Thinking
+
+### Is there a difference in themes mentioned between experts who show dialecticism in their reasoning about societal change vs. those who do not invoke dialectism?
+
+It appears that **people invoking dialecticism** in their reasoning were more likely to raise the themes of *perspective-taking*, *intellectual humility*, *critical thinking*,*social connectedness*, *political cooperation*, and *work-life balance*  compared to those who did not show dialecticism.\
+\
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+#Dialectical thinking
+
+Q2.data.Dia<-all.data %>% group_by(Dialectic_Final)%>% 
+  summarise(across(social.connectedness_q2:personal.resilience_q2, mean, na.rm=TRUE))
+
+colnames(Q2.data.Dia)[colnames(Q2.data.Dia)      # Rename two variable names
+                     %in% Q2] <- Q2.q
+Q2.data.Dia$Dialecticism[Q2.data.Dia$Dialectic_Final==0]<-"Not Dialectical"
+Q2.data.Dia$Dialecticism[Q2.data.Dia$Dialectic_Final==1]<-"Dialectical"
+
+Q2.data.Dia.long <- Q2.data.Dia %>% 
+  pivot_longer(-c("Dialectic_Final","Dialecticism"),names_to = "Theme", values_to = "Proportion")
+Q2.Dia.summ<-cbind(Q2.data.Dia.long, Q2.type)
+colnames(Q2.Dia.summ) <- c("Dialectical Code","Dialecticism","Theme","Proportion","Type")  # change column names
+Q2.Dia.summ$Percent<-Q2.Dia.summ$Proportion*100
+Q2.Dia.plot<-ggplot(Q2.Dia.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Dialecticism)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom for Positive Consequences by Cognitive Style")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="%")
+Q2.Dia.plot
+
+
+```
+
+### Is there a difference in **Common Wisdom Model** themes between dialectical experts vs. those who do not invoke dialectism?
+
+It appears there is a difference in the direction of dialectical experts more likely to mention moral aspirations and meta-cognition, but it is not significant.
+
+```{r,warning=FALSE,message=FALSE}
+#Are dialectical thinkers more likely to mention core aspects of wisdom as identified by the Common wisdom model per Toronto Wisdom Task Force 2019?
+
+#sum up all morals
+morals.Q2<-c("social.connectedness_q2", "social.support_q2","bipartisanship.and.international.cooperation_q2","solidarity_q2",                        
+        "political.engagement...structural.change_q2","shared.humanity_q2") 
+        
+#sum up all metacognitive
+metacog.Q2<- c("acknowledge.of.uncertainty.flexibility_q2","balance.of.personal...others.interest_q2","perspective.taking_q2",
+        "critical.thinking_q2","intellectual.humility_q2","sympathy...compassion_q2", "self.distancing_q2") 
+#sum the rest
+others.Q2<-c("evidence.based.decision.making_q2","improved.work.life.balance_q2",
+             "improve.communication_q2", "living.in.the.moment_q2",
+        "learning.from.pandemics_q2","self.reflection.on.what.s.important_q2","embrace.new.tech_q2","personal.resilience_q2")
+
+all.data$morals.Q2<-rowSums(all.data[morals.Q2])
+all.data$metacog.Q2<-rowSums(all.data[metacog.Q2])
+all.data$others.Q2<-rowSums(all.data[others.Q2])
+
+all.data$Dialecticism[all.data$Dialectic_Final==0]<-"Not Dialectical"
+all.data$Dialecticism[all.data$Dialectic_Final==1]<-"Dialectical"
+
+
+Q2.data.Dia.CWM<-all.data %>% group_by(Dialecticism)%>% 
+  summarise(across(morals.Q2:others.Q2, sum, na.rm=TRUE))%>%
+pivot_longer(-Dialecticism,names_to = "Theme", values_to = "Count")
+
+Q2.Dia.CWM.plot<- ggplot(Q2.data.Dia.CWM,aes(x=Dialecticism,y=Count,fill=Theme))+
+  geom_col(stat="identity")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="Count")
+
+Q2.Dia.CWM.plot #more meta-cognition and more morals among dialectics
+
+mosaic(xtabs(Count~ Dialecticism+Theme, data= Q2.data.Dia.CWM), shade=TRUE) #but not significant
+
+
+Q2.data.W.CWM<-all.data %>% group_by(FamiliarWisdom)%>% 
+  summarise(across(morals.Q2:others.Q2, sum, na.rm=TRUE))%>%
+pivot_longer(-FamiliarWisdom,names_to = "Theme", values_to = "Count")
+mosaic(xtabs(Count~ FamiliarWisdom+Theme, data= Q2.data.W.CWM), shade=TRUE) #those familiar with wisdom research are more likely to mention meta-cognition, but not significantly so.
+
+chisq.test(xtabs(Count~ FamiliarWisdom+Theme, data= Q2.data.W.CWM))
+
+```
 
 ## PCA 
 
@@ -1229,6 +1468,86 @@ Q4.W.summ$Percent<-Q4.W.summ$Proportion*100
 Q4.W.plot<-ggplot(Q4.W.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ FamiliarWisdom)+
   geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom against Negative Consequences\nby Wisdom Familarity")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
 Q4.W.plot
+
+
+```
+
+
+## Frequencies by Cognitive Style: Dialectical Thinking
+
+### Is there a difference in themes mentioned between experts who show dialecticism in their reasoning about societal change vs. those who do not invoke dialectism?
+
+It appears that **people invoking dialecticism** in their reasoning were more likely to raise the themes of *perspective-taking*, *self-distancing*, *focus on the concept of shared humanity*,*solidarity*, and *optimism/positivity*  compared to those who did not show dialecticism.\
+\
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+#Dialectical thinking
+
+Q4.data.Dia<-all.data %>% group_by(Dialectic_Final)%>% 
+  summarise(across(social.awareness_q4:self.distancing_q4, mean, na.rm=TRUE))
+
+colnames(Q4.data.Dia)[colnames(Q4.data.Dia)      # Rename two variable names
+                     %in% Q4] <- Q4.q
+Q4.data.Dia$Dialecticism[Q4.data.Dia$Dialectic_Final==0]<-"Not Dialectical"
+Q4.data.Dia$Dialecticism[Q4.data.Dia$Dialectic_Final==1]<-"Dialectical"
+
+Q4.data.Dia.long <- Q4.data.Dia %>% 
+  pivot_longer(-c("Dialectic_Final","Dialecticism"),names_to = "Theme", values_to = "Proportion")
+Q4.Dia.summ<-cbind(Q4.data.Dia.long, Q4.type)
+colnames(Q4.Dia.summ) <- c("Dialectical Code","Dialecticism","Theme","Proportion","Type")  # change column names
+Q4.Dia.summ$Percent<-Q4.Dia.summ$Proportion*100
+Q4.Dia.plot<-ggplot(Q4.Dia.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Dialecticism)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom for Negative Consequences by Cognitive Style")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="%")
+Q4.Dia.plot
+
+
+```
+
+
+### Is there a difference in **Common Wisdom Model** themes between dialectical experts vs. those who do not invoke dialectism?
+
+It appears there is a difference in the direction of dialectical experts *less* likely to mention moral aspirations and meta-cognition, but it is not significant. In fact, both groups are virtually indistinguishable *p* = .870.
+
+```{r,warning=FALSE,message=FALSE}
+#Are dialectical thinkers more likely to mention core aspects of wisdom as identified by the Common wisdom model per Toronto Wisdom Task Force 2019?
+
+#sum up all morals
+moralsQ4<-c( "solidarity_q4",                        "bipartisanship.and.international.cooperation_q4",                  "gratitude_q4",  "social.support_q4"  ,                  "social.connectedness_q4",             
+             "shared.humanity_q4",      "strive.for.socio.economic.equality_q4",               "political.engagement...structural.change_q4") 
+
+
+#sum up all metacognitive
+metacogQ4<- c("social.awareness_q4" , "balance.of.personal...others.interest_q4" ,  "context.sensitivity_q4",     "critical.thinking_q4",       "long.term.orientation_q4",             "acknowledge.uncertainty.flexibility_q4",         
+               "perspective.taking_q4",                          "sympathy...compassion_q4",                         "self.distancing_q4") 
+ 
+#sum the rest
+othersQ4<-c("evidence.based.decision.making_q4",    "optimism...positivity_q4",                              "improve.communication_q4",  "living.in.the.moment_q4",                         "patience_q4",    "self.reflection.on.what.s.important_q4") 
+
+all.data$moralsQ4<-rowSums(all.data[moralsQ4])
+all.data$metacogQ4<-rowSums(all.data[metacogQ4])
+all.data$othersQ4<-rowSums(all.data[othersQ4])
+
+
+
+Q4.data.Dia.CWM<-all.data %>% group_by(Dialecticism)%>% 
+  summarise(across(moralsQ4:othersQ4, sum, na.rm=TRUE))%>%
+pivot_longer(-Dialecticism,names_to = "Theme", values_to = "Count")
+
+Q4.Dia.CWM.plot<- ggplot(Q4.data.Dia.CWM,aes(x=Dialecticism,y=Count,fill=Theme))+
+  geom_col(stat="identity")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="Count")
+
+Q4.Dia.CWM.plot #more meta-cognition and more morals among nondialectics (by virtue of them bringing up more themes in general and being a larger sample)
+ 
+
+mosaic(xtabs(Count~ Dialecticism+Theme, data= Q4.data.Dia.CWM), shade=TRUE) #but not significant
+
+
+Q4.data.W.CWM<-all.data %>% group_by(FamiliarWisdom)%>% 
+  summarise(across(moralsQ4:othersQ4, sum, na.rm=TRUE))%>%
+pivot_longer(-FamiliarWisdom,names_to = "Theme", values_to = "Count")
+mosaic(xtabs(Count~  FamiliarWisdom+Theme, data= Q4.data.W.CWM), shade=TRUE) #those familiar with wisdom research are significantly more likely to mention meta-cognition than those not familiar with wisdom research.
+
+chisq.test(xtabs(Count~  FamiliarWisdom+Theme, data= Q4.data.W.CWM))
 
 
 ```
@@ -1523,9 +1842,7 @@ Q5.SC.plot<-ggplot(Q5.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip()
   geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom Now")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=7))+labs(x="",y="%")
 Q5.SC.plot
 
-
-
-##BY sfamiliarity with wisdom
+##BY familiarity with wisdom
 Q5.data.W<-all.data %>% group_by(FamiliarWisdom)%>% 
   summarise(across(balance.of.personal...others.interest_q5:personal.resilience_q5, mean, na.rm=T))
 
@@ -1543,6 +1860,92 @@ Q5.W.plot
 
 
 ```
+
+
+## Frequencies by Cognitive Style: Dialectical Thinking
+
+Is there a difference in themes mentioned between experts who show dialecticism in their reasoning about societal change vs. those who do not invoke dialectism?\
+
+It appears that **people invoking dialecticism** in their reasoning were quite similar to those not invoking dialecticism.\
+\
+There are were a noticeable differences: *dialectics* more likely to raise the themes of *self-distancing*, *balancing diverse interests*, *prosocial behavior*, *clear governmental communication*, and *following rules* compared to those who did not show dialecticism.\
+\
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+#Dialectical thinking
+
+Q5.data.Dia<-all.data %>% group_by(Dialectic_Final)%>% 
+  summarise(across(balance.of.personal...others.interest_q5:personal.resilience_q5, mean, na.rm=TRUE))
+
+colnames(Q5.data.Dia)[colnames(Q5.data.Dia)      # Rename two variable names
+                     %in% Q5] <- Q5.q
+Q5.data.Dia$Dialecticism[Q5.data.Dia$Dialectic_Final==0]<-"Not Dialectical"
+Q5.data.Dia$Dialecticism[Q5.data.Dia$Dialectic_Final==1]<-"Dialectical"
+
+Q5.data.Dia.long <- Q5.data.Dia %>% 
+  pivot_longer(-c("Dialectic_Final","Dialecticism"),names_to = "Theme", values_to = "Proportion")
+Q5.Dia.summ<-cbind(Q5.data.Dia.long, Q5.type)
+colnames(Q5.Dia.summ) <- c("Dialectical Code","Dialecticism","Theme","Proportion","Type")  # change column names
+Q5.Dia.summ$Percent<-Q5.Dia.summ$Proportion*100
+Q5.Dia.plot<-ggplot(Q5.Dia.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Dialecticism)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom Now by Cognitive Style")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="%")
+Q5.Dia.plot
+
+```
+
+### Is there a difference in **Common Wisdom Model** themes between dialectical experts vs. those who do not invoke dialectism?
+
+It appears there is a difference in the direction of dialectical experts being likely to mention moral aspirations and meta-cognition, but it is not significant. 
+
+```{r,warning=FALSE,message=FALSE}
+#Are dialectical thinkers more likely to mention core aspects of wisdom as identified by the Common wisdom model per Toronto Wisdom Task Force 2019?
+
+#sum up all morals
+moralsQ5<-c("solidarity_q5",                                   "bipartisanship.and.international.cooperation_q5",
+ "follow.rules_q5",                                
+ "prosocial.behavior_q5",                           
+ "social.connectedness_q5",                         "strive.for.socio.economic.equality_q5",         "take.science.seriously_q5") 
+
+
+#sum up all metacognitive
+metacogQ5<- c("balance.of.personal...others.interest_q5",       
+  "critical.thinking_q5",                                              
+        "long.term.orientation_q5",         "acknowledge.uncertainty.flexibility_q5",                "perspective.taking_q5",                                         
+ "self.distancing_q5",                              "sympathy...compassion_q5"                      ) 
+ 
+#sum the rest
+othersQ5<-c("clear.governmental.communication_q5",   "embrace.new.tech_q5",                             "agency...control_q5",                            
+        "optimism...positivity_q5",                        "learning.from.the.pandemics_q5",                  "improve.communication_q5",
+      "living.in.the.moment_q5", "patience_q5","self.reflection.on.what.is.important_q5",             "personal.resilience_q5") 
+
+all.data$moralsQ5<-rowSums(all.data[moralsQ5])
+all.data$metacogQ5<-rowSums(all.data[metacogQ5])
+all.data$othersQ5<-rowSums(all.data[othersQ5])
+
+
+
+Q5.data.Dia.CWM<-all.data %>% group_by(Dialecticism)%>% 
+  summarise(across(moralsQ5:othersQ5, sum, na.rm=TRUE))%>%
+pivot_longer(-Dialecticism,names_to = "Theme", values_to = "Count")
+
+Q5.Dia.CWM.plot<- ggplot(Q5.data.Dia.CWM,aes(x=Dialecticism,y=Count,fill=Theme))+
+  geom_col(stat="identity")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="Count")
+
+Q5.Dia.CWM.plot #more meta-cognition and more morals among dialectics
+ 
+
+mosaic(xtabs(Count~  Dialecticism+Theme, data= Q5.data.Dia.CWM), shade=TRUE) #but not significant
+
+
+Q5.data.W.CWM<-all.data %>% group_by(FamiliarWisdom)%>% 
+  summarise(across(moralsQ5:othersQ5, sum, na.rm=TRUE))%>%
+pivot_longer(-FamiliarWisdom,names_to = "Theme", values_to = "Count")
+mosaic(xtabs(Count~ FamiliarWisdom+Theme, data= Q5.data.W.CWM), shade=TRUE) #those familiar with wisdom research are more likely to mention meta-cognition, but not significantly so.
+
+chisq.test(xtabs(Count~ FamiliarWisdom+Theme, data= Q5.data.W.CWM))
+
+```
+
 
 ## PCA 
 
@@ -1727,8 +2130,153 @@ fig <- ggplotly(tooltip=c("Percent"), height=1020, width = 690)
 fig <- fig %>% layout(autosize = T) %>% layout(legend = list(x = 0.6, y = 0.07))
 
 fig
+
+
+#graph for the infographic
+data.245.jS<-data.245.j %>% 
+  arrange(desc(rowSums(data.245.j[-1]))) %>% 
+  slice(1:11) 
+
+
+mdS <- melt(data.245.jS, id=(c("Theme")))
+colnames(mdS)<-c("Theme","Variable","Percent")
+
+gS<-ggplot(mdS, aes(x =Percent , y=Theme,fill = Variable), width = 0.5)+
+  geom_bar(stat = "identity")+ 
+  scale_color_tableau() +theme_minimal() +
+  theme(legend.position="bottom")+
+  scale_fill_manual(values=c("#F28E2B", "#4E79A7",  "#59A14F"))+
+  ylab("")+
+  xlab("%") +
+  theme(legend.title = element_blank())
+
+
+
+
 ```
 
+
+# Does dialecticism and knowledge of wisdom scholarship impact type of wisdom experts recommended?
+
+## Dialectical thinking
+
+So far, we just examined relative frequencies for certain wisdom-related themes, separately for each question. We did not account for interdependence between responses by the same person nor did we look at actual likelihood of mentioning one vs. another category (e.g., moral vs. others or metacog vs. others). To do the latter, I restructure the dataset to a long format and perform generalized (binomial) linear mixed model with dichotomous responses (1/0) nested in participants and type of wisdom theme (moral vs. metacog vs. other), cognitive style (dialectical vs. non-dialectical) and their interaction as predictors. If cognitive style of experts qualifies type of category mentioned, we should expect a significant interaction.\
+\
+It turns out, it does not matter, with no significant differences for any of the questions or in total.\
+
+```{r,warning=FALSE,message=FALSE}
+#restructure to long format
+
+wisdom.total<-c("social.connectedness_q2", "social.support_q2",  "evidence.based.decision.making_q2","improved.work.life.balance_q2","acknowledge.of.uncertainty.flexibility_q2","balance.of.personal...others.interest_q2","perspective.taking_q2",
+        "critical.thinking_q2","bipartisanship.and.international.cooperation_q2","solidarity_q2",                        
+        "improve.communication_q2", "intellectual.humility_q2","living.in.the.moment_q2",
+        "learning.from.pandemics_q2","political.engagement...structural.change_q2",
+        "self.reflection.on.what.s.important_q2","shared.humanity_q2","sympathy...compassion_q2", "self.distancing_q2","embrace.new.tech_q2","personal.resilience_q2",
+        "social.awareness_q4" , "balance.of.personal...others.interest_q4" ,  "solidarity_q4",                    "context.sensitivity_q4",                          "bipartisanship.and.international.cooperation_q4", "critical.thinking_q4",                            "evidence.based.decision.making_q4",               "gratitude_q4",                                   
+        "optimism...positivity_q4",                              "improve.communication_q4",                        "long.term.orientation_q4",    "social.support_q4"  ,                  "social.connectedness_q4",               "acknowledge.uncertainty.flexibility_q4",         
+        "living.in.the.moment_q4",                         "patience_q4",                                     "perspective.taking_q4",                           "self.reflection.on.what.s.important_q4",          "shared.humanity_q4",                             
+        "strive.for.socio.economic.equality_q4",           "sympathy...compassion_q4",                        "political.engagement...structural.change_q4",     "self.distancing_q4",
+        "balance.of.personal...others.interest_q5",       
+ "clear.governmental.communication_q5",             "solidarity_q5",                                   "bipartisanship.and.international.cooperation_q5",
+ "critical.thinking_q5",                            "embrace.new.tech_q5",                             "agency...control_q5",                            
+ "follow.rules_q5",                                 "optimism...positivity_q5",                        "learning.from.the.pandemics_q5",                  "improve.communication_q5",
+ "prosocial.behavior_q5",                           "long.term.orientation_q5",         "acknowledge.uncertainty.flexibility_q5",          "living.in.the.moment_q5",
+ "patience_q5",                                     "perspective.taking_q5",                           "self.reflection.on.what.is.important_q5",         "social.connectedness_q5",                        
+ "self.distancing_q5",                              "strive.for.socio.economic.equality_q5",           "sympathy...compassion_q5",                        "take.science.seriously_q5",                       "personal.resilience_q5", "Dialectic_Final","FamiliarWisdom","Name")
+
+wisdom.long<-all.data[wisdom.total] %>% gather(key = "theme", value = "value", -Dialectic_Final,-FamiliarWisdom,-Name)
+
+morals.Q2<-enframe(morals.Q2)
+morals.Q2$Q<-"Q2"
+morals.Q4<-enframe(moralsQ4)
+morals.Q4$Q<-"Q4"
+morals.Q5<-enframe(moralsQ5)
+morals.Q5$Q<-"Q5"
+
+morals<-rbind(morals.Q2,morals.Q4,morals.Q5)
+morals$theme<-morals$value
+morals$type<-"moral"
+
+metacog.Q2<-enframe(metacog.Q2)
+metacog.Q2$Q<-"Q2"
+metacog.Q4<-enframe(metacogQ4)
+metacog.Q4$Q<-"Q4"
+metacog.Q5<-enframe(metacogQ5)
+metacog.Q5$Q<-"Q5"
+metacog<-rbind(metacog.Q2,metacog.Q4,metacog.Q5)
+metacog$theme<-metacog$value
+metacog$type<-"metacog"
+
+others.Q2<-enframe(others.Q2)
+others.Q2$Q<-"Q2"
+others.Q4<-enframe(othersQ4)
+others.Q4$Q<-"Q4"
+others.Q5<-enframe(othersQ5)
+others.Q5$Q<-"Q5"
+others<-rbind(others.Q2,others.Q4,others.Q5)
+others$theme<-others$value
+others$type<-"others"
+
+scores<-select(rbind(morals,metacog,others),-c("name","value"))
+
+wisdom.long.total<-wisdom.long %>% left_join(scores,by="theme")
+
+#Run analyses
+
+## Does it matter if the person is dialectical?
+
+dialect.test<-glmer(value~Dialectic_Final*type*Q+(1|Name),data=wisdom.long.total,family=binomial)
+car::Anova(dialect.test,type="III")   #no significant effect and no interaction 
+
+### test by question: positive
+
+dialect.test.q2<-glmer(value~Dialectic_Final*type+(1|Name),data=wisdom.long.total %>% filter(Q=="Q2"),family=binomial)
+car::Anova(dialect.test.q2,type="III")   #no significant effect and no interaction 
+
+### test by question: negative
+
+dialect.test.q4<-glmer(value~Dialectic_Final*type+(1|Name),data=wisdom.long.total %>% filter(Q=="Q4"),family=binomial)
+car::Anova(dialect.test.q4,type="III")   #no significant effect and no interaction 
+
+### test by question: now
+
+dialect.test.q5<-glmer(value~Dialectic_Final*type+(1|Name),data=wisdom.long.total %>% filter(Q=="Q5"),family=binomial)
+car::Anova(dialect.test.q5,type="III")   #no significant effect and no interaction 
+
+
+```
+
+
+## Does familiarity with wisdom research influence types of categories experts mention in their recommendations?
+
+To address this question, I perform generalized (binomial) linear mixed model with dichotomous responses (1/0) nested in participants and type of wisdom theme (moral vs. metacog vs. other), familiarity with wisdom (yes vs. no) and their interaction as predictors. If familiarity with wisdom qualifies type of category mentioned, we should expect a significant interaction.\
+\
+It turns out, it does not matter for positive recommendations and for recommendations now (as well as in total), though we did observe a significant interaction for wisdom against negative consequences: Experts familiar with wisdom scholarship were significantly more likely to mention meta-cognition than other categories, whereas no such differences among those folks not familiar with wisdom scholarship.\
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+## Does it matter if the person is familiar with wisdom research (supplementary question)?
+
+wis.test<-glmer(value~FamiliarWisdom*type*Q+(1|Name),data=wisdom.long.total,family=binomial)
+car::Anova(wis.test,type="III")   #no significant effect and no interaction 
+
+### test by question: positive
+
+wisdom.test.q2<-glmer(value~FamiliarWisdom*type+(1|Name),data=wisdom.long.total %>% filter(Q=="Q2"),family=binomial)
+car::Anova(wisdom.test.q2,type="III")   #no significant effect and no interaction 
+
+### test by question: negative
+
+wisdom.test.q4<-glmer(value~FamiliarWisdom*type+(1|Name),data=wisdom.long.total %>% filter(Q=="Q4"),family=binomial)
+car::Anova(wisdom.test.q4,type="III")   # significant effect and a sig interaction 
+sjPlot::plot_model(wisdom.test.q4, type="int") #familiar with wisdom are significantly more likely to mention meta-cognition than moral aspirations and (esp. others), whereas no such differences among those folks not familiar with wisdom scholarship
+
+### test by question: now
+
+wisdom.test.q5<-glmer(value~FamiliarWisdom*type+(1|Name),data=wisdom.long.total %>% filter(Q=="Q5"),family=binomial)
+car::Anova(wisdom.test.q5,type="III")   #no significant effect and no interaction 
+
+```
 
 # Relationship of Forecasts & Given Advice
 
