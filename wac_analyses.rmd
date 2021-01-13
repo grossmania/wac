@@ -1,7 +1,7 @@
 ---
 title: "World after Covid: Method & Analyses"
 author: "Igor Grossmann"
-date: "Dec 26,2020"
+date: "Jan 11,2021"
 output:
   rmdformats::html_clean:
     toc: true # table of content true
@@ -58,7 +58,7 @@ library(tibble)
 library(lme4)
 library(ggwordcloud)
 library(showtext)
-library(maptools)
+library(car)
 
 
 ```
@@ -68,7 +68,6 @@ setwd("C:/Users/igrossma/Documents/GitHub/wac") #change to your preferred workin
 codes.data<-read.csv("codes.csv")
 transcripts<-read.csv("transcripts.csv")
 codes.outsider<-read.csv("outside_dialectic_codes.csv")
-country_names<-read.csv("Country_Names.csv")
 
 all.data<- transcripts %>% full_join(codes.data, by = c("Name"))
 all.data<- all.data %>% full_join(codes.outsider, by = c("Name"))
@@ -81,12 +80,15 @@ all.data<-all.data[order(as.Date(all.data$date, format="%Y/%m/%d")),] #resort by
 
 all.data$Week <- as.Date(cut(all.data$date,
                         breaks = "week",
-                        start.on.monday = FALSE)) # changes weekly break point to Sunday
+                        start.on.monday = T)) # changes weekly break point to Sunday
 
 
 all.data %>% group_by(date) %>% count() %>% ggplot() + geom_line(aes(date,n, group = 1)) #how many interviews on what days
 
 all.data <- all.data %>% mutate(month = month(date))
+
+all.data <- all.data %>% mutate(week = week(date))
+
 
 all.data %>% group_by(month) %>% count()  #%>% ggplot() + geom_bar(aes(month,n), stat ='identity')
 
@@ -126,14 +128,14 @@ Since June 2020, I have interviewed 57 of the [top social, behavioral, and polit
 
 ## Quantifying narratives
 
-To quantify themes in interviews, we relied on a novel **Multi-step Bottom-up/Top-down Cross-validation** method for analyzing and cross-referencing unstructured qualitative data. in the method, we first rely on classic *grounded approach*, with two scholars going through the first set of 30 interviews 9June-July) to identify unique themes for each question in an iterative fashion. Hereby, we followed the following guidelines:\
+To quantify themes in interviews, we relied on a novel **Multi-step Bottom-up/Top-down Cross-validation** method for analyzing and cross-referencing unstructured qualitative data. in the method, we first rely on classic *grounded approach*, with two scholars going through the first set of 30 interviews June-July) to identify unique themes for each question in an iterative fashion. Hereby, we followed the following guidelines:\
 
 *   Each theme should be present at least twice across interviews;\
 *   Themes should have minimum overlap. In other words, they should not be directly reducible, though they could show natural dependencies (e.g., "importance of social connections" and "social support").
 
 In this initial phase, two independent raters, one of whom was blind to the identity of the interviewees, coded statements on prevalence of determined themes. Initial reliability was good (over 90% agreement), with disagreements resolved via group discussion with the senior scholar. Following iterative procedure, in case additional themes were identified that were not covered by the original categories, they were added to the codebook and statements were recoded for presence of the category.\
 \
-In the second stage, after interviews were extended into September - December 2020, another two coders (one of whom coded the initial set of 30 interviews) coded the new batch of interviews. Once again, agreement was high (90+%), with disagreements resolved in a group discussion. In this stage, coders identified several additional themes, which were again added to the codebook, with all interviewed cross-examined for presense of these themes. The procedure was repeated four times, until we identified the final list of themes for each question. Here, we also included some simple-occurance themes if they were fully distinct and addressed the questions.\
+In the second stage, after interviews were extended into September - December 2020, another two coders (one of whom coded the initial set of 30 interviews) coded the new batch of interviews. Once again, agreement was high (90+%), with disagreements resolved in a group discussion. In this stage, coders identified several additional themes, which were again added to the codebook, with all interviewed cross-examined for presence of these themes. The procedure was repeated four times, until we identified the final list of themes for each question. Here, we also included some simple-occurrence themes if they were fully distinct and addressed the questions.\
 
 Coding open-ended interviews is inherently subjective. Even in the presence of high reliability between coders (as in our case), validity of the coding may be compromised due to various additional factors (e.g., a particular sentiment in a response, agreement with the opinion raised in the interview response). To address this issue, we introduce a novel *top-down cross-validation approach*: \
 
@@ -144,12 +146,12 @@ The idea behind this cross-validation approach is that this top-down, bird’s e
 
 ## Quantifying reasoning style
 
-Prior research on forecasting suggests that certain cogntive style may be more conducive for accurate forecasting of [geopolitical events](https://doi.org/10.1177/1745691615577794), [affect](https://doi.org/10.1037/0022-3514.78.5.821) and emotions toward close others in [social conflict situations](https://psyarxiv.com/a5fgu). Specifically, research suggests that superior forecasters tend to show greater likelihood of embracing:\
+Prior research on forecasting suggests that a certain cognitive style may be more conducive for accurate forecasting of [geopolitical events](https://doi.org/10.1177/1745691615577794), [affect](https://doi.org/10.1037/0022-3514.78.5.821) and emotions toward close others in [social conflict situations](https://psyarxiv.com/a5fgu). Specifically, research suggests that superior forecasters tend to show greater likelihood of embracing:\
 
 *   an **outsider viewpoint** and consider additional baserate information (rather than focus on the focal event alone);\
 *   more complex, **dialectical thinking** (aspects of which are central to the notions of [integrative complexity](https://doi.org/10.1037/0022-3514.49.6.1565) and [wisdom](https://doi.org/10.1080/1047840X.2020.1750917)) -- i.e., recognize the uncertainty and qualify forecasts by expressing multi-determined nature of predictions and considering both positive and negative aspects of the same forecast.\
 
-I sought to quantify the extent to which top experts in behaviral and social sciences apply these aspects of reasoning in their reflections. To this end, my team focused on the forecast-related questions (Q1: positive consequences / Q3: negative consequences). Here, we could categorize responses as those invoking *outsider viewpoint* and *dialectical reasoning* and compare % frequencies and type of forecasts among these two groups. A codebook for both categorization types is [here](https://github.com/grossmania/wac/blob/main/codebook_outsider.md). Because dialectical reasoning categorization involved both questions, each participant received only one code (yes=1 / no = 0). For outsider viewpoint, we separately categorized positive and negative responses, which allowed us to compare likelihood of invokingoutsider-view information across questions. Two research assistants, who did not engage in coding prior categories), independently categorized responses on both categories. As analyses below show, inter-raiter reliability was medium-large (rules of thumb for Cohen's kappa suggest *h* =.5 as medium effect size and *k*h* = .8 as large effect size). Disagreements were resolved in a discussion with the senior author and another co-author on the project.
+I sought to quantify the extent to which top experts in behavioral and social sciences apply these aspects of reasoning in their reflections. To this end, my team focused on the forecast-related questions (Q1: positive consequences / Q3: negative consequences). Here, we could categorize responses as those invoking *outsider viewpoint* and *dialectical reasoning* and compare % frequencies and type of forecasts among these two groups. A codebook for both categorization types is [here](https://github.com/grossmania/wac/blob/main/codebook_outsider.md). Because dialectical reasoning categorization involved both questions, each participant received only one code (yes=1 / no = 0). For outsider viewpoint, we separately categorized positive and negative responses, which allowed us to compare likelihood of invokingoutsider-view information across questions. Two research assistants, who did not engage in coding prior categories), independently categorized responses on both categories. As analyses below show, inter-rater reliability was medium-large (rules of thumb for Cohen's kappa suggest *h* =.5 as medium effect size and *h* = .8 as large effect size). Disagreements were resolved in a discussion with the senior author and another co-author on the project.
 
 ```{r reliability of codes,warning=FALSE,message=FALSE}
 kappa2(all.data[c("Q1_Outside_CC","Q1_Outside_OM")]) #Question 1: Outsider Viewpoint
@@ -212,7 +214,7 @@ ggplot(domains, aes(label = Var1, size = Freq, color=as.factor(Type))) +
 Only 20% were familiar with wisdom research (either in philosophy or in psychology).
 
 
-# Cognitive Style Differences amogn Experts: Breakdown by dialectical thinking & outsider viewpoint
+# Cognitive Style Differences among Experts: Breakdown by dialectical thinking & outsider viewpoint
 
 Almost half of the experts invoked dialectical thinking when reflecting on future consequences of the pandemic. In other words, they pointed out that the same theme could have both positive and negative consequences. This way, they also communicated their uncertainty in the downstream impact of selected themes.\
 
@@ -403,6 +405,17 @@ Q1.Dia.plot<-ggplot(Q1.Dia.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip
   geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Positive Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="%")
 Q1.Dia.plot
 
+Q1.sum.Dia<-all.data %>% group_by(Dialectic_Final)%>% 
+  summarise(across(shared.humanity_q1:sympathy...compassion_q1, sum))
+
+#test significance of the effect - prevalence of themes in the dialectical vs. non-dialectical samples.
+Q1.data.Dia.long<-all.data %>% pivot_longer(cols=shared.humanity_q1:sympathy...compassion_q1, names_to="Theme",values_to="Presence")
+
+Q1.dia.result<-glmer(Presence ~ Theme*Dialectic_Final + (1 | Name), data = Q1.data.Dia.long, family = binomial)
+summary(Q1.dia.result)
+Anova(Q1.dia.result,type="III") #no sig difference
+
+
 #outsider Viewpoint
 
 Q1.data.Outsider<-all.data %>% group_by(Q1_Outside_Final)%>% 
@@ -533,6 +546,15 @@ all.data$M[all.data$month==9]<-"3. Sept/early Oct"
 all.data$M[all.data$date=="2020-10-06 UTC"]<-"3. Sept/early Oct"
 all.data$M[all.data$date=="2020-10-07 UTC"]<-"3. Sept/early Oct"
 all.data$M[all.data$date=="2020-10-09 UTC"]<-"3. Sept/early Oct"
+
+all.data$M.n<-4
+all.data$M.n[all.data$month==6]<-1
+all.data$M.n[all.data$month==7]<-2
+all.data$M.n[all.data$month==9]<-3
+all.data$M.n[all.data$date=="2020-10-06 UTC"]<-3
+all.data$M.n[all.data$date=="2020-10-07 UTC"]<-3
+all.data$M.n[all.data$date=="2020-10-09 UTC"]<-3
+
 
 table(all.data$M)
 
@@ -750,6 +772,17 @@ Q3.Dia.plot<-ggplot(Q3.Dia.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip
   geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Negative Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom",legend.text=element_text(size=8))+labs(x="",y="%")
 Q3.Dia.plot
 
+Q3.sum.Dia<-all.data %>% group_by(Dialectic_Final)%>% 
+  summarise(across(estrangement...alienation_q3:autobiographical.memory_q3, sum, na.rm=TRUE))
+
+#test significance of the effect - prevalence of themes in the dialectical vs. non-dialectical samples.
+Q3.data.Dia.long<-all.data %>% pivot_longer(cols=estrangement...alienation_q3:autobiographical.memory_q3, names_to="Theme",values_to="Presence")
+
+Q3.dia.result<-glmer(Presence ~ Theme*Dialectic_Final + (1 | Name), data = Q3.data.Dia.long, family = binomial)
+summary(Q3.dia.result)
+Anova(Q3.dia.result,type="III")
+
+
 #outsider Viewpoint
 
 Q3.data.Outsider<-all.data %>% group_by(Q3_Outside_Final)%>% 
@@ -886,21 +919,6 @@ ggplot(Q3.data.TT, aes(x=Period, y=Percent, group = Type, color=Type, fill=Type)
     geom_point(shape=21,  size=4) +
    theme_pubclean()+scale_color_d3()+scale_fill_d3()
 
-#BY EACH THEME
-#Q3.data.T.ALL<-all.data %>% group_by(M)%>%
-#   summarise_at(Q3, funs(sum))
-#colnames(Q3.data.T.ALL)[colnames(Q3.data.T.ALL)      # Rename variable names
-#                  %in% Q3] <- Q3.q
-#
-#Q3.data.T.ALL.long <-Q3.data.T.ALL %>%
-#    gather(domain, frequency, -c(M), convert = TRUE)
-#colnames(Q3.data.T.ALL.long) <- c("Period","Theme","Count")  # change column names
-#Q3.data.TT.ALL.long<-full_join(Q3.data.T.ALL.long,countByMonth,, by = "Period")
-#Q3.data.TT.ALL.long$Percent<-(Q3.data.TT.ALL.long$Count/Q3.data.TT.ALL.long$N)*100
-#ggplot(Q3.data.TT.ALL.long, aes(x=Period, y=Percent, group = Theme, color=Theme, fill=Theme)) + 
-#    geom_line( ) +
-#  geom_point(shape=21,  size=4) +
-#  theme_pubclean()
 
 ```
 
@@ -951,20 +969,16 @@ data.Q13<-data.Q13%>%
   mutate(Above = ifelse(Frequency > 0, TRUE, FALSE),
          Theme = factor(Theme, levels = .$Theme))
 # plot Lollipop chart
-fig<-ggplot(data.Q13, aes(x=Theme, y=Frequency,color = group, tooltip=group))+
-  geom_point(size=6)+
+fig<-ggplot(data.Q13, aes(x=Theme, y=Frequency,color = Above, tooltip=group))+
+   geom_segment(aes(x=Theme, xend=Theme, y=0, yend=Frequency), color = "burlywood3", size = 0.6) +
+  geom_point(size=3)+
   #geom_text(color = 'black', size = 2)+
-  scale_y_continuous(limits = c(-25, 25))+
-  theme_light() +
-  coord_flip() +
-  theme(
-    panel.grid.major.x = element_blank(),
-    panel.border = element_blank(),
-    axis.ticks.x = element_blank()
-  ) +scale_color_tableau()+
+   scale_y_continuous(breaks=c(-20,-10,0,10,25),
+        labels=c("20%", "10%", "0","10%","25%"))+
+   coord_flip() +scale_color_d3()+theme_pubclean()+
   xlab("Themes")+geom_hline(yintercept = 0, linetype="dashed", 
-                color = "black", size=1)+ylab("<== Negative Consequences vs. Positive Consequences ==>\n%")+
-    theme(text = element_text(size = 8),legend.title=element_blank(), legend.position="bottom",legend.text=element_text(size=7))
+                color = "black", size=0.7)+ylab("")+
+    theme(legend.title=element_blank(), legend.position="none",legend.text=element_text(size=5))
 fig
 ggplotly(fig, height = 920)
 
@@ -1006,6 +1020,90 @@ fig13x
 
 ```
 
+
+# Change in Top Consequences over Time
+
+We examined whether top positive and negative categorized changed over the course of the pandemic. To this end, we focused on the most frequent six themes mentioned across positive and negative forecasts.\
+Experts were more likely to predict greater will for political and structural societal change, as well as greater prejudice and racism after George Floyd death and anti-police brutality protests in early summer. When approaching new lockdowns in the fall of 2020, topics such as social inequality became more dominant in expert reflections. And in the week preceding and following the highly polarized 2020 US Presidential election in early November, solidarity and political conflict entered the centerstage. Because experts were explicitly instructed to provide forecasts for the timeframe of several years after the pandemic, the event-contingent fluctuation in forecast could reflect focalism in expert predictions (Wilson, Wheatly, Meyers, Gilbert, & Axsom, 2000) or Bayesian information updating based on pressing societal events of the moment. Regardless of possible reasons, the cross-temporal variability in forecasts emphasizes cross-temporal uncertainty in expert predictions.\
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+top.cat.5<-c("social.connectedness_q1","political.engagement...structural.change_q1","solidarity_q1","reconsidering.habits_q1","embrace.new.tech_q1","political.conflict_q3","prejudice...racism_q3","exacerbated.social.inequality_q3","mistrust_q3","decreased.well.being_q3")
+top.cat<-c("social.connectedness_q1","political.engagement...structural.change_q1","solidarity_q1","political.conflict_q3","prejudice...racism_q3","exacerbated.social.inequality_q3")
+
+#perform logistic regression. to test whether there is a difference by month.
+
+temporal.data<-all.data %>% pivot_longer(cols=top.cat, names_to="theme",values_to="count")
+temporal.data$Theme[temporal.data$theme=="social.connectedness_q1"]<-"Social\nConnectedness"
+temporal.data$Theme[temporal.data$theme=="political.engagement...structural.change_q1"]<-"Polit.\nStructure-Change"
+temporal.data$Theme[temporal.data$theme=="solidarity_q1"]<-"Solidarity"
+temporal.data$Theme[temporal.data$theme=="political.conflict_q3"]<-"Political Conflict"
+temporal.data$Theme[temporal.data$theme=="prejudice...racism_q3"]<-"Prejudice Racism"
+temporal.data$Theme[temporal.data$theme=="exacerbated.social.inequality_q3"]<-"Social Inequality"
+
+temporal.data$pos[temporal.data$theme=="social.connectedness_q1"]<-1
+temporal.data$pos[temporal.data$theme=="political.engagement...structural.change_q1"]<-1
+temporal.data$pos[temporal.data$theme=="solidarity_q1"]<-1
+temporal.data$pos[temporal.data$theme=="political.conflict_q3"]<-0
+temporal.data$pos[temporal.data$theme=="prejudice...racism_q3"]<-0
+temporal.data$pos[temporal.data$theme=="exacerbated.social.inequality_q3"]<-0
+
+temp.result.pos<-glmer(count ~ week*Theme + (1 | Name), data = subset(temporal.data,pos==1), family = binomial)
+Anova(temp.result.pos,type="III")
+pos.pl<-sjPlot::plot_model(temp.result.pos,type="int")
+
+temp.result.neg<-glmer(count ~ week*Theme + (1 | Name), data = subset(temporal.data,pos==0), family = binomial)
+Anova(temp.result.neg,type="III")
+neg.pl<-sjPlot::plot_model(temp.result.neg,type="int")
+
+temp.result.pos.emt<-emmeans::emtrends(temp.result.pos,"Theme",var="week")
+pairs(temp.result.pos.emt)
+
+temp.result.neg.emt<-emmeans::emtrends(temp.result.neg,"Theme",var="week")
+pairs(temp.result.neg.emt)
+
+pos.plot<-pos.pl+scale_x_continuous(breaks=c(25,30,37,42,49),labels=c("15 June", "20 July", "9 Sept","12 Oct","30 Nov"))+ylim(NA,.8)+scale_y_continuous(breaks=c(0,.2,.4,.6,.8),
+        labels=c("0%", "20%", "40%","60%","80%"))+
+   theme_pubclean()+scale_color_colorblind()+scale_fill_colorblind()+theme(legend.title=element_blank())+ylab("Theme's Likelihood")+xlab("")+ggtitle("")
+neg.plot<-neg.pl+scale_x_continuous(breaks=c(25,30,37,42,49),labels=c("15 June", "20 July", "9 Sept","12 Oct","30 Nov"))+ylim(NA,.8)+scale_y_continuous(breaks=c(0,.2,.4,.6,.8),
+         labels=c("0%", "20%", "40%","60%","80%"))+
+   theme_pubclean()+scale_color_colorblind()+scale_fill_colorblind()+theme(legend.title=element_blank())+ylab("Theme's Likelihood")+xlab("")+ggtitle("")
+
+ggarrange(pos.plot,neg.plot,ncol=1,label.x="Month")
+
+##raw score version (proportion for different periods)
+
+temporal.change<-all.data %>% group_by(M)%>%
+  summarise(across(top.cat, sum,na.rm=T))
+
+top.cat.names.5<-c("Period","Social\nConnectedness","Polit.\nStructure-Change","Solidarity","Reconsider Habits","Embrace New Tech","Political Conflict","Prejudice Racism","Social Inequality","Mistrust","Low Wellbeing")
+temporal.change.type.5<-c("Positive","Positive","Positive","Positive","Positive","Negative","Negative","Negative","Negative","Negative")
+
+top.cat.names<-c("Period","Social\nConnectedness","Polit.\nStructure-Change","Solidarity","Political Conflict","Prejudice Racism","Social Inequality")
+temporal.change.type<-c("Positive","Positive","Positive","Negative","Negative","Negative")
+
+colnames(temporal.change) <- top.cat.names
+temporal.change.long <- temporal.change %>% 
+  pivot_longer(-Period,names_to = "Theme", values_to = "Count")
+
+temporal.change.long<-cbind(temporal.change.long, temporal.change.type)
+colnames(temporal.change.long) <- c("Period","Theme","Count","Type")  # change column names
+temporal.change.long <- temporal.change.long[order(temporal.change.long$Count), ]  # sort
+
+countByMonth<-all.data %>% group_by(M)%>% 
+  summarise(count = n() )
+
+colnames(countByMonth) <- c("Period","N")  # change column names
+
+temporal.change.TT<-full_join(temporal.change.long,countByMonth, by = "Period")
+temporal.change.TT$Percent<-(temporal.change.TT$Count/temporal.change.TT$N)*100
+
+temp.change.graph<-ggplot(temporal.change.TT, aes(x=Period, y=Percent, group = Theme, color=Theme, fill=Theme)) + 
+    geom_line( ) +
+    geom_point(shape=21,  size=4) +facet_wrap(~Type, ncol=1,as.table = FALSE)+
+   theme_pubclean()+scale_color_d3()+scale_fill_d3()+theme(legend.title=element_blank())
+temp.change.graph
+
+```
 # Wisdom for Positive Consequences
 
 ## Summary
@@ -1127,6 +1225,15 @@ Q2.W.plot<-ggplot(Q2.W.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() +
   geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom for Positive Consequences\nby Wisdom Familarity")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
 Q2.W.plot
 
+
+#test whether familiarity with wisdom impacts type of themes selected
+Q2.data.Famil.long<-all.data %>% pivot_longer(cols=social.connectedness_q2:personal.resilience_q2, names_to="Theme",values_to="Presence")
+
+Q2.Famil.result<-glmer(Presence ~ Theme*FamiliarWisdom + (1 | Name), data = Q2.data.Famil.long, family = binomial)
+summary(Q2.Famil.result)
+Anova(Q2.Famil.result,type="III")
+#no significant difference by familiarity with wisdom scholarship
+
 ```
 
 
@@ -1162,7 +1269,8 @@ Q2.Dia.plot
 
 ### Is there a difference in **Common Wisdom Model** themes between dialectical experts vs. those who do not invoke dialectism?
 
-It appears there is a difference in the direction of dialectical experts more likely to mention moral aspirations and meta-cognition, but it is not significant.
+It appears there is a significant difference in overall prevalence of CWM components (morals and meta-cog) over other categories. Further, there is a trend toward this difference being more pronounced among folks reasoning in a dialectical fashion about their forecasts (z-score ratio of 1.61 to 1: 4.08 vs. 2.53).
+
 
 ```{r,warning=FALSE,message=FALSE}
 #Are dialectical thinkers more likely to mention core aspects of wisdom as identified by the Common wisdom model per Toronto Wisdom Task Force 2019?
@@ -1182,11 +1290,34 @@ others.Q2<-c("evidence.based.decision.making_q2","improved.work.life.balance_q2"
 all.data$morals.Q2<-rowSums(all.data[morals.Q2])
 all.data$metacog.Q2<-rowSums(all.data[metacog.Q2])
 all.data$others.Q2<-rowSums(all.data[others.Q2])
+all.data$CWM.Q2<-rowSums(all.data[c("morals.Q2","metacog.Q2")])
 
 all.data$Dialecticism[all.data$Dialectic_Final==0]<-"Not Dialectical"
 all.data$Dialecticism[all.data$Dialectic_Final==1]<-"Dialectical"
 
+Q2.dia.data<-all.data %>% pivot_longer(cols=morals.Q2:others.Q2, names_to="type",values_to="count")
 
+Q2.dia.result<-glmer(count ~ type*Dialecticism + (1 | Name), data = Q2.dia.data, family = poisson)
+Anova(Q2.dia.result,type="III") #no significant differences
+sjPlot::plot_model(Q2.dia.result,type="int")
+
+Q2.dia.result.emt<-emmeans::emmeans(Q2.dia.result,"type",var="Dialecticism")
+pairs(Q2.dia.result.emt)
+
+#contrast of cWM (morals and meta-cog) vs. the rest
+
+Q2.dia.data.C<-all.data %>% pivot_longer(cols=c("others.Q2","CWM.Q2"), names_to="type",values_to="count")
+
+Q2.dia.result.C<-glmer(count ~ type*Dialecticism + (1 | Name), data = Q2.dia.data.C, family = poisson)
+Anova(Q2.dia.result.C,type="III") #no significant differences
+sjPlot::plot_model(Q2.dia.result.C,type="int")
+
+Q2.dia.result.C.emt<-emmeans::emmeans(Q2.dia.result.C,"type",by="Dialecticism")
+pairs(Q2.dia.result.C.emt)
+
+
+
+#look at it in terms of raw counts
 Q2.data.Dia.CWM<-all.data %>% group_by(Dialecticism)%>% 
   summarise(across(morals.Q2:others.Q2, sum, na.rm=TRUE))%>%
 pivot_longer(-Dialecticism,names_to = "Theme", values_to = "Count")
@@ -1277,8 +1408,11 @@ plot(Q2.network,
 Q2.ceb <- cluster_edge_betweenness(Q2.network) 
 
 dendPlot(Q2.ceb, mode="hclust")
-plot(Q2.ceb, Q2.network, axes=T, vertex.label.color="black", edge.width=seq(1,10)) 
+edge.start <- ends(Q2.network, es=E(Q2.network), names=F)[,1]
+edge.col <- V(Q2.network)$color[edge.start]
 
+plot(Q2.ceb, Q2.network, axes=F, ,vertex.shape="none",edge.color=edge.col, edge.curved=.1,
+     vertex.label.color="black", vertex.label.font=1,vertex.label.dist=0.5,layout=layout_with_fr(Q2.network)) 
 
 
 ```
@@ -1469,6 +1603,13 @@ Q4.W.plot<-ggplot(Q4.W.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() +
   geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom against Negative Consequences\nby Wisdom Familarity")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
 Q4.W.plot
 
+#test whether familiarity with wisdom impacts type of themes selected
+Q4.data.Famil.long<-all.data %>% pivot_longer(cols=social.awareness_q4:self.distancing_q4, names_to="Theme",values_to="Presence")
+
+Q4.Famil.result<-glmer(Presence ~ Theme*FamiliarWisdom + (1 | Name), data = Q4.data.Famil.long, family = binomial)
+summary(Q4.Famil.result)
+Anova(Q4.Famil.result,type="III")
+#no significant difference by familiarity with wisdom scholarship
 
 ```
 
@@ -1506,7 +1647,8 @@ Q4.Dia.plot
 
 ### Is there a difference in **Common Wisdom Model** themes between dialectical experts vs. those who do not invoke dialectism?
 
-It appears there is a difference in the direction of dialectical experts *less* likely to mention moral aspirations and meta-cognition, but it is not significant. In fact, both groups are virtually indistinguishable *p* = .870.
+No group difference. We observe a main effect: both groups are sig more likely to favor CWM vs. other themes.
+
 
 ```{r,warning=FALSE,message=FALSE}
 #Are dialectical thinkers more likely to mention core aspects of wisdom as identified by the Common wisdom model per Toronto Wisdom Task Force 2019?
@@ -1523,14 +1665,37 @@ metacogQ4<- c("social.awareness_q4" , "balance.of.personal...others.interest_q4"
 #sum the rest
 othersQ4<-c("evidence.based.decision.making_q4",    "optimism...positivity_q4",                              "improve.communication_q4",  "living.in.the.moment_q4",                         "patience_q4",    "self.reflection.on.what.s.important_q4") 
 
-all.data$moralsQ4<-rowSums(all.data[moralsQ4])
-all.data$metacogQ4<-rowSums(all.data[metacogQ4])
-all.data$othersQ4<-rowSums(all.data[othersQ4])
+all.data$morals.Q4<-rowSums(all.data[moralsQ4])
+all.data$metacog.Q4<-rowSums(all.data[metacogQ4])
+all.data$others.Q4<-rowSums(all.data[othersQ4])
+
+all.data$CWM.Q4<-rowSums(all.data[c("morals.Q4","metacog.Q4")])
+
+Q4.dia.data<-all.data %>% pivot_longer(cols=morals.Q4:others.Q4, names_to="type",values_to="count")
+
+Q4.dia.result<-glmer(count ~ type*Dialecticism + (1 | Name), data = Q4.dia.data, family = poisson)
+Anova(Q4.dia.result,type="III") #no significant differences
+sjPlot::plot_model(Q4.dia.result,type="int")
+
+Q4.dia.result.emt<-emmeans::emmeans(Q4.dia.result,"type",var="Dialecticism")
+pairs(Q4.dia.result.emt)
+
+#contrast of cWM (morals and meta-cog) vs. the rest
+
+Q4.dia.data.C<-all.data %>% pivot_longer(cols=c("others.Q4","CWM.Q4"), names_to="type",values_to="count")
+
+Q4.dia.result.C<-glmer(count ~ type*Dialecticism + (1 | Name), data = Q4.dia.data.C, family = poisson)
+Anova(Q4.dia.result.C,type="III") #no significant differences
+sjPlot::plot_model(Q4.dia.result.C,type="int")
+
+Q4.dia.result.C.emt<-emmeans::emmeans(Q4.dia.result.C,"type",by="Dialecticism")
+pairs(Q4.dia.result.C.emt)
+
 
 
 
 Q4.data.Dia.CWM<-all.data %>% group_by(Dialecticism)%>% 
-  summarise(across(moralsQ4:othersQ4, sum, na.rm=TRUE))%>%
+  summarise(across(morals.Q4:others.Q4, sum, na.rm=TRUE))%>%
 pivot_longer(-Dialecticism,names_to = "Theme", values_to = "Count")
 
 Q4.Dia.CWM.plot<- ggplot(Q4.data.Dia.CWM,aes(x=Dialecticism,y=Count,fill=Theme))+
@@ -1548,6 +1713,12 @@ pivot_longer(-FamiliarWisdom,names_to = "Theme", values_to = "Count")
 mosaic(xtabs(Count~  FamiliarWisdom+Theme, data= Q4.data.W.CWM), shade=TRUE) #those familiar with wisdom research are significantly more likely to mention meta-cognition than those not familiar with wisdom research.
 
 chisq.test(xtabs(Count~  FamiliarWisdom+Theme, data= Q4.data.W.CWM))
+Q4.famil.result<-glmer(count ~ type*FamiliarWisdom + (1 | Name), data = Q4.dia.data, family = poisson)
+Anova(Q4.famil.result,type="III") #no significant differences
+sjPlot::plot_model(Q4.famil.result,type="int")
+
+Q4.famil.result.emt<-emmeans::emmeans(Q4.famil.result,"type",by="FamiliarWisdom")
+pairs(Q4.famil.result.emt) #  folks familiar with wisdom research more likely to mention metacog vs. other categories, whereas folks not familiar with wisdom more likely to mention morals vs. others. No sig differences in preference for meta-cog vs. morals in both groups.
 
 
 ```
@@ -1629,7 +1800,11 @@ plot(Q4.network,
 Q4.ceb <- cluster_edge_betweenness(Q4.network) 
 
 dendPlot(Q4.ceb, mode="hclust")
-plot(Q4.ceb, Q4.network, axes=T, vertex.label.color="black", edge.width=seq(1,10)) 
+edge.start <- ends(Q4.network, es=E(Q4.network), names=F)[,1]
+edge.col <- V(Q4.network)$color[edge.start]
+
+plot(Q4.ceb, Q4.network, axes=F, ,vertex.shape="none",edge.color=edge.col, edge.curved=.1,
+     vertex.label.color="black", vertex.label.font=1,vertex.label.dist=0.5,layout=layout_with_fr(Q4.network)) 
 
 
 ```
@@ -1787,6 +1962,10 @@ ggplot(Q5.summ, aes(x=Theme, y=Percent, color=Type)) +
 ```
 
 
+
+
+
+
 ## How many themes per person?
 
 Did people just report 1-2 themes or a great number of themes? How do such trends vary across people?\
@@ -1858,6 +2037,13 @@ Q5.W.plot<-ggplot(Q5.W.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() +
   geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom Now by Wisdom Familiarity")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=7))+labs(x="",y="%")
 Q5.W.plot
 
+#test whether familiarity with wisdom impacts type of themes selected
+Q5.data.Famil.long<-all.data %>% pivot_longer(cols=balance.of.personal...others.interest_q5:personal.resilience_q5, names_to="Theme",values_to="Presence")
+
+Q5.Famil.result<-glmer(Presence ~ Theme*FamiliarWisdom + (1 | Name), data = Q5.data.Famil.long, family = binomial)
+summary(Q5.Famil.result)
+Anova(Q5.Famil.result,type="III")
+#no significant difference by familiarity with wisdom scholarship
 
 ```
 
@@ -1895,7 +2081,7 @@ Q5.Dia.plot
 
 ### Is there a difference in **Common Wisdom Model** themes between dialectical experts vs. those who do not invoke dialectism?
 
-It appears there is a difference in the direction of dialectical experts being likely to mention moral aspirations and meta-cognition, but it is not significant. 
+It appears there is a difference in the direction of dialectical experts being likely to mention moral aspirations and meta-cognition, but it is not significant (p = .0597). No significant differences between experts familiar with wisdom research and those not familiar.
 
 ```{r,warning=FALSE,message=FALSE}
 #Are dialectical thinkers more likely to mention core aspects of wisdom as identified by the Common wisdom model per Toronto Wisdom Task Force 2019?
@@ -1918,14 +2104,35 @@ othersQ5<-c("clear.governmental.communication_q5",   "embrace.new.tech_q5",     
         "optimism...positivity_q5",                        "learning.from.the.pandemics_q5",                  "improve.communication_q5",
       "living.in.the.moment_q5", "patience_q5","self.reflection.on.what.is.important_q5",             "personal.resilience_q5") 
 
-all.data$moralsQ5<-rowSums(all.data[moralsQ5])
-all.data$metacogQ5<-rowSums(all.data[metacogQ5])
-all.data$othersQ5<-rowSums(all.data[othersQ5])
+all.data$morals.Q5<-rowSums(all.data[moralsQ5])
+all.data$metacog.Q5<-rowSums(all.data[metacogQ5])
+all.data$others.Q5<-rowSums(all.data[othersQ5])
 
+all.data$CWM.Q5<-rowSums(all.data[c("morals.Q5","metacog.Q5")])
+
+Q5.dia.data<-all.data %>% pivot_longer(cols=morals.Q5:others.Q5, names_to="type",values_to="count")
+
+Q5.dia.result<-glmer(count ~ type*Dialecticism + (1 | Name), data = Q5.dia.data, family = poisson)
+Anova(Q5.dia.result,type="III") #no significant differences
+sjPlot::plot_model(Q5.dia.result,type="int")
+
+Q5.dia.result.emt<-emmeans::emmeans(Q5.dia.result,"type",var="Dialecticism")
+pairs(Q5.dia.result.emt)
+
+#contrast of cWM (morals and meta-cog) vs. the rest
+
+Q5.dia.data.C<-all.data %>% pivot_longer(cols=c("others.Q5","CWM.Q5"), names_to="type",values_to="count")
+
+Q5.dia.result.C<-glmer(count ~ type*Dialecticism + (1 | Name), data = Q5.dia.data.C, family = poisson)
+Anova(Q5.dia.result.C,type="III") #no significant differences
+sjPlot::plot_model(Q5.dia.result.C,type="int")
+
+Q5.dia.result.C.emt<-emmeans::emmeans(Q5.dia.result.C,"type",by="Dialecticism")
+pairs(Q5.dia.result.C.emt)
 
 
 Q5.data.Dia.CWM<-all.data %>% group_by(Dialecticism)%>% 
-  summarise(across(moralsQ5:othersQ5, sum, na.rm=TRUE))%>%
+  summarise(across(morals.Q5:others.Q5, sum, na.rm=TRUE))%>%
 pivot_longer(-Dialecticism,names_to = "Theme", values_to = "Count")
 
 Q5.Dia.CWM.plot<- ggplot(Q5.data.Dia.CWM,aes(x=Dialecticism,y=Count,fill=Theme))+
@@ -1940,9 +2147,19 @@ mosaic(xtabs(Count~  Dialecticism+Theme, data= Q5.data.Dia.CWM), shade=TRUE) #bu
 Q5.data.W.CWM<-all.data %>% group_by(FamiliarWisdom)%>% 
   summarise(across(moralsQ5:othersQ5, sum, na.rm=TRUE))%>%
 pivot_longer(-FamiliarWisdom,names_to = "Theme", values_to = "Count")
+
 mosaic(xtabs(Count~ FamiliarWisdom+Theme, data= Q5.data.W.CWM), shade=TRUE) #those familiar with wisdom research are more likely to mention meta-cognition, but not significantly so.
 
 chisq.test(xtabs(Count~ FamiliarWisdom+Theme, data= Q5.data.W.CWM))
+
+Q5.famil.result<-glmer(count ~ type*FamiliarWisdom + (1 | Name), data = Q5.dia.data, family = poisson)
+Anova(Q5.famil.result,type="III") #no significant differences
+sjPlot::plot_model(Q5.famil.result,type="int")
+
+Q5.famil.result.emt<-emmeans::emmeans(Q5.famil.result,"type",by="FamiliarWisdom")
+pairs(Q5.famil.result.emt)
+
+pairs(emmeans::emmeans(Q5.famil.result,"FamiliarWisdom",by="type"))
 
 ```
 
@@ -1985,7 +2202,7 @@ Q5.cor<-partial.r(all.data,Q5,cs(tokens.Q5),method="spearman")
 row.names(Q5.cor) <-Q5.q
 colnames(Q5.cor) <-Q5.q
 
-# Keep only meaningful correlations (<.19)
+# Keep only meaningful correlations (<.17)
 Q5.cor[is.na(Q5.cor)==TRUE] <- 0
 Q5.cor[Q5.cor<0.17] <- 0
 
@@ -2025,10 +2242,18 @@ plot(Q5.network,
 Q5.ceb <- cluster_edge_betweenness(Q5.network) 
 
 dendPlot(Q5.ceb, mode="hclust")
-plot(Q5.ceb, Q5.network, axes=T, edge.width=seq(1,10),
-     vertex.label.color="black") 
+
+edge.start <- ends(Q5.network, es=E(Q5.network), names=F)[,1]
+edge.col <- V(Q5.network)$color[edge.start]
+
+plot(Q5.ceb, Q5.network, axes=F, ,vertex.shape="none",edge.color=edge.col, edge.curved=.1,
+     vertex.label.color="black", vertex.label.font=1,vertex.label.dist=0.5,layout=layout_with_fr(Q5.network)) 
+
+
 
 ```
+
+
 
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
@@ -2114,7 +2339,7 @@ data.245<-data.frame(data.245$Theme,data.245$Percent.x,data.245$Percent.y)
 colnames(data.245)<-c("Theme","Percent.Q4","Percent.Q2")
 data.245.j<-full_join(data.245,Q5.summ,by=c("Theme"))
 data.245.j<-data.frame(data.245.j$Theme,data.245.j$Percent.Q2,data.245.j$Percent.Q4,data.245.j$Percent)
-colnames(data.245.j)<-c("Theme","Wisdom for Positive","Wisdom against Negative","Wisdom Now")
+colnames(data.245.j)<-c("Theme","Wisdom\nfor Positive","Wisdom\nagainst Negative","Wisdom Now")
 data.245.j[is.na(data.245.j)]<-0
 
 
@@ -2124,7 +2349,7 @@ data.245.j$Theme <- reorder(data.245.j$Theme, rowSums(data.245.j[-1]))
 md <- melt(data.245.j, id=(c("Theme")))
 colnames(md)<-c("Theme","Variable","Percent")
 
-g<-ggplot(md, aes(x =Percent , y=Theme,fill = Variable), width = 0.9)+geom_bar(stat = "identity")+theme_pubclean()+scale_fill_aaas()+theme(legend.position="bottom")
+g<-ggplot(md, aes(x =Percent , y=Theme,fill = Variable))+geom_bar(stat = "identity")+theme_pubclean()+scale_fill_d3()+theme(legend.position="bottom",legend.title = element_blank())
 
 fig <- ggplotly(tooltip=c("Percent"), height=1020, width = 690)
 fig <- fig %>% layout(autosize = T) %>% layout(legend = list(x = 0.6, y = 0.07))
@@ -2244,7 +2469,44 @@ dialect.test.q5<-glmer(value~Dialectic_Final*type+(1|Name),data=wisdom.long.tota
 car::Anova(dialect.test.q5,type="III")   #no significant effect and no interaction 
 
 
+
+
+all.data$morals.QALL<-rowSums(all.data[c("morals.Q2","morals.Q4","morals.Q5")])
+all.data$metacog.QALL<-rowSums(all.data[c("metacog.Q2","metacog.Q4","metacog.Q5")])
+all.data$others.QALL<-rowSums(all.data[c("others.Q2","others.Q4","others.Q5")])
+
+all.data$CWM.QALL<-rowSums(all.data[c("morals.QALL","metacog.QALL")])
+
+all.dia.data<-all.data %>% pivot_longer(cols=morals.QALL:others.QALL, names_to="type",values_to="count")
+
+all.dia.result<-glmer(count ~ type*Dialecticism + (1 | Name), data = all.dia.data, family = poisson)
+Anova(all.dia.result,type="III") #no significant differences
+sjPlot::plot_model(all.dia.result,type="int")
+
+all.dia.result.emt<-emmeans::emmeans(all.dia.result,"type",by="Dialecticism")
+pairs(all.dia.result.emt)
+
+pairs(emmeans::emmeans(all.dia.result,"Dialecticism",by="type")) #no sig difference in total
+
+#contrast of cWM (morals and meta-cog) vs. the rest
+
+ALL.dia.data.C<-all.data %>% pivot_longer(cols=c("others.QALL","CWM.QALL"), names_to="type",values_to="count")
+
+QALL.dia.result.C<-glmer(count ~ type*Dialecticism + (1 | Name), data = ALL.dia.data.C, family = poisson)
+Anova(QALL.dia.result.C,type="III") #no significant differences
+sjPlot::plot_model(QALL.dia.result.C,type="int")
+
+QALL.dia.result.C.emt<-emmeans::emmeans(QALL.dia.result.C,"type",by="Dialecticism")
+pairs(QALL.dia.result.C.emt)
+pairs(emmeans::emmeans(QALL.dia.result.C.emt,"Dialecticism",by="type")) #no sig difference in total
+
+
+
+
 ```
+
+
+
 
 
 ## Does familiarity with wisdom research influence types of categories experts mention in their recommendations?
@@ -2259,6 +2521,17 @@ It turns out, it does not matter for positive recommendations and for recommenda
 
 wis.test<-glmer(value~FamiliarWisdom*type*Q+(1|Name),data=wisdom.long.total,family=binomial)
 car::Anova(wis.test,type="III")   #no significant effect and no interaction 
+
+
+QALL.famil.result<-glmer(count ~ type*FamiliarWisdom + (1 | Name), data = all.dia.data, family = poisson)
+Anova(QALL.famil.result,type="III") #no significant differences
+sjPlot::plot_model(QALL.famil.result,type="int")
+
+QALL.famil.result.emt<-emmeans::emmeans(QALL.famil.result,"type",by="FamiliarWisdom")
+pairs(QALL.famil.result.emt)
+
+pairs(emmeans::emmeans(QALL.famil.result,"FamiliarWisdom",by="type"))
+
 
 ### test by question: positive
 
