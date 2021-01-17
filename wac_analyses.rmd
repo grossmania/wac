@@ -10,7 +10,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
@@ -257,6 +257,8 @@ all.data %>% group_by(Outsider_total)%>%
 
 
 ```
+About 22 % of participants wrote on the topic of wisdom whereas the majority did not know much about wisdom scholarship, with some scholars expolicitly stating they don't know what wisdom refers to, in which case they were referred to the broad definition concerning "attitudes, strategies, and behaviors that can help master the pandemic."
+
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 #expertise breakdown
@@ -1103,6 +1105,26 @@ temp.change.graph<-ggplot(temporal.change.TT, aes(x=Period, y=Percent, group = T
    theme_pubclean()+scale_color_d3()+scale_fill_d3()+theme(legend.title=element_blank())
 temp.change.graph
 
+# does it matter if one is from the US or not for type of trajectories?
+
+temp.result.pos.location<-glmer(count ~ week*Theme*Location + (1 | Name), data = subset(temporal.data,pos==1), family = binomial)
+Anova(temp.result.pos.location,type="III")
+pos.pl.location<-sjPlot::plot_model(temp.result.pos.location,type="int")
+
+temp.result.neg.location<-glmer(count ~ week*Theme*Location+ (1 | Name), data = subset(temporal.data,pos==0), family = binomial)
+Anova(temp.result.neg.location,type="III")
+neg.pl.location<-sjPlot::plot_model(temp.result.neg.location,type="int")
+
+
+
+pos.pl.location<-pos.pl.location[[4]]+scale_x_continuous(breaks=c(25,30,37,42,49),labels=c("15 June", "20 July", "9 Sept","12 Oct","30 Nov"))+ylim(NA,.8)+scale_y_continuous(breaks=c(0,.2,.4,.6,.8),labels=c("0%", "20%", "40%","60%","80%"))+
+   theme_pubclean()+scale_color_colorblind()+scale_fill_colorblind()+theme(legend.title=element_blank())+ylab("Theme's Likelihood")+xlab("")+ggtitle("")
+neg.pl.location<-neg.pl.location[[4]]+scale_x_continuous(breaks=c(25,30,37,42,49),labels=c("15 June", "20 July", "9 Sept","12 Oct","30 Nov"))+ylim(NA,.8)+scale_y_continuous(breaks=c(0,.2,.4,.6,.8),
+         labels=c("0%", "20%", "40%","60%","80%"))+
+   theme_pubclean()+scale_color_colorblind()+scale_fill_colorblind()+theme(legend.title=element_blank())+ylab("Theme's Likelihood")+xlab("")+ggtitle("")
+
+ggarrange(pos.pl.location,neg.pl.location,ncol=1,label.x="Month")
+
 ```
 # Wisdom for Positive Consequences
 
@@ -1193,21 +1215,6 @@ Q2.G.plot<-ggplot(Q2.G.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() +
   geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom for Positive Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
 
 Q2.G.plot
-##BY socio-cultural vs. non-socio-cultural expertise
-Q2.data.SC<-all.data %>% group_by(Field)%>% 
-  summarise(across(social.connectedness_q2:personal.resilience_q2, mean, na.rm = TRUE))
-
-colnames(Q2.data.SC)[colnames(Q2.data.SC)      # Rename two variable names
-                     %in% Q2] <- Q2.q
-
-Q2.data.SC.long <- Q2.data.SC %>% 
-  pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
-Q2.SC.summ<-cbind(Q2.data.SC.long, Q2.type)
-colnames(Q2.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
-Q2.SC.summ$Percent<-Q2.SC.summ$Proportion*100
-Q2.SC.plot<-ggplot(Q2.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
-  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom for Positive Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
-Q2.SC.plot
 
 ##BY wisdom familiarity
 Q2.data.W<-all.data %>% group_by(FamiliarWisdom)%>% 
@@ -1233,6 +1240,26 @@ Q2.Famil.result<-glmer(Presence ~ Theme*FamiliarWisdom + (1 | Name), data = Q2.d
 summary(Q2.Famil.result)
 Anova(Q2.Famil.result,type="III")
 #no significant difference by familiarity with wisdom scholarship
+
+##BY socio-cultural vs. non-socio-cultural expertise
+Q2.data.SC<-all.data %>% group_by(Field)%>% 
+  summarise(across(social.connectedness_q2:personal.resilience_q2, mean, na.rm = TRUE))
+
+colnames(Q2.data.SC)[colnames(Q2.data.SC)      # Rename two variable names
+                     %in% Q2] <- Q2.q
+
+Q2.data.SC.long <- Q2.data.SC %>% 
+  pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
+Q2.SC.summ<-cbind(Q2.data.SC.long, Q2.type)
+colnames(Q2.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
+Q2.SC.summ$Percent<-Q2.SC.summ$Proportion*100
+Q2.SC.plot<-ggplot(Q2.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom for Positive Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
+Q2.SC.plot
+
+Q2.SC.result<-glmer(Presence ~ Theme*Field + (1 | Name), data = Q2.data.Famil.long, family = binomial)
+summary(Q2.SC.result)
+Anova(Q2.SC.result,type="III")
 
 ```
 
@@ -1570,22 +1597,6 @@ Q4.G.plot<-ggplot(Q4.G.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() +
   geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom against Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
 Q4.G.plot
 
-##BY socio-cultural vs. non-socio-cultural expertise
-Q4.data.SC<-all.data %>% group_by(Field)%>% 
-  summarise(across(social.awareness_q4:self.distancing_q4, mean, na.rm=T))
-
-colnames(Q4.data.SC)[colnames(Q4.data.SC)      # Rename two variable names
-                     %in% Q4] <- Q4.q
-
-Q4.data.SC.long <- Q4.data.SC %>% 
-  pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
-Q4.SC.summ<-cbind(Q4.data.SC.long, Q4.type)
-colnames(Q4.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
-Q4.SC.summ$Percent<-Q4.SC.summ$Proportion*100
-Q4.SC.plot<-ggplot(Q4.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
-  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom against Negative Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
-Q4.SC.plot
-
 
 ##BY wisdom familiarity
 Q4.data.W<-all.data %>% group_by(FamiliarWisdom)%>% 
@@ -1610,6 +1621,27 @@ Q4.Famil.result<-glmer(Presence ~ Theme*FamiliarWisdom + (1 | Name), data = Q4.d
 summary(Q4.Famil.result)
 Anova(Q4.Famil.result,type="III")
 #no significant difference by familiarity with wisdom scholarship
+
+##BY socio-cultural vs. non-socio-cultural expertise
+Q4.data.SC<-all.data %>% group_by(Field)%>% 
+  summarise(across(social.awareness_q4:self.distancing_q4, mean, na.rm=T))
+
+colnames(Q4.data.SC)[colnames(Q4.data.SC)      # Rename two variable names
+                     %in% Q4] <- Q4.q
+
+Q4.data.SC.long <- Q4.data.SC %>% 
+  pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
+Q4.SC.summ<-cbind(Q4.data.SC.long, Q4.type)
+colnames(Q4.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
+Q4.SC.summ$Percent<-Q4.SC.summ$Proportion*100
+Q4.SC.plot<-ggplot(Q4.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom against Negative Consequences")+theme_pubclean()+scale_fill_d3()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=6.5))+labs(x="",y="%")
+Q4.SC.plot
+
+Q4.SC.result<-glmer(Presence ~ Theme*Field + (1 | Name), data = Q4.data.Famil.long, family = binomial)
+summary(Q4.SC.result)
+Anova(Q4.SC.result,type="III")
+
 
 ```
 
@@ -2005,21 +2037,7 @@ Q5.G.plot<-ggplot(Q5.G.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() +
   geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom Now")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=7))+labs(x="",y="%")
 Q5.G.plot
 
-##BY socio-cultural vs. non-socio-cultural expertise
-Q5.data.SC<-all.data %>% group_by(Field)%>% 
-  summarise(across(balance.of.personal...others.interest_q5:personal.resilience_q5, mean, na.rm=T))
 
-colnames(Q5.data.SC)[colnames(Q5.data.SC)      # Rename two variable names
-                     %in% Q5] <- Q5.q
-
-Q5.data.SC.long <- Q5.data.SC %>% 
-  pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
-Q5.SC.summ<-cbind(Q5.data.SC.long, Q5.type)
-colnames(Q5.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
-Q5.SC.summ$Percent<-Q5.SC.summ$Proportion*100
-Q5.SC.plot<-ggplot(Q5.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
-  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom Now")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=7))+labs(x="",y="%")
-Q5.SC.plot
 
 ##BY familiarity with wisdom
 Q5.data.W<-all.data %>% group_by(FamiliarWisdom)%>% 
@@ -2044,6 +2062,28 @@ Q5.Famil.result<-glmer(Presence ~ Theme*FamiliarWisdom + (1 | Name), data = Q5.d
 summary(Q5.Famil.result)
 Anova(Q5.Famil.result,type="III")
 #no significant difference by familiarity with wisdom scholarship
+
+##BY socio-cultural vs. non-socio-cultural expertise
+Q5.data.SC<-all.data %>% group_by(Field)%>% 
+  summarise(across(balance.of.personal...others.interest_q5:personal.resilience_q5, mean, na.rm=T))
+
+colnames(Q5.data.SC)[colnames(Q5.data.SC)      # Rename two variable names
+                     %in% Q5] <- Q5.q
+
+Q5.data.SC.long <- Q5.data.SC %>% 
+  pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
+Q5.SC.summ<-cbind(Q5.data.SC.long, Q5.type)
+colnames(Q5.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
+Q5.SC.summ$Percent<-Q5.SC.summ$Proportion*100
+Q5.SC.plot<-ggplot(Q5.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Wisdom Now")+theme_pubclean()+scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"))+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom", legend.text=element_text(size=7))+labs(x="",y="%")
+Q5.SC.plot
+
+
+Q5.SC.result<-glmer(Presence ~ Theme*Field + (1 | Name), data = Q5.data.Famil.long, family = binomial)
+summary(Q5.SC.result)
+Anova(Q5.SC.result,type="III")
+
 
 ```
 
