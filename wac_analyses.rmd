@@ -59,7 +59,12 @@ library(lme4)
 library(ggwordcloud)
 library(showtext)
 library(car)
+library(logisticPCA)
+library(FactoMineR)
+library(factoextra)
+library(missMDA)
 
+options(scipen = 999)    #disable scientific notation
 
 ```
 
@@ -287,7 +292,7 @@ Only three themes were mentioned by at least ten people: greater (appreciation o
 ## Frequency Chart
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
-Q1 <- c("shared.humanity_q1","critical.thinking_q1","personal.resilience_q1","gratitude_q1",
+q1 <- c("shared.humanity_q1","critical.thinking_q1","personal.resilience_q1","gratitude_q1",
         "nature_q1","improved.care.for.elders_q1","embrace.new.tech_q1","prosocial.behavior_q1",
         "social.connectedness_q1","improved.work.life.balance_q1","increased.interest.in.science_q1",
         "learning.from.pandemics_q1","political.engagement...structural.change_q1",
@@ -312,7 +317,7 @@ Q1.data<-all.data %>%
 
 
 colnames(Q1.data)[colnames(Q1.data)      # Rename two variable names
-                     %in% Q1] <- Q1.q
+                     %in% q1] <- Q1.q
 
 Q1.data.long <- Q1.data %>% 
   pivot_longer(everything(),names_to = "Theme", values_to = "Proportion")
@@ -330,7 +335,7 @@ Q1.plot
 
 Did people just report 1-2 themes or a great number of themes? How do such trends vary across people?
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
-all.data$Q1.pp<-rowSums(all.data[Q1])
+all.data$Q1.pp<-rowSums(all.data[q1])
 
 ggplot(all.data, aes(x = Q1.pp)) +   geom_vline(xintercept=median(all.data$Q1.pp), color="red")+
   geom_bar()+theme_pubclean()+scale_fill_d3()+labs(x="Number of Themes per Person",y="Count")
@@ -350,7 +355,7 @@ Q1.data.G<-all.data %>% group_by(Gender)%>%
   summarise(across(shared.humanity_q1:sympathy...compassion_q1, mean))
 
 colnames(Q1.data.G)[colnames(Q1.data.G)      # Rename two variable names
-                     %in% Q1] <- Q1.q
+                     %in% q1] <- Q1.q
 Q1.data.G.long <- Q1.data.G %>% 
   pivot_longer(-Gender,names_to = "Theme", values_to = "Proportion")
 Q1.G.summ<-cbind(Q1.data.G.long, Q1.type)
@@ -365,7 +370,7 @@ Q1.data.SC<-all.data %>% group_by(Field)%>%
   summarise(across(shared.humanity_q1:sympathy...compassion_q1, mean))
 
 colnames(Q1.data.SC)[colnames(Q1.data.SC)      # Rename two variable names
-                     %in% Q1] <- Q1.q
+                     %in% q1] <- Q1.q
 
 Q1.data.SC.long <- Q1.data.SC %>% 
   pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
@@ -394,7 +399,7 @@ Q1.data.Dia<-all.data %>% group_by(Dialectic_Final)%>%
   summarise(across(shared.humanity_q1:sympathy...compassion_q1, mean))
 
 colnames(Q1.data.Dia)[colnames(Q1.data.Dia)      # Rename two variable names
-                     %in% Q1] <- Q1.q
+                     %in% q1] <- Q1.q
 Q1.data.Dia$Dialecticism[Q1.data.Dia$Dialectic_Final==0]<-"Not Dialectical"
 Q1.data.Dia$Dialecticism[Q1.data.Dia$Dialectic_Final==1]<-"Dialectical"
 
@@ -424,7 +429,7 @@ Q1.data.Outsider<-all.data %>% group_by(Q1_Outside_Final)%>%
   summarise(across(shared.humanity_q1:sympathy...compassion_q1, mean))
 
 colnames(Q1.data.Outsider)[colnames(Q1.data.Outsider)      # Rename two variable names
-                     %in% Q1] <- Q1.q
+                     %in% q1] <- Q1.q
 Q1.data.Outsider$OutsiderV[Q1.data.Outsider$Q1_Outside_Final==0]<-"No Baserate Info (25%)"
 Q1.data.Outsider$OutsiderV[Q1.data.Outsider$Q1_Outside_Final==1]<-"Mentioned Baserates (75%)"
 
@@ -440,36 +445,55 @@ Q1.Outsider.plot
 
 ```
 
-## PCA
+## MCA
 
-We can address the question of diversity by examining the degree to which scores across themes are reducible to common components. To this end, we perform a principal component analysis (PCA), which works on dichotomous data.\
+We can address the question of diversity by examining the degree to which scores across themes are reducible to common components. To this end, we perform a series of data reduction analyses. Our chief focus was on Multiple Correspondence Analysis for categorical data. \
 
-It appears that 8 component is good start to account for 20 themes for Question 1.\
-Keep in mind that reducing 20 items to 8 components is just a 40% reduction and that's not much. Moreover, when we reduce the items to 8 components, the first component explains only 9 % of the variance. Given that each theme by default explains 5% of the variance (1/20), this is not much. \
-Furthermore, each of these components is largely based on 1-2 item (loadings > .6), with two items  for TC4 - solidarity & prosocial behavior,  TC6 - shared humanity &bipartisanship, TC3 - critical thinking & increased interest in science, TC5 - personal resilience & optimism/positivity, 
-TC2 - health/wellbeing & worklife balance.
+As a reminder, in qualitative analyses we identified 20 themes. If themes are completely independent and irreducible, each theme would account for 5 % of the variance. In other words, we can use 5% of variance as a cut-off point for a meaningful contribution of each component.
+
+It appears that 7 component is good start to account for 20 themes for Question 1.\
+Keep in mind that reducing 20 items to 7 components is just a 40% reduction and that's not much. Moreover, when we reduce the items to 7 components, the first component explains only 11.6 % of the variance. Given that each theme by default explains 5% of the variance (1/20), this is not much. \
+Furthermore, each of these components is largely based on 1-2 item (when examining squared cosine ≥ .4).
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 
-vss(all.data[Q1], rotate="oblimin", fm="pc")
+#first, convert to categorical
+Q1.fac<-all.data %>% select(q1)%>% mutate_at(q1, funs(factor(.)))
 
-principal(all.data[Q1], nfactors = 8, rotate="oblimin")
+names(Q1.fac)<-Q1.q
 
+
+# number of categories per variable
+cats = apply(Q1.fac, 2, function(x) nlevels(as.factor(x)))
+cats
+
+
+q1.mca<-MCA(Q1.fac)
+
+# table of eigenvalues
+q1.mca$eig
+
+q1.eig.val <- factoextra::get_eigenvalue(q1.mca)
+ # head(eig.val)
+
+q1.var<-get_mca_var(q1.mca)
+q1.var$cos2 #quality of representation of variable categories
+round(q1.var$contrib,2) #Contribution of variable categories to the dimensions
+
+
+#To visualize the percentages of themes explained by each MCA dimensions, use the function fviz_eig() or fviz_screeplot() [factoextra package]:
+fviz_screeplot(q1.mca, choice="variance",addlabels = TRUE, geom="line") #does not look like there is much reduction happening...
 
 ```
 
-In short, principal components (note: identical results with minres factor analyses with tetriconic correlation) show substantial diversity, with the top factors shared humanity and critical thinking not accounting for more than 9% of the variance and showing only weak intercorrelation among themselves. And even with 7 components, we don't account for 90% of the variance.\
-
-
-Three large clusters emerge, similar results are also evident in the dendogram below  .\
-
+In short, MCA analyses (note: close to identical results with minres factor analyses with tetriconic correlation) show substantial diversity, with the top dimensions not accounting for more than 12% of the variance. And even with 7 components, we don't account for 60% of the variance.\
 
 ## Network Graph
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 
 #first, get correlation matrix., we use spearman and we also control for tokens (length of response for this question)
-Q1.cor<-partial.r(all.data,Q1,cs(tokens.Q1),method="spearman")
+Q1.cor<-partial.r(all.data,q1,cs(tokens.Q1),method="spearman")
 
 ##################
 row.names(Q1.cor) <-Q1.q
@@ -507,11 +531,19 @@ Q1.ceb <- cluster_edge_betweenness(Q1.network)
 dendPlot(Q1.ceb, mode="hclust")
 plot(Q1.ceb, Q1.network, axes=T, vertex.label.color="black", edge.width=seq(1,10)) 
 
+edge.start <- ends(Q1.network, es=E(Q1.network), names=F)[,1]
+edge.col <- V(Q1.network)$color[edge.start]
+
+plot(Q1.ceb, Q1.network, axes=F, ,vertex.shape="none",edge.color=edge.col, edge.curved=.1,
+     vertex.label.color="black", vertex.label.font=1,vertex.label.dist=0.5,layout=layout_with_fr(Q1.network)) 
+
+
+
 
 ```
 
 
-As we can see above, even after removing negligible correlations (r < .17), cluster analyses on top of the network graphs show five clusters - psych. well-being, civic (poli.structural change, care for elders), solidarity, "pandemic-experience" strategies (social connectedness, change in habits, critical thinking), and adaptive mindsets (shared humanity, focus on nature, optimism/positivity, resilience). Again, this suggests a diversity of topics. Despite forming meaningful dependencies, themes for positive consequences of the pandemic appear largely distinct, except for link between social connectedness and gratitude, linking two networks.
+As we can see above, even after removing negligible correlations (r < .17), cluster analyses on top of the network graphs show seven clusters - psych. well-being, civic (poli.structural change, care for elders), solidarity, critical reflection and social connectedness (social connectedness, change in habits, critical thinking), and adaptive mindsets (shared humanity, focus on nature, optimism/positivity, resilience). Again, this suggests a diversity of topics. Despite forming meaningful dependencies, themes for positive consequences of the pandemic appear largely distinct, except for link between social connectedness and gratitude, linking two networks.
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 edgebundle(Q1.network, padding = 120, fontsize = 10)
@@ -584,7 +616,7 @@ Q1.data.M<-all.data %>% group_by(M)%>%
 
 
 colnames(Q1.data.M)[colnames(Q1.data.M)      # Rename two variable names
-                     %in% Q1] <- Q1.q
+                     %in% q1] <- Q1.q
 
 Q1.data.long.M <- Q1.data.M %>% 
   pivot_longer(-M,names_to = "Theme", values_to = "Count")
@@ -656,7 +688,7 @@ Generally:\
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 ##'QUESTION 3
 
-Q3 <- c("estrangement...alienation_q3","career.disruptions_q3", "decline.in.quality.of.education_q3", "decreased.trust.in.science_q3","decreased.well.being_q3"   ,                     
+q3 <- c("estrangement...alienation_q3","career.disruptions_q3", "decline.in.quality.of.education_q3", "decreased.trust.in.science_q3","decreased.well.being_q3"   ,                     
         "economic.hardship_q3" ,"educational.inequality_q3", "erosion.of.democratic.institutions_q3", "exacerbated.social.inequality_q3","mistrust_q3",                            
         "prejudice...racism_q3", "despair_q3", "prioritize.self.over.others_q3","irrationality_q3","loneliness_q3"  ,                                
         "misperception.about.the.world_q3" ,"political.conflict_q3" , "authoritarianism_q3", "stunted.child.development_q3","pessimism_q3",                                   
@@ -678,7 +710,7 @@ Q3.data<-all.data %>%
   summarise(across(estrangement...alienation_q3:autobiographical.memory_q3, mean, na.rm=TRUE))
 
 colnames(Q3.data)[colnames(Q3.data)      # Rename two variable names
-                     %in% Q3] <- Q3.q
+                     %in% q3] <- Q3.q
 Q3.data.long <- Q3.data %>% 
   pivot_longer(everything(),names_to = "Theme", values_to = "Proportion")
 Q3.summ<-cbind(Q3.data.long, Q3.type)
@@ -698,7 +730,7 @@ It turns out most people mentioned just one or two (median) negative consequence
 
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
-all.data$Q3.pp<-rowSums(all.data[Q3])
+all.data$Q3.pp<-rowSums(all.data[q3])
 ggplot(all.data, aes(x = Q3.pp)) +   geom_vline(xintercept=median(all.data$Q3.pp, na.rm=T), color="red")+
   geom_bar()+theme_pubclean()+scale_fill_d3()+labs(x="Number of Themes per Person",y="Count")
            
@@ -716,7 +748,7 @@ Q3.data.G<-all.data %>% group_by(Gender)%>%
   summarise(across(estrangement...alienation_q3:autobiographical.memory_q3, mean, na.rm=TRUE))
 
 colnames(Q3.data.G)[colnames(Q3.data.G)      # Rename two variable names
-                    %in% Q3] <- Q3.q
+                    %in% q3] <- Q3.q
 
 Q3.data.G.long <- Q3.data.G %>% 
   pivot_longer(-Gender,names_to = "Theme", values_to = "Proportion")
@@ -732,7 +764,7 @@ Q3.data.SC<-all.data %>% group_by(Field)%>%
   summarise(across(estrangement...alienation_q3:autobiographical.memory_q3, mean, na.rm=TRUE))
 
 colnames(Q3.data.SC)[colnames(Q3.data.SC)      # Rename two variable names
-                     %in% Q3] <- Q3.q
+                     %in% q3] <- Q3.q
 
 Q3.data.SC.long <- Q3.data.SC %>% 
   pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
@@ -761,7 +793,7 @@ Q3.data.Dia<-all.data %>% group_by(Dialectic_Final)%>%
   summarise(across(estrangement...alienation_q3:autobiographical.memory_q3, mean, na.rm=TRUE))
 
 colnames(Q3.data.Dia)[colnames(Q3.data.Dia)      # Rename two variable names
-                     %in% Q3] <- Q3.q
+                     %in% q3] <- Q3.q
 Q3.data.Dia$Dialecticism[Q3.data.Dia$Dialectic_Final==0]<-"Not Dialectical"
 Q3.data.Dia$Dialecticism[Q3.data.Dia$Dialectic_Final==1]<-"Dialectical"
 
@@ -791,7 +823,7 @@ Q3.data.Outsider<-all.data %>% group_by(Q3_Outside_Final)%>%
   summarise(across(estrangement...alienation_q3:autobiographical.memory_q3, mean, na.rm=TRUE))
 
 colnames(Q3.data.Outsider)[colnames(Q3.data.Outsider)      # Rename two variable names
-                     %in% Q3] <- Q3.q
+                     %in% q3] <- Q3.q
 Q3.data.Outsider$OutsiderV[Q3.data.Outsider$Q3_Outside_Final==0]<-"No Baserate Info (25%)"
 Q3.data.Outsider$OutsiderV[Q3.data.Outsider$Q3_Outside_Final==1]<-"Mentioned Baserates (75%)"
 
@@ -808,28 +840,49 @@ Q3.Outsider.plot
 ```
 
 
-## PCA 
+## MCA 
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 
-vss(all.data[Q3], rotate="oblimin", fm="pc")
-principal(all.data[Q3], nfactors = 8, rotate="oblimin")
+#first, convert to categorical
+Q3.fac<-all.data %>% select(q3)%>%mutate_at(q3, funs(factor(.)))
+
+names(Q3.fac)<-Q3.q
+
+Q3.fac<-na.omit(Q3.fac) #gt rid of NAs
+
+q3.mca<-MCA(Q3.fac)
+
+# table of eigenvalues
+round(q3.mca$eig,3)
+
+#To visualize the percentages of themes explained by each MCA dimensions, use the function fviz_eig() or fviz_screeplot() [factoextra package]:
+fviz_screeplot(q3.mca, choice="variance",addlabels = TRUE, geom="line") #does not look like there is much reduction happening...
+
+
+q3.eig.val <- factoextra::get_eigenvalue(q3.mca)
+ # head(eig.val)
+
+q3.var<-get_mca_var(q3.mca)
+round(q3.var$cos2,3) #quality of representation of variable categories
+round(q3.var$contrib,3) #Contribution of variable categories to the dimensions
+
 
 
 ```
 
-Similar to positive consequences, we can address the question of diversity by examining the degree to which scores across themes are reducible to common component, examining principal component analysis (PCA).\
-It appears that 7 or 8 components is as good a start to account for 22 themes for Question 3 (neg consequences), as any other. This said, the scree plot line is pretty flat.\
-Again, keep in mind that reducing 22 items to 8 components is not much. Moreover, when we reduce the items to 8 components, the first component explains only 10 % of the variance and in total 8 components account only for 64%.\
-Given that each theme by default explains 4.6% of the variance (1/22), this is not much. \
-Furthermore, each of these components is largely based on 1-2 items (loadings > .6), with an exception of TC1 - decline in education, stunted child dev & intomate relationships \
+Similar to positive consequences, we can address the question of diversity by examining the degree to which scores across themes are reducible to common dimensions via MCA).\
+With 22 themes, just by chance one would expect a component to account for at least 4.6% of variance. Nine dimensions are above this cut off point. This said, the scree plot line is pretty flat after the first component, and eeven the first one only accounts for 12% and nine components account for 68% of variance.\
 
-In short, principal components show substantial diversity, with the top factors political conflict and prejudice/racism not accounting for more than 16% of the variance and showing only weak intercorrelation among themselves\
+Given that each theme by default explains 4.6% of the variance (1/22), this is not much. \
+Furthermore, each of these components is largely based on 1-2 items (cos2 >  .3.9) \
+
+In short, MCA analysis shows substantial diversity, with the top dimensions concerning stunted child development and career disruptions/economic hardships not accounting for more than 22% of the variance \
 
 ## Network Graph
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
-Q3.cor<-partial.r(all.data,Q3,cs(tokens.Q3),method="spearman")
+Q3.cor<-partial.r(all.data,q3,cs(tokens.Q3),method="spearman")
 
 row.names(Q3.cor) <-Q3.q
 colnames(Q3.cor) <-Q3.q
@@ -860,23 +913,23 @@ plot(Q3.network,
                 vertex.color=my_color                           # Line type, could be 0 or "blank", 1 or "solid", 2 or "dashed", 3 or "dotted", 4 or "dotdash", 5 or "longdash", 6 or "twodash"
      #edge.curved=c(rep(0,5), rep(1,5))            # Edge curvature, range 0-1 (FALSE sets it to 0, TRUE to 0.5)
 )
-
-
-```
-
-```{r,echo=FALSE,warning=FALSE,message=FALSE}
-
 Q3.ceb <- cluster_edge_betweenness(Q3.network) 
 
 dendPlot(Q3.ceb, mode="hclust")
-plot(Q3.ceb, Q3.network, axes=T,edge.width=seq(1,10)) 
+plot(Q3.ceb, Q3.network, axes=T, vertex.label.color="black", edge.width=seq(1,10)) 
+
+edge.start <- ends(Q3.network, es=E(Q3.network), names=F)[,1]
+edge.col <- V(Q3.network)$color[edge.start]
+
+plot(Q3.ceb, Q3.network, axes=F, ,vertex.shape="none",edge.color=edge.col, edge.curved=.1,
+     vertex.label.color="black", vertex.label.font=1,vertex.label.dist=0.5,layout=layout_with_fr(Q3.network)) 
+
 
 
 ```
 
-As we can see above, even after removing negligible correlations (r < .17), cluster analyses on top of the network graphs show four clusters - Four clusters: irrationality & misperception of the world, prejudice, & decline of democracy / well-being decline and associated factors / family matters & educational (social) inequality (incl stunted child dev) / economic hardships.\
-
-Themes for negative consequences of the pandemic appear largely distinct, except for link between loneliness and gratitude, linking two networks concerning family matters (loneliness) and wellbeing (alienation/estrangement).\
+As we can see above, even after removing negligible correlations (r < .17), cluster analyses on top of the network graphs show 5 groups concerning irrational dystopia (e.g., irrationality & misperception of the world, prejudice, & authoritarianism), ill-being, inequality and family strains, economic hardships, and mistrust. \
+Again, only three themes showed connections across groups: loneliness and estrangement/alienation, intimate relations and economic hardships, and pessimism and despair. \
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 edgebundle(Q3.network, padding = 120, fontsize = 10)
@@ -897,7 +950,7 @@ Q3.data.M<-all.data %>% group_by(M)%>%
 
 
 colnames(Q3.data.M)[colnames(Q3.data.M)      # Rename two variable names
-                     %in% Q3] <- Q3.q
+                     %in% q3] <- Q3.q
 
 Q3.data.long.M <- Q3.data.M %>% 
   pivot_longer(-M,names_to = "Theme", values_to = "Count")
@@ -1141,7 +1194,7 @@ Most common wisdom-related strategies to sustain positive changes (7+ ppl) conce
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 ##'QUESTION 2
 
-Q2 <- c("social.connectedness_q2", "social.support_q2",  "evidence.based.decision.making_q2","improved.work.life.balance_q2","acknowledge.of.uncertainty.flexibility_q2","balance.of.personal...others.interest_q2","perspective.taking_q2",
+q2 <- c("social.connectedness_q2", "social.support_q2",  "evidence.based.decision.making_q2","improved.work.life.balance_q2","acknowledge.of.uncertainty.flexibility_q2","balance.of.personal...others.interest_q2","perspective.taking_q2",
         "critical.thinking_q2","bipartisanship.and.international.cooperation_q2","solidarity_q2",                        
         "improve.communication_q2", "intellectual.humility_q2","living.in.the.moment_q2",
         "learning.from.pandemics_q2","political.engagement...structural.change_q2",
@@ -1167,7 +1220,7 @@ Q2.data<-all.data %>%
 
 
 colnames(Q2.data)[colnames(Q2.data)      # Rename two variable names
-                     %in% Q2] <- Q2.q
+                     %in% q2] <- Q2.q
 
 Q2.data.long <- Q2.data %>% 
   pivot_longer(everything(),names_to = "Theme", values_to = "Proportion")
@@ -1188,7 +1241,7 @@ It turns out most people mentioned just one or two (median) negative consequence
 
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
-all.data$Q2.pp<-rowSums(all.data[Q2])
+all.data$Q2.pp<-rowSums(all.data[q2])
 ggplot(all.data, aes(x = Q2.pp)) +   geom_vline(xintercept=median(all.data$Q2.pp, na.rm=T), color="red")+
   geom_bar()+theme_pubclean()+scale_fill_d3()+labs(x="Number of Themes per Person",y="Count")
            
@@ -1204,7 +1257,7 @@ Q2.data.G<-all.data %>% group_by(Gender)%>%
   summarise(across(social.connectedness_q2:personal.resilience_q2, mean, na.rm = TRUE))
 
 colnames(Q2.data.G)[colnames(Q2.data.G)      # Rename two variable names
-                    %in% Q2] <- Q2.q
+                    %in% q2] <- Q2.q
 
 Q2.data.G.long <- Q2.data.G %>% 
   pivot_longer(-Gender,names_to = "Theme", values_to = "Proportion")
@@ -1221,7 +1274,7 @@ Q2.data.W<-all.data %>% group_by(FamiliarWisdom)%>%
   summarise(across(social.connectedness_q2:personal.resilience_q2, mean, na.rm = TRUE))
 
 colnames(Q2.data.W)[colnames(Q2.data.W)      # Rename two variable names
-                     %in% Q2] <- Q2.q
+                     %in% q2] <- Q2.q
 
 Q2.data.W.long <- Q2.data.W %>% 
   pivot_longer(-FamiliarWisdom,names_to = "Theme", values_to = "Proportion")
@@ -1246,7 +1299,7 @@ Q2.data.SC<-all.data %>% group_by(Field)%>%
   summarise(across(social.connectedness_q2:personal.resilience_q2, mean, na.rm = TRUE))
 
 colnames(Q2.data.SC)[colnames(Q2.data.SC)      # Rename two variable names
-                     %in% Q2] <- Q2.q
+                     %in% q2] <- Q2.q
 
 Q2.data.SC.long <- Q2.data.SC %>% 
   pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
@@ -1278,7 +1331,7 @@ Q2.data.Dia<-all.data %>% group_by(Dialectic_Final)%>%
   summarise(across(social.connectedness_q2:personal.resilience_q2, mean, na.rm=TRUE))
 
 colnames(Q2.data.Dia)[colnames(Q2.data.Dia)      # Rename two variable names
-                     %in% Q2] <- Q2.q
+                     %in% q2] <- Q2.q
 Q2.data.Dia$Dialecticism[Q2.data.Dia$Dialectic_Final==0]<-"Not Dialectical"
 Q2.data.Dia$Dialecticism[Q2.data.Dia$Dialectic_Final==1]<-"Dialectical"
 
@@ -1366,23 +1419,43 @@ chisq.test(xtabs(Count~ FamiliarWisdom+Theme, data= Q2.data.W.CWM))
 
 ```
 
-## PCA 
+## MCA 
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 
-vss(all.data[Q2], rotate="oblimin", fm="pc")
-principal(all.data[Q2], nfactors = 8, rotate="oblimin")
+#first, convert to categorical
+Q2.fac<-all.data %>% select(q2)%>%mutate_at(q2, funs(factor(.)))
+
+names(Q2.fac)<-Q2.q
+
+Q2.fac<-na.omit(Q2.fac) #gt rid of NAs
+
+q2.mca<-MCA(Q2.fac)
+
+# table of eigenvalues
+round(q2.mca$eig,2)
+
+#To visualize the percentages of themes explained by each MCA dimensions, use the function fviz_eig() or fviz_screeplot() [factoextra package]:
+fviz_screeplot(q2.mca, choice="variance",addlabels = TRUE, geom="line") #does not look like there is much reduction happening...
+
+
+q2.eig.val <- factoextra::get_eigenvalue(q2.mca)
+ # head(eig.val)
+
+q2.var<-get_mca_var(q2.mca)
+round(q2.var$cos2,2) #quality of representation of variable categories
+round(q2.var$contrib,2) #Contribution of variable categories to the dimensions
 
 
 ```
 
-Similar to prior results, we can address the question of diversity by examining the degree to which scores across themes are reducible to common component, examining principal component analysis (PCA).\
-It appears that 7 or 8 components is as good a start to account for 21 themes for Question 2 (wisdom for pos consequences), as any other. Once again, the scree plot line is pretty flat.\
-Again, keep in mind that reducing 21 items to 8 components is not parsimonious. Moreover, when we reduce the items to 8 components, the first component explains only 11 % of the variance, and in total 8 components explain 61% of variance.\
+Similar to prior results, we can address the question of diversity by examining the degree to which scores across themes are reducible to common component, examining MCAs.\
+It appears that 10 dimensions is as good a start to account for 21 themes for Question 2 (advice for pos consequences), as any other. Once again, the scree plot line is pretty flat.\
+Again, keep in mind that reducing 21 items to 10 dimensions is not parsimonious. Moreover, when we reduce the items to 10 components, the first component explains only 11 % of the variance, and in total 10 components explain 70% of variance.\
 Given that each theme by default explains 4.8% of the variance (1/21), this is not much. \
-Furthermore, each of these components is largely based on 1-2 items (loadings > .6), with an exception of TC1 - social connectedness, social support, and balance of personal and others interests, and improved work-life balance. \
+Furthermore, each of these components is largely based on 1-2 items (cos2 > .4). \
 
-In short, principal components show substantial diversity, with the top factor solidarity not even loading squarely on any of the components.\
+In short, MCA analyses show substantial diversity.\
 
 
 
@@ -1400,7 +1473,7 @@ Even after removing negligible correlations (r < .17), cluster analyses on top o
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 #create correlation matrix, adjusting for number of words in each narrative
-Q2.cor<-partial.r(all.data,Q2,cs(tokens.Q2),method="spearman")
+Q2.cor<-partial.r(all.data,q2,cs(tokens.Q2),method="spearman")
 row.names(Q2.cor) <-Q2.q
 colnames(Q2.cor) <-Q2.q
 
@@ -1463,7 +1536,7 @@ Q2.data.M<-all.data %>% group_by(M)%>%
 
 
 colnames(Q2.data.M)[colnames(Q2.data.M)      # Rename two variable names
-                     %in% Q2] <- Q2.q
+                     %in% q2] <- Q2.q
 
 Q2.data.long.M <- Q2.data.M %>% 
   pivot_longer(-M,names_to = "Theme", values_to = "Count")
@@ -1528,7 +1601,7 @@ Importantly, ten out of 23 identified themes were meta-cognitive in nature, cons
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 
-Q4 <- c("social.awareness_q4" , "balance.of.personal...others.interest_q4" ,  "solidarity_q4",                    "context.sensitivity_q4",                          "bipartisanship.and.international.cooperation_q4", "critical.thinking_q4",                            "evidence.based.decision.making_q4",               "gratitude_q4",                                   
+q4 <- c("social.awareness_q4" , "balance.of.personal...others.interest_q4" ,  "solidarity_q4",                    "context.sensitivity_q4",                          "bipartisanship.and.international.cooperation_q4", "critical.thinking_q4",                            "evidence.based.decision.making_q4",               "gratitude_q4",                                   
         "optimism...positivity_q4",                              "improve.communication_q4",                        "long.term.orientation_q4",    "social.support_q4"  ,                  "social.connectedness_q4",               "acknowledge.uncertainty.flexibility_q4",         
         "living.in.the.moment_q4",                         "patience_q4",                                     "perspective.taking_q4",                           "self.reflection.on.what.s.important_q4",          "shared.humanity_q4",                             
         "strive.for.socio.economic.equality_q4",           "sympathy...compassion_q4",                        "political.engagement...structural.change_q4",     "self.distancing_q4") 
@@ -1548,7 +1621,7 @@ Q4.data<-all.data %>%
   summarise(across(social.awareness_q4:self.distancing_q4, mean, na.rm=T))
 
 colnames(Q4.data)[colnames(Q4.data)      # Rename two variable names
-                     %in% Q4] <- Q4.q
+                     %in% q4] <- Q4.q
 
 Q4.data.long <- Q4.data %>% 
   pivot_longer(everything(),names_to = "Theme", values_to = "Proportion")
@@ -1569,7 +1642,7 @@ It turns out most people mentioned just one or two (median) negative consequence
 
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
-all.data$Q4.pp<-rowSums(all.data[Q4])
+all.data$Q4.pp<-rowSums(all.data[q4])
 ggplot(all.data, aes(x = Q4.pp)) +   geom_vline(xintercept=median(all.data$Q4.pp, na.rm=T), color="red")+
   geom_bar()+theme_pubclean()+scale_fill_d3()+labs(x="Number of Themes per Person",y="Count")
            
@@ -1586,7 +1659,7 @@ Q4.data.G<-all.data %>% group_by(Gender)%>%
   summarise(across(social.awareness_q4:self.distancing_q4, mean, na.rm=T))
 
 colnames(Q4.data.G)[colnames(Q4.data.G)      # Rename two variable names
-                    %in% Q4] <- Q4.q
+                    %in% q4] <- Q4.q
 
 Q4.data.G.long <- Q4.data.G %>% 
   pivot_longer(-Gender,names_to = "Theme", values_to = "Proportion")
@@ -1603,7 +1676,7 @@ Q4.data.W<-all.data %>% group_by(FamiliarWisdom)%>%
   summarise(across(social.awareness_q4:self.distancing_q4, mean, na.rm = TRUE))
 
 colnames(Q4.data.W)[colnames(Q4.data.W)      # Rename two variable names
-                     %in% Q4] <- Q4.q
+                     %in% q4] <- Q4.q
 
 Q4.data.W.long <- Q4.data.W %>% 
   pivot_longer(-FamiliarWisdom,names_to = "Theme", values_to = "Proportion")
@@ -1627,7 +1700,7 @@ Q4.data.SC<-all.data %>% group_by(Field)%>%
   summarise(across(social.awareness_q4:self.distancing_q4, mean, na.rm=T))
 
 colnames(Q4.data.SC)[colnames(Q4.data.SC)      # Rename two variable names
-                     %in% Q4] <- Q4.q
+                     %in% q4] <- Q4.q
 
 Q4.data.SC.long <- Q4.data.SC %>% 
   pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
@@ -1660,7 +1733,7 @@ Q4.data.Dia<-all.data %>% group_by(Dialectic_Final)%>%
   summarise(across(social.awareness_q4:self.distancing_q4, mean, na.rm=TRUE))
 
 colnames(Q4.data.Dia)[colnames(Q4.data.Dia)      # Rename two variable names
-                     %in% Q4] <- Q4.q
+                     %in% q4] <- Q4.q
 Q4.data.Dia$Dialecticism[Q4.data.Dia$Dialectic_Final==0]<-"Not Dialectical"
 Q4.data.Dia$Dialecticism[Q4.data.Dia$Dialectic_Final==1]<-"Dialectical"
 
@@ -1755,23 +1828,42 @@ pairs(Q4.famil.result.emt) #  folks familiar with wisdom research more likely to
 
 ```
 
-## PCA 
+## MCA 
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 
-vss(all.data[Q4], rotate="oblimin", fm="pc")
-principal(all.data[Q4], nfactors = 8, rotate="oblimin")
+#first, convert to categorical
+q4.fac<-all.data %>% select(q4)%>%mutate_at(q4, funs(factor(.)))
 
+names(q4.fac)<-Q4.q
+
+q4.fac<-na.omit(q4.fac) #gt rid of NAs
+
+q4.mca<-MCA(q4.fac)
+
+# table of eigenvalues
+round(q4.mca$eig,2)
+
+#To visualize the percentages of themes explained by each MCA dimensions, use the function fviz_eig() or fviz_screeplot() [factoextra package]:
+fviz_screeplot(q4.mca, choice="variance",addlabels = TRUE, geom="line") #does not look like there is much reduction happening...
+
+
+q4.eig.val <- factoextra::get_eigenvalue(q4.mca)
+ # head(eig.val)
+
+q4.var<-get_mca_var(q4.mca)
+round(q4.var$cos2,2) #quality of representation of variable categories
+round(q4.var$contrib,2) #Contribution of variable categories to the dimensions
 
 ```
 
-Similar to prior results, we can address the question of diversity by examining the degree to which scores across themes are reducible to common component, examining principal component analysis (PCA).\
-It appears that 8 components is as good a start to account for 23 themes for Question 4 (wisdom against neg consequences), as any other. Once again, the scree plot line is pretty flat.\
-Again, keep in mind that reducing 23 items to 8 components is not parsimonious. Moreover, when we reduce the items to 8 components, the first component explains only 10 % of the variance, and in total 8 components explain 60% of variance.\
+Similar to prior results, we can address the question of diversity by examining the degree to which scores across themes are reducible to common dimensions, using MCA.\
+It appears that 10 components is as good a start to account for 23 themes for Question 4 (wisdom against neg consequences), as any other. Once again, the scree plot line is pretty flat after the first dimension.\
+Again, keep in mind that reducing 23 items to 10 components is not parsimonious. Moreover, when we reduce the items to 10 components, the first component explains only 11.6 % of the variance, and in total 10 components explain 70% of variance.\
 Given that each theme by default explains 4.4% of the variance (1/23), this is not much. \
-Furthermore, each of these components is largely based on 1-2 items (loadings > .6). \
+Furthermore, each of these components is largely based on 1-2 items (cos2 > .4). \
 
-In short, principal components show substantial diversity, with the top factor political engagement and structural change not even loading squarely on any of the components (and negatively loading on the component it has highest loading for - the one with positive loading for self-distancing).\
+In short, MCA shows substantial diversity.\
 
 
 ## Network Graph
@@ -1786,7 +1878,7 @@ Even after removing negligible correlations (r < .17), cluster analyses on top o
 Balance of diverse interests appears in the center of everything, connecting to other themes mentioned by experts.\
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
-Q4.cor<-partial.r(all.data,Q4,cs(tokens.Q4),method="spearman")
+Q4.cor<-partial.r(all.data,q4,cs(tokens.Q4),method="spearman")
 
 row.names(Q4.cor) <-Q4.q
 colnames(Q4.cor) <-Q4.q
@@ -1859,7 +1951,7 @@ Q4.data.M<-all.data %>% group_by(M)%>%
 
 
 colnames(Q4.data.M)[colnames(Q4.data.M)      # Rename two variable names
-                     %in% Q4] <- Q4.q
+                     %in% q4] <- Q4.q
 
 Q4.data.long.M <- Q4.data.M %>% 
   pivot_longer(-M,names_to = "Theme", values_to = "Count")
@@ -1926,7 +2018,7 @@ Once again, seven categories were meta-cognitive, whereas 3 were (pro)social and
 ###Q5################################################
 
 
-Q5 <- c("balance.of.personal...others.interest_q5",       
+q5 <- c("balance.of.personal...others.interest_q5",       
  "clear.governmental.communication_q5",             "solidarity_q5",                                   "bipartisanship.and.international.cooperation_q5",
  "critical.thinking_q5",                            "embrace.new.tech_q5",                             "agency...control_q5",                            
  "follow.rules_q5",                                 "optimism...positivity_q5",                        "learning.from.the.pandemics_q5",                  "improve.communication_q5",
@@ -1962,7 +2054,7 @@ Q5.data<-all.data %>%
 
 
 colnames(Q5.data)[colnames(Q5.data)      # Rename two variable names
-                     %in% Q5] <- Q5.q
+                     %in% q5] <- Q5.q
 
 Q5.data.long <- Q5.data %>% 
   pivot_longer(everything(),names_to = "Theme", values_to = "Count")
@@ -2005,7 +2097,7 @@ Did people just report 1-2 themes or a great number of themes? How do such trend
 Most people reported 1-2 themes, with the max being 4 themes mentioned by 4 people.
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
-all.data$Q5.pp<-rowSums(all.data[Q5])
+all.data$Q5.pp<-rowSums(all.data[q5])
 
 ggplot(all.data, aes(x = Q5.pp)) +   geom_vline(xintercept=median(all.data$Q5.pp,na.rm=T), color="red")+
   geom_bar()+theme_pubclean()+scale_fill_d3()+labs(x="Number of Themes per Person",y="Count")
@@ -2026,7 +2118,7 @@ Q5.data.G<-all.data %>% group_by(Gender)%>%
   summarise(across(balance.of.personal...others.interest_q5:personal.resilience_q5, mean, na.rm=T))
 
 colnames(Q5.data.G)[colnames(Q5.data.G)      # Rename two variable names
-                     %in% Q5] <- Q5.q
+                     %in% q5] <- Q5.q
 
 Q5.data.G.long <- Q5.data.G %>% 
   pivot_longer(-Gender,names_to = "Theme", values_to = "Proportion")
@@ -2044,7 +2136,7 @@ Q5.data.W<-all.data %>% group_by(FamiliarWisdom)%>%
   summarise(across(balance.of.personal...others.interest_q5:personal.resilience_q5, mean, na.rm=T))
 
 colnames(Q5.data.W)[colnames(Q5.data.W)      # Rename two variable names
-                     %in% Q5] <- Q5.q
+                     %in% q5] <- Q5.q
 
 Q5.data.W.long <- Q5.data.W %>% 
   pivot_longer(-FamiliarWisdom,names_to = "Theme", values_to = "Proportion")
@@ -2068,7 +2160,7 @@ Q5.data.SC<-all.data %>% group_by(Field)%>%
   summarise(across(balance.of.personal...others.interest_q5:personal.resilience_q5, mean, na.rm=T))
 
 colnames(Q5.data.SC)[colnames(Q5.data.SC)      # Rename two variable names
-                     %in% Q5] <- Q5.q
+                     %in% q5] <- Q5.q
 
 Q5.data.SC.long <- Q5.data.SC %>% 
   pivot_longer(-Field,names_to = "Theme", values_to = "Proportion")
@@ -2104,7 +2196,7 @@ Q5.data.Dia<-all.data %>% group_by(Dialectic_Final)%>%
   summarise(across(balance.of.personal...others.interest_q5:personal.resilience_q5, mean, na.rm=TRUE))
 
 colnames(Q5.data.Dia)[colnames(Q5.data.Dia)      # Rename two variable names
-                     %in% Q5] <- Q5.q
+                     %in% q5] <- Q5.q
 Q5.data.Dia$Dialecticism[Q5.data.Dia$Dialectic_Final==0]<-"Not Dialectical"
 Q5.data.Dia$Dialecticism[Q5.data.Dia$Dialectic_Final==1]<-"Dialectical"
 
@@ -2204,23 +2296,42 @@ pairs(emmeans::emmeans(Q5.famil.result,"FamiliarWisdom",by="type"))
 ```
 
 
-## PCA 
+## MCA 
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 
-vss(all.data[Q5], rotate="oblimin", fm="pc")
-principal(all.data[Q5], nfactors = 8, rotate="oblimin")
+#first, convert to categorical
+q5.fac<-all.data %>% select(q5)%>%mutate_at(q5, funs(factor(.)))
 
+names(q5.fac)<-Q5.q
+
+q5.fac<-na.omit(q5.fac) #gt rid of NAs
+
+q5.mca<-MCA(q5.fac)
+
+# table of eigenvalues
+round(q5.mca$eig,2)
+
+#To visualize the percentages of themes explained by each MCA dimensions, use the function fviz_eig() or fviz_screeplot() [factoextra package]:
+fviz_screeplot(q5.mca, choice="variance",addlabels = TRUE, geom="line") #does not look like there is much reduction happening...
+
+
+q5.eig.val <- factoextra::get_eigenvalue(q5.mca)
+ # head(eig.val)
+
+q5.var<-get_mca_var(q5.mca)
+round(q5.var$cos2,2) #quality of representation of variable categories
+round(q5.var$contrib,2) #Contribution of variable categories to the dimensions
 
 ```
 
-Similar to prior results, we can address the question of diversity by examining the degree to which scores across themes are reducible to common component, examining principal component analysis (PCA).\
-It appears that 8 components is as good a start to account for 25 themes for Question 5 (wisdom now), as any other. Once again, the scree plot line is pretty flat.\
-Again, keep in mind that reducing 24 items to 8 components is not parsimonious. Moreover, when we reduce the items to 8 components, the first component explains only 9 % of the variance, and in total 8 components explain 57% of variance.\
+Similar to prior results, we can address the question of diversity by examining the degree to which scores across themes are reducible to common components, examining MCA results.\
+It appears that 8 components is as good a start to account for 25 themes for Question 5 (wisdom now), as any other. Though 12 dimensions are providing at least 4 % of variance, scree plot line suggests a bent after 8 components.\
+Again, keep in mind that reducing 24 items to 8 components is not parsimonious (and its even worse with 12 components). Moreover, when we reduce the items to 8 components, the first component explains only 9.6 % of the variance, and in total 8 components explain 57% of variance.\
 Given that each theme by default explains 4.2% of the variance (1/23), this is not much. \
-Furthermore, each of these components is largely based on 1-2 items (loadings > .6), with exception of TC2 : bipartisanship & int.cooperation, learning from the pandemic, long-term orientation.\
+Furthermore, each of these components is largely based on 1-2 items (cos2 > .4).\
 
-In short, principal components show substantial diversity, with the top factor social connectedness not even loading squarely on any of the components (and negatively loading on the component it has highest loading for - the one with positive loading for critical thinking).\
+In short, MCA results show substantial diversity.\
 
 
 ## Network Graph
@@ -2237,7 +2348,7 @@ Five clusters: \
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 #create new variables, adjusting for number of words in each narrative
-Q5.cor<-partial.r(all.data,Q5,cs(tokens.Q5),method="spearman")
+Q5.cor<-partial.r(all.data,q5,cs(tokens.Q5),method="spearman")
 
 row.names(Q5.cor) <-Q5.q
 colnames(Q5.cor) <-Q5.q
@@ -2313,7 +2424,7 @@ Q5.data.M<-all.data %>% group_by(M)%>%
 
 
 colnames(Q5.data.M)[colnames(Q5.data.M)      # Rename two variable names
-                     %in% Q5] <- Q5.q
+                     %in% q5] <- Q5.q
 
 Q5.data.long.M <- Q5.data.M %>% 
   pivot_longer(-M,names_to = "Theme", values_to = "Count")
@@ -2379,7 +2490,7 @@ data.245<-data.frame(data.245$Theme,data.245$Percent.x,data.245$Percent.y)
 colnames(data.245)<-c("Theme","Percent.Q4","Percent.Q2")
 data.245.j<-full_join(data.245,Q5.summ,by=c("Theme"))
 data.245.j<-data.frame(data.245.j$Theme,data.245.j$Percent.Q2,data.245.j$Percent.Q4,data.245.j$Percent)
-colnames(data.245.j)<-c("Theme","Wisdom\nfor Positive","Wisdom\nagainst Negative","Wisdom Now")
+colnames(data.245.j)<-c("Theme","Advice\nfor Positive","Advice\nagainst Negative","Advice for Now")
 data.245.j[is.na(data.245.j)]<-0
 
 
@@ -2406,6 +2517,7 @@ data.245.jS<-data.245.j %>%
 mdS <- melt(data.245.jS, id=(c("Theme")))
 colnames(mdS)<-c("Theme","Variable","Percent")
 
+#most common categories
 gS<-ggplot(mdS, aes(x =Percent , y=Theme,fill = Variable), width = 0.5)+
   geom_bar(stat = "identity")+ 
   scale_color_tableau() +theme_minimal() +
