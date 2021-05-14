@@ -2723,11 +2723,10 @@ As one can see below, some of the results are indeed quite trivial. Beyond same 
 * greater social connectedness and optimism/positivity depend on *improved communication*;\
 * greater health & wellbeing depends on *improved work-life balance* , *focus on living in the moment* & *ability to compromise/balance diverse interests*;\
 * greater resilience depends on *sympathy & compassion*;\
-* greater resilience depends on *sympathy & compassion*;\
 * learning from the pandemic in the future depends on *political cooperation*;\
 * greater solidarity depends on *awareness of shared humanity*;\
 * greater transition to new technologies and reconsideration of habits depend on *personal resilience*;\
-* **strongest relationship**: greater resilience, embacing new tech, and reconsideration of habits depend on *acknowledgement of uncertainty*.
+* **strongest relationship**: greater resilience, embracing new tech, and reconsideration of habits depend on *acknowledgment of uncertainty*.
 
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE, out.height="300%"}
@@ -2777,7 +2776,7 @@ heatmaply_cor(round(Q12.cor.arb,digits=2), #round to 2 decimal points
 
 ### Q1-Q2 Edge Binding
 
-A different, and perhaps more intuitive way to examine the relationship between themes mentioned for forecasts and advice is to examine connections between "edges" formed in the network of QUestions concerning forecasts and the advice. Here, full information from the network is used to optimally visualize connections between different themes in the network.\
+A different, and perhaps more intuitive way to examine the relationship between themes mentioned for forecasts and advice is to examine connections between "edges" formed in the network of Questions concerning forecasts and the advice. Here, full information from the network is used to optimally visualize connections between different themes in the network.\
 \
 Below, you see an edge-binding diagram visualizing the relationships. On the right, you see themes for forecasts (Q1) and on the left you see type of advice recommended (Q2). When you navigate the cursor on each theme, the graph will show you what other themes it is mostly connected to, both within the same question and across questions. As for the other network visualizations, I used r < .17 as a cut-off here.\
 \
