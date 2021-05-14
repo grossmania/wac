@@ -197,7 +197,7 @@ Expertise is roughly equally distributed.
 #expertise breakdown
 all.data %>% group_by(Field)%>% 
   summarise(count = n() ) %>%
-  mutate( prop = count / sum(count)*100 )%>% ggplot() + geom_bar(aes(Field,prop, fill=Field), stat ='identity')+scale_fill_d3()+theme(legend.position = "none")+labs(y="%", x="Expertise (Socio-cultural vs. Rest)")+theme_pubclean()+theme(legend.position="none")
+  mutate( prop = count / sum(count)*100) %>% ggplot() + geom_bar(aes(Field,prop, fill=Field), stat ='identity')+scale_fill_d3()+theme(legend.position = "none")+labs(y="%", x="Expertise (Socio-cultural vs. Rest)")+theme_pubclean()+theme(legend.position="none")
 
 
 #wordcloud of subfields
@@ -694,7 +694,7 @@ q3 <- c("estrangement...alienation_q3","career.disruptions_q3", "decline.in.qual
         "misperception.about.the.world_q3" ,"political.conflict_q3" , "authoritarianism_q3", "stunted.child.development_q3","pessimism_q3",                                   
         "intimate.relations_q3" , "autobiographical.memory_q3") 
 
-Q3.q <- c("Estrangement\nAlienation","Career Disruptions", "Low Qual. Education", "Low Trust\nin Science","Low Wellbeing"   ,                     
+Q3.q <- c("Estrangement Alienation","Career Disruptions", "Low Qual. Education", "Low Trust in Science","Low Wellbeing"   ,                     
           "Economic Hardship" ,"Educational Inequality", "Erosion of Democratic Instit.", "Social Inequality","Mistrust",                            
           "Prejudice Racism", "Despair", "Self-Centeredness","Irrationality","Loneliness"  ,                                
           "Misperception of the World" ,"Political Conflict" , "Authoritarianism", "Stunted Child\nDevelopment","Pessimism",                                   
@@ -772,7 +772,7 @@ Q3.SC.summ<-cbind(Q3.data.SC.long, Q3.type)
 colnames(Q3.SC.summ) <- c("Field","Theme","Proportion","Type")  # change column names
 Q3.SC.summ$Percent<-Q3.SC.summ$Proportion*100
 Q3.SC.plot<-ggplot(Q3.SC.summ, aes(x=Theme, y=Percent,fill=Type)) + coord_flip() + facet_grid(. ~ Field)+
-  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Negative Consequences")+theme_pubclean()+scale_fill_aaas()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
+  geom_bar(stat="identity", width=.5,position=position_dodge()) + ggtitle("Negative Consequences")+theme_pubclean()+scale_fill_lancet()+theme(plot.title = element_text(hjust = 0.5),legend.position="bottom")+labs(x="",y="%")
 Q3.SC.plot
 ```
 
@@ -1179,6 +1179,7 @@ neg.pl.location<-neg.pl.location[[4]]+scale_x_continuous(breaks=c(25,30,37,42,49
 ggarrange(pos.pl.location,neg.pl.location,ncol=1,label.x="Month")
 
 ```
+
 # Wisdom for Positive Consequences
 
 ## Summary
@@ -2658,9 +2659,6 @@ pairs(emmeans::emmeans(QALL.dia.result.C.emt,"Dialecticism",by="type")) #no sig 
 ```
 
 
-
-
-
 ## Does familiarity with wisdom research influence types of categories experts mention in their recommendations?
 
 To address this question, I perform generalized (binomial) linear mixed model with dichotomous responses (1/0) nested in participants and type of wisdom theme (moral vs. metacog vs. other), familiarity with wisdom (yes vs. no) and their interaction as predictors. If familiarity with wisdom qualifies type of category mentioned, we should expect a significant interaction.\
@@ -2751,10 +2749,10 @@ Q12<-c("shared.humanity_q1","critical.thinking_q1","personal.resilience_q1","gra
        "self.reflection.on.what.s.important_q2","shared.humanity_q2","sympathy...compassion_q2", "self.distancing_q2","embrace.new.tech_q2","personal.resilience_q2") 
 
 Q12.cor.data<-partial.r(all.data,Q12,cs(tokens.Q1,tokens.Q2),method="spearman") #correct for tokens (length) in each interview
-write.csv(Q12.cor.data,"corr12.csv") #R is weird with partial.r function so I jsut save and open the file again, scripping it to one layer
+write.csv(Q12.cor.data,"corr12.csv") #R is weird with partial.r function so I just save and open the file again, stripping it to one layer
 Q12.cor.data<-read.csv("corr12.csv")
 
-Q12.cor.arb<-Q12.cor.data[1:length(Q1),c("X",Q2)]
+Q12.cor.arb<-Q12.cor.data[1:length(Q1),c("X",q2)]
 Q12.cor.arb <- data.frame(Q12.cor.arb[,-1], row.names=paste("Q1",Q1.q))
 colnames(Q12.cor.arb) <-paste("Q2",Q2.q)
 
@@ -2868,7 +2866,7 @@ Q34.cor.data<-partial.r(all.data,Q34,cs(tokens.Q3,tokens.Q4),method="spearman") 
 write.csv(Q34.cor.data,"corr34.csv") #R is weird with partial.r function so I jsut save and open the file again, scripping it to one layer
 Q34.cor.data<-read.csv("corr34.csv")
 
-Q34.cor.arb<-Q34.cor.data[1:length(Q3),c("X",Q4)]
+Q34.cor.arb<-Q34.cor.data[1:length(q3),c("X",q4)]
 Q34.cor.arb <- data.frame(Q34.cor.arb[,-1], row.names=paste("Q3",Q3.q))
 colnames(Q34.cor.arb) <-paste("Q4",Q4.q)
 
