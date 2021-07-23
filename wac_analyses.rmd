@@ -63,6 +63,7 @@ library(logisticPCA)
 library(FactoMineR)
 library(factoextra)
 library(missMDA)
+library(jtools)
 
 options(scipen = 999)    #disable scientific notation
 
@@ -1152,10 +1153,10 @@ colnames(countByMonth) <- c("Period","N")  # change column names
 temporal.change.TT<-full_join(temporal.change.long,countByMonth, by = "Period")
 temporal.change.TT$Percent<-(temporal.change.TT$Count/temporal.change.TT$N)*100
 
-temp.change.graph<-ggplot(temporal.change.TT, aes(x=Period, y=Percent, group = Theme, color=Theme, fill=Theme)) + 
+temp.change.graph<-ggplot(temporal.change.TT, aes(x=Period, y=Percent, group = Theme, color=Theme, shape=Theme,fill=Theme)) + 
     geom_line( ) +
-    geom_point(shape=21,  size=4) +facet_wrap(~Type, ncol=1,as.table = FALSE)+
-   theme_pubclean()+scale_color_d3()+scale_fill_d3()+theme(legend.title=element_blank())
+    geom_point(size=4) +facet_wrap(~Type, ncol=1,as.table = FALSE)+
+   theme_nice()+scale_color_d3()+scale_fill_d3()+theme(legend.title=element_blank(), legend.position = "top")
 temp.change.graph
 
 # does it matter if one is from the US or not for type of trajectories?
